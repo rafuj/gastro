@@ -12,7 +12,7 @@ const SearchOptions = () => {
 	return (
 		<Box
 			sx={{
-				p: 2,
+				py: 2,
 				backgroundColor: "#f5f5f5",
 				borderRadius: 1,
 				display: "flex",

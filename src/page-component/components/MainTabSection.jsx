@@ -2,6 +2,7 @@ import { icons } from "@/components/icons";
 import { Box, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { MenuCarte } from "./MenuCarte";
+import { MenuContent } from "./MenuContent";
 import SearchOptions from "./SearchOptions";
 
 export const MainTabSection = () => {
@@ -12,7 +13,7 @@ export const MainTabSection = () => {
 	};
 
 	return (
-		<Box sx={{ width: "100%", mt: 3 }}>
+		<Box sx={{ width: "100%", mt: 3, px: 3 }}>
 			<Box
 				sx={{
 					borderBottom: 1,
@@ -64,6 +65,7 @@ export const MainTabSection = () => {
 			</Box>
 			<SearchOptions />
 			<MenuCarte />
+			<MenuContent />
 		</Box>
 	);
 };
