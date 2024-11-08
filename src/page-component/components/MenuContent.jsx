@@ -203,6 +203,7 @@ export const MenuContent = () => {
 										width: "100%",
 										mt: 2,
 									}}
+									disabled={!item.status}
 								>
 									Select Menu at - CHF 6’000
 								</Button>
