@@ -33,7 +33,11 @@ const SearchOptions = () => {
 						</InputAdornment>
 					),
 				}}
-				sx={{ width: "200px", flexGrow: 1, maxWidth: "320px" }}
+				sx={{
+					width: "200px",
+					flexGrow: 1,
+					maxWidth: { xs: "320px", xl: "unset" },
+				}}
 			/>
 
 			{/* Date Selection */}
@@ -51,7 +55,7 @@ const SearchOptions = () => {
 				sx={{
 					width: "150px",
 					flexGrow: 1,
-					maxWidth: "320px",
+					maxWidth: { xs: "320px", xl: "unset" },
 					gap: 1,
 				}}
 			/>
@@ -64,7 +68,7 @@ const SearchOptions = () => {
 				sx={{
 					width: "200px",
 					flexGrow: 1,
-					maxWidth: "320px",
+					maxWidth: { xs: "320px", xl: "unset" },
 					gap: 1,
 					legend: {
 						visibility: "visible",
@@ -88,7 +92,7 @@ const SearchOptions = () => {
 				sx={{
 					width: "100px",
 					flexGrow: 1,
-					maxWidth: "320px",
+					maxWidth: { xs: "320px", xl: "unset" },
 					gap: 1,
 					legend: {
 						visibility: "visible",
@@ -116,7 +120,11 @@ const SearchOptions = () => {
 						</InputAdornment>
 					),
 				}}
-				sx={{ width: "150px", flexGrow: 1, maxWidth: "320px" }}
+				sx={{
+					width: "150px",
+					flexGrow: 1,
+					maxWidth: { xs: "320px", xl: "unset" },
+				}}
 			/>
 
 			{/* More Options Button */}

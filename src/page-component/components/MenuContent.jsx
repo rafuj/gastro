@@ -20,12 +20,13 @@ export const MenuContent = () => {
 						<Stack
 							sx={{
 								width: "95%",
-								maxWidth: "580px",
+								maxWidth: { xs: "580px", xl: "unset" },
 								minWidth: { lg: "480px", xl: "580px" },
 								border: "1px solid rgba(0, 0, 0, 0.1)",
 								boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.1)",
 								p: 3,
 								borderRadius: "8px",
+								maxHeight: "calc(90vh)",
 							}}
 							key={item.id}
 						>
@@ -52,7 +53,10 @@ export const MenuContent = () => {
 									{item.subtitle}
 								</Typography>
 							</Stack>
-							<Box sx={{ maxHeight: "790px", overflowY: "auto" }}>
+							{/* <Box sx={{ maxHeight: "790px", overflowY: "auto" }}> */}
+							<Box
+								sx={{ height: "0", flexGrow: "1", overflowY: "auto" }}
+							>
 								<Stack gap={3}>
 									{item?.submenus?.map((subitem, index) => (
 										<Stack
