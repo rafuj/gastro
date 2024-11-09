@@ -91,7 +91,12 @@ export const MenuContent = () => {
 														background: "transparent",
 														p: 0,
 														minWidth: "0",
+														"&[disabled]": {
+															cursor: "not-allowed",
+															color: alpha("#000000", 0.5),
+														},
 													}}
+													disabled={!item.status}
 													onClick={() => setOpen(true)}
 												>
 													{menuicons.penIcon}
