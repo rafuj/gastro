@@ -21,7 +21,7 @@ export const MenuContent = () => {
 							sx={{
 								width: "95%",
 								maxWidth: "580px",
-								minWidth: { lg: "580px" },
+								minWidth: { lg: "480px", xl: "580px" },
 								border: "1px solid rgba(0, 0, 0, 0.1)",
 								boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.1)",
 								p: 3,
