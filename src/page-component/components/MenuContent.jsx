@@ -134,6 +134,7 @@ export const MenuContent = () => {
 														pl: { xs: 2, sm: 3, md: 4 },
 														mt: 2,
 													}}
+													key={index}
 												>
 													<Box width="0" flexGrow={1}>
 														<Typography

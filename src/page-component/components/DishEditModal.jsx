@@ -13,6 +13,7 @@ import {
 import React from "react";
 const DishCard = ({ title, dishName, description, icon, tag, kidsIcon }) => {
 	const [value, setValue] = React.useState(description);
+	// return;
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
 			<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
@@ -72,16 +73,14 @@ const DishCard = ({ title, dishName, description, icon, tag, kidsIcon }) => {
 										height: "18px",
 									}}
 								/>
-								{kidsIcon && (
-									<Box
-										sx={{
-											transform: "translateX(7px)",
-											display: "inline-flex",
-										}}
-									>
-										{kidsIcon}
-									</Box>
-								)}
+								<Box
+									sx={{
+										transform: "translateX(7px)",
+										display: "inline-flex",
+									}}
+								>
+									{kidsIcon}
+								</Box>
 								<Select
 									defaultValue="kids"
 									variant="outlined"
@@ -132,8 +131,8 @@ const DishEditModal = ({ open, setOpen }) => {
 						<Typography
 							variant="subtitle2"
 							color="textSecondary"
-							sx={{ marginTop: 2 }}
 							sx={{
+								marginTop: 2,
 								alignSelf: "flex-start",
 								m: 0,
 								position: "absolute",
