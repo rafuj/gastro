@@ -7,8 +7,11 @@ import {
 	Typography,
 	alpha,
 } from "@mui/material";
+import React from "react";
+import DishEditModal from "./DishEditModal";
 
 export const MenuContent = () => {
+	const [open, setOpen] = React.useState(false);
 	return (
 		<Box sx={{ mt: 3 }}>
 			<Stack direction="row" gap={3}>
@@ -80,6 +83,7 @@ export const MenuContent = () => {
 													p: 0,
 													minWidth: "0",
 												}}
+												onClick={() => setOpen(true)}
 											>
 												{menuicons.penIcon}
 											</Button>
@@ -212,6 +216,7 @@ export const MenuContent = () => {
 					</Stack>
 				))}
 			</Stack>
+			<DishEditModal open={open} setOpen={setOpen} />
 		</Box>
 	);
 };
