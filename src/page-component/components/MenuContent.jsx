@@ -10,8 +10,9 @@ import {
 import React from "react";
 import DishEditModal from "./DishEditModal";
 
-export const MenuContent = () => {
+export const MenuContent = ({ disabledBtn }) => {
 	const [open, setOpen] = React.useState(false);
+
 	return (
 		<Box sx={{ mt: 3 }}>
 			<Box sx={{ overflowX: "auto" }}>
@@ -222,7 +223,7 @@ export const MenuContent = () => {
 											width: "100%",
 											mt: 2,
 										}}
-										disabled={!item.status}
+										disabled={disabledBtn}
 									>
 										Select Menu at - CHF 6’000
 									</Button>

@@ -11,6 +11,7 @@ export const MainTabSection = () => {
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
+	const [disabledBtn, setDisabledBtn] = React.useState(true);
 
 	return (
 		<Box sx={{ width: "100%", mt: 3, px: 3 }}>
@@ -64,8 +65,8 @@ export const MainTabSection = () => {
 				</Tabs>
 			</Box>
 			<SearchOptions />
-			<MenuCarte />
-			<MenuContent />
+			<MenuCarte cb={() => setDisabledBtn(false)} />
+			<MenuContent disabledBtn={disabledBtn} />
 		</Box>
 	);
 };

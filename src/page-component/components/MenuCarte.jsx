@@ -2,20 +2,23 @@ import { icons } from "@/components/icons";
 import { Box, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
 import React, { useState } from "react";
 
-export const MenuCarte = () => {
+export const MenuCarte = ({ cb = () => {} }) => {
 	const [value, setValue] = React.useState(0);
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
+		cb();
 	};
 	const [guests, setGuests] = useState(9);
 
 	const handleIncrement = () => {
 		setGuests((prev) => prev + 1);
+		cb();
 	};
 
 	const handleDecrement = () => {
 		if (guests > 0) {
 			setGuests((prev) => prev - 1);
+			cb();
 		}
 	};
 	return (
