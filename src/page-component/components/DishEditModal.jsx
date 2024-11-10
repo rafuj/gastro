@@ -11,9 +11,8 @@ import {
 	Typography,
 } from "@mui/material";
 import React from "react";
-const DishCard = ({ title, dishName, description, icon, tag, kidsIcon }) => {
-	const [value, setValue] = React.useState(description);
-	// return;
+const DishCard = ({ icon, kidsIcon, dishlist }) => {
+	const [activeDish, setActiveDish] = React.useState(dishlist[0]);
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
 			<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
@@ -32,10 +31,9 @@ const DishCard = ({ title, dishName, description, icon, tag, kidsIcon }) => {
 					>
 						<TextField
 							variant="outlined"
-							icon={dishName}
-							iconPosition="start"
-							value={value}
-							onChange={(e) => setValue(e.target.value)}
+							value={activeDish.description}
+							readOnly
+							disabled
 							sx={{
 								width: "100%",
 								flexGrow: 1,
@@ -54,7 +52,7 @@ const DishCard = ({ title, dishName, description, icon, tag, kidsIcon }) => {
 					<Box sx={{ display: "flex", alignItems: "center" }}>
 						{icon && (
 							<Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
-								{icon}
+								{activeDish.icon}
 							</Box>
 						)}
 						<Typography
@@ -62,38 +60,37 @@ const DishCard = ({ title, dishName, description, icon, tag, kidsIcon }) => {
 							color="textSecondary"
 							sx={{ mr: 2 }}
 						>
-							{tag}
+							{activeDish.tag}
 						</Typography>
-						{kidsIcon && (
-							<>
-								<Box
-									sx={{
-										width: "1px",
-										background: "#cccccc",
-										height: "18px",
-									}}
-								/>
-								<Box
-									sx={{
-										transform: "translateX(7px)",
-										display: "inline-flex",
-									}}
-								>
-									{kidsIcon}
-								</Box>
-								<Select
-									defaultValue="kids"
-									variant="outlined"
-									size="small"
-									sx={{
-										fieldset: { border: "none", outline: "none" },
-									}}
-								>
-									<MenuItem value="kids">Kids</MenuItem>
-									<MenuItem value="adults">Adults</MenuItem>
-								</Select>
-							</>
-						)}
+						<Box
+							sx={{
+								width: "1px",
+								background: "#cccccc",
+								height: "18px",
+							}}
+						/>
+						<Box
+							sx={{
+								transform: "translateX(7px)",
+								display: "inline-flex",
+							}}
+						>
+							{kidsIcon}
+						</Box>
+						<Select
+							defaultValue="kids"
+							variant="outlined"
+							size="small"
+							sx={{
+								fieldset: { border: "none", outline: "none" },
+							}}
+							value={activeDish}
+							onChange={(e) => setActiveDish(e.target.value)}
+						>
+							{dishlist.map((item) => (
+								<MenuItem value={item}>{item.dishName}</MenuItem>
+							))}
+						</Select>
 					</Box>
 				</Box>
 			</Card>
@@ -152,17 +149,70 @@ const DishEditModal = ({ open, setOpen }) => {
 							icon={menuicons.meat}
 							tag="Meat"
 							kidsIcon={menuicons.kids}
+							dishlist={[
+								{
+									dishName: "Caprese Salad",
+									description:
+										"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+									icon: menuicons.meat,
+									tag: "Meat",
+								},
+								{
+									dishName: "Salad Caprese",
+									description:
+										"Vine-ripened tomatoes, basil, and balsamic reduction.",
+									icon: menuicons.meat,
+									tag: "Meat",
+								},
+							]}
 						/>
 						<Box
 							sx={{
 								ml: { xs: 2, md: 4 },
+								mt: 2,
+								position: "relative",
 							}}
 						>
+							<Typography
+								variant="subtitle2"
+								color="textSecondary"
+								sx={{
+									marginTop: 2,
+									alignSelf: "flex-start",
+									m: 0,
+									position: "absolute",
+									left: "10px",
+									top: "0",
+									zIndex: 1,
+									background: "#fff",
+									px: 0.7,
+								}}
+							>
+								<div style={{ transform: "translateY(-50%)" }}>
+									Sub Dish
+								</div>
+							</Typography>
 							<DishCard
 								dishName="Caprese Salad"
 								description="Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction."
 								icon={menuicons.meat}
 								tag="Meat"
+								dishlist={[
+									{
+										dishName: "Caprese Salad",
+										description:
+											"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+										icon: menuicons.meat,
+										tag: "Meat",
+									},
+									{
+										dishName: "Salad Caprese",
+										description:
+											"Vine-ripened tomatoes, basil, and balsamic reduction.",
+										icon: menuicons.meat,
+										tag: "Meat",
+									},
+								]}
 							/>
 						</Box>
 					</Box>
