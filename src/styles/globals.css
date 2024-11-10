@@ -18,3 +18,15 @@ a {
 svg {
 	display: inline-block;
 }
+/* scrollbar design */
+body *::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+body *::-webkit-scrollbar-thumb {
+	background-color: #88888830;
+	border-radius: 10px;
+}
+body *::-webkit-scrollbar-track {
+	background-color: #f1f1f1;
+}
