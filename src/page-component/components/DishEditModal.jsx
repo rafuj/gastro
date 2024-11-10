@@ -151,7 +151,7 @@ const DishEditModal = ({ open, setOpen }) => {
 							kidsIcon={menuicons.kids}
 							dishlist={[
 								{
-									dishName: "Caprese Salad",
+									dishName: "Kids",
 									description:
 										"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 									icon: menuicons.meat,
@@ -199,14 +199,14 @@ const DishEditModal = ({ open, setOpen }) => {
 								tag="Meat"
 								dishlist={[
 									{
-										dishName: "Caprese Salad",
+										dishName: "Kids",
 										description:
 											"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 										icon: menuicons.meat,
 										tag: "Meat",
 									},
 									{
-										dishName: "Salad Caprese",
+										dishName: "Caprese Salad",
 										description:
 											"Vine-ripened tomatoes, basil, and balsamic reduction.",
 										icon: menuicons.meat,
