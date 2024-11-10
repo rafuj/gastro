@@ -1,9 +1,8 @@
 import { icons } from "@/components/icons";
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 import { MenuCarte } from "./MenuCarte";
 import { MenuContent } from "./MenuContent";
-import SearchOptions from "./SearchOptions";
 
 export const MainTabSection = () => {
 	const [value, setValue] = React.useState(0);
@@ -11,11 +10,12 @@ export const MainTabSection = () => {
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
-	const [disabledBtn, setDisabledBtn] = React.useState(true);
+	// const [disabledBtn, setDisabledBtn] = React.useState(true);
+	const [guests, setGuests] = React.useState(9);
 
 	return (
-		<Box sx={{ width: "100%", mt: 3, px: 3 }}>
-			<Box
+		<Box sx={{ width: "100%", px: 3 }}>
+			{/* <Box
 				sx={{
 					borderBottom: 1,
 					borderColor: "divider",
@@ -64,9 +64,9 @@ export const MainTabSection = () => {
 					})}
 				</Tabs>
 			</Box>
-			<SearchOptions />
-			<MenuCarte cb={() => setDisabledBtn(false)} />
-			<MenuContent disabledBtn={disabledBtn} />
+			<SearchOptions /> */}
+			<MenuCarte guests={guests} setGuests={setGuests} />
+			<MenuContent guests={guests} />
 		</Box>
 	);
 };

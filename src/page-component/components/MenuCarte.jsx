@@ -1,24 +1,20 @@
 import { icons } from "@/components/icons";
 import { Box, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 
-export const MenuCarte = ({ cb = () => {} }) => {
+export const MenuCarte = ({ guests, setGuests }) => {
 	const [value, setValue] = React.useState(0);
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
-		cb();
 	};
-	const [guests, setGuests] = useState(9);
 
 	const handleIncrement = () => {
 		setGuests((prev) => prev + 1);
-		cb();
 	};
 
 	const handleDecrement = () => {
 		if (guests > 0) {
 			setGuests((prev) => prev - 1);
-			cb();
 		}
 	};
 	return (
@@ -28,10 +24,9 @@ export const MenuCarte = ({ cb = () => {} }) => {
 			justifyContent="space-between"
 			alignItems="center"
 			gap={1}
-			sx={{ mt: 1 }}
 		>
 			<Typography
-				sx={{ fontSize: "24px", fontWeight: "600", marginRight: "auto" }}
+				sx={{ fontSize: "20px", fontWeight: "600", marginRight: "auto" }}
 				variant="h4"
 			>
 				Menu
@@ -64,8 +59,8 @@ export const MenuCarte = ({ cb = () => {} }) => {
 									label={item.name}
 									sx={{
 										py: 0,
-										minHeight: "54px",
-										lineHeight: "54px",
+										minHeight: "42px",
+										lineHeight: "42px",
 										textTransform: "capitalize",
 										fontSize: "14px",
 										fontWeight: "500",
@@ -88,7 +83,7 @@ export const MenuCarte = ({ cb = () => {} }) => {
 				sx={{
 					border: "1px solid #ccc",
 					borderRadius: "8px",
-					padding: "8px 16px",
+					padding: "4px 16px",
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",

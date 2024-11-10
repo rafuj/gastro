@@ -10,7 +10,7 @@ import {
 import React from "react";
 import DishEditModal from "./DishEditModal";
 
-export const MenuContent = ({ disabledBtn }) => {
+export const MenuContent = ({ guests }) => {
 	const [open, setOpen] = React.useState(false);
 
 	return (
@@ -22,31 +22,31 @@ export const MenuContent = ({ disabledBtn }) => {
 							sx={{
 								width: "95%",
 								maxWidth: { xs: "580px", xl: "unset" },
-								minWidth: { lg: "480px", xl: "580px" },
+								// minWidth: { lg: "480px", xl: "580px" },
 								border: "1px solid rgba(0, 0, 0, 0.1)",
 								boxShadow: "4px 4px 10px rgba(0, 0, 0, 0.1)",
-								p: 3,
+								p: 2,
 								borderRadius: "8px",
-								maxHeight: "calc(90vh)",
+								height: { xs: "600px", md: "calc(100vh - 220px)" },
 							}}
 							key={item.id}
 						>
 							<Stack
 								direction="row"
-								mb={3}
+								mb={2}
 								justifyContent="space-between"
 								alignItems="center"
 							>
 								<Typography
 									component="h5"
-									sx={{ fontSize: "24px", fontWeight: "600" }}
+									sx={{ fontSize: "20px", fontWeight: "600" }}
 								>
 									{item.title}
 								</Typography>
 								<Typography
 									component="span"
 									sx={{
-										fontSize: "20px",
+										fontSize: "16px",
 										fontWeight: "600",
 										color: alpha("#000000", 0.6),
 									}}
@@ -58,7 +58,7 @@ export const MenuContent = ({ disabledBtn }) => {
 							<Box
 								sx={{ height: "0", flexGrow: "1", overflowY: "auto" }}
 							>
-								<Stack gap={3}>
+								<Stack gap={2}>
 									{item?.submenus?.map((subitem, index) => (
 										<Stack
 											key={index}
@@ -72,12 +72,12 @@ export const MenuContent = ({ disabledBtn }) => {
 												direction="row"
 												justifyContent="space-between"
 												alignItems="center"
-												mb={2}
+												mb={1}
 											>
 												<Typography
 													sx={{
-														fontSize: "20px",
-														fontWeight: "600",
+														fontSize: "16px",
+														fontWeight: "700",
 													}}
 													variant="h5"
 												>
@@ -97,8 +97,10 @@ export const MenuContent = ({ disabledBtn }) => {
 															color: alpha("#000000", 0.5),
 														},
 													}}
-													// disabled={!item.status}
-													disabled={disabledBtn}
+													disabled={
+														guests < item.minCount ||
+														guests > item.maxCount
+													}
 													onClick={() => setOpen(true)}
 												>
 													{menuicons.penIcon}
@@ -109,7 +111,7 @@ export const MenuContent = ({ disabledBtn }) => {
 													<Typography
 														variant="h6"
 														sx={{
-															fontSize: "16px",
+															fontSize: "14px",
 															fontWeight: "600",
 														}}
 														mb={1}
@@ -119,7 +121,7 @@ export const MenuContent = ({ disabledBtn }) => {
 													<Typography
 														variant="body1"
 														sx={{
-															fontSize: "16px",
+															fontSize: "14px",
 															fontWeight: "500",
 															color: alpha("#000000", 0.8),
 														}}
@@ -147,8 +149,8 @@ export const MenuContent = ({ disabledBtn }) => {
 													<Stack
 														direction="row"
 														sx={{
-															pl: { xs: 2, sm: 3, md: 4 },
-															mt: 2,
+															pl: { xs: 2, sm: 3 },
+															mt: 1,
 														}}
 														key={index}
 													>
@@ -156,7 +158,7 @@ export const MenuContent = ({ disabledBtn }) => {
 															<Typography
 																variant="h6"
 																sx={{
-																	fontSize: "16px",
+																	fontSize: "15px",
 																	fontWeight: "600",
 																}}
 															>
@@ -165,7 +167,7 @@ export const MenuContent = ({ disabledBtn }) => {
 															<Typography
 																variant="body1"
 																sx={{
-																	fontSize: "16px",
+																	fontSize: "13px",
 																	fontWeight: "500",
 																	color: alpha("#000000", 0.8),
 																}}
@@ -179,7 +181,7 @@ export const MenuContent = ({ disabledBtn }) => {
 									))}
 								</Stack>
 							</Box>
-							<Stack mt="auto" pt={4}>
+							<Stack mt="auto" pt={2}>
 								<hr style={{ background: "#cccccc", opacity: 1 }} />
 								<Box pt={3}>
 									<TextField
@@ -191,21 +193,26 @@ export const MenuContent = ({ disabledBtn }) => {
 											flexGrow: 1,
 											mb: 2,
 										}}
+										inputProps={{
+											style: {
+												paddingBottom: "13px",
+											},
+										}}
 									/>
 									<Stack
 										direction="row"
 										justifyContent="space-between"
-										sx={{ fontSize: "20px", fontWeight: "600" }}
+										sx={{ fontSize: "14px", fontWeight: "600" }}
 									>
 										<Box>Meat, Fish</Box>
 										<Box sx={{ opacity: "0.8", fontWeight: "500" }}>
-											8-12 Guest
+											{item.minCount}-{item.maxCount} Guest
 										</Box>
 									</Stack>
 									<Stack
 										direction="row"
 										justifyContent="space-between"
-										sx={{ fontSize: "20px", fontWeight: "600" }}
+										sx={{ fontSize: "14px", fontWeight: "600" }}
 									>
 										<Box>Price per guest:</Box>
 										<Box sx={{ opacity: "0.8", fontWeight: "500" }}>
@@ -217,14 +224,17 @@ export const MenuContent = ({ disabledBtn }) => {
 										variant="contained"
 										color="primary"
 										sx={{
-											fontSize: "15px",
-											fontWeight: "700",
+											fontSize: "14px",
+											fontWeight: "600",
 											textTransform: "uppercase",
-											height: "50px",
+											height: "44px",
 											width: "100%",
 											mt: 2,
 										}}
-										disabled={disabledBtn}
+										disabled={
+											guests < item.minCount ||
+											guests > item.maxCount
+										}
 									>
 										Select Menu at - CHF 6’000
 									</Button>
@@ -245,6 +255,8 @@ const menuData = [
 		title: "Wedding",
 		subtitle: "3 Courses",
 		// status: false,
+		minCount: 8,
+		maxCount: 10,
 		submenus: [
 			{
 				title: "1 - Course",
@@ -280,6 +292,8 @@ const menuData = [
 		title: "Birthday",
 		subtitle: "7 Courses",
 		// status: false,
+		minCount: 11,
+		maxCount: 20,
 		submenus: [
 			{
 				title: "1 - Course",
@@ -342,6 +356,8 @@ const menuData = [
 		title: "School Party",
 		subtitle: "2 Courses",
 		// status: false,
+		minCount: 21,
+		maxCount: 60,
 		submenus: [
 			{
 				title: "1 - Course",
