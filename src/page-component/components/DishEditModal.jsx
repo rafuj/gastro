@@ -7,7 +7,6 @@ import {
 	DialogContent,
 	MenuItem,
 	Select,
-	TextField,
 	Typography,
 } from "@mui/material";
 import React from "react";
@@ -16,7 +15,7 @@ const DishCard = ({ icon, kidsIcon, dishlist }) => {
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
 			<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
-				<Box
+				{/* <Box
 					sx={{
 						display: "flex",
 						justifyContent: "space-between",
@@ -92,6 +91,113 @@ const DishCard = ({ icon, kidsIcon, dishlist }) => {
 							))}
 						</Select>
 					</Box>
+				</Box> */}
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+					}}
+				>
+					<Box
+						sx={{
+							width: "0",
+							flexGrow: 1,
+						}}
+					>
+						<Select
+							value={activeDish} // controlled value
+							onChange={(e) => setActiveDish(e.target.value)}
+							displayEmpty
+							variant="outlined"
+							sx={{
+								width: "100%",
+								position: "relative",
+								zIndex: 1,
+								"& .MuiOutlinedInput-notchedOutline": {
+									border: "none", // Removes default border
+								},
+								"& .MuiSelect-select": {
+									padding: "10px 14px", // Adjust padding for appearance
+								},
+							}}
+							renderValue={(selected) =>
+								selected ? (
+									<Box sx={{ display: "flex", alignItems: "center" }}>
+										<Typography flexGrow={1}>
+											{selected.description}
+										</Typography>
+										{selected.icon && (
+											<Box
+												sx={{
+													display: "flex",
+													alignItems: "center",
+													mr: 1,
+												}}
+											>
+												{selected.icon}
+											</Box>
+										)}
+										<Typography variant="body2" color="textSecondary">
+											{selected.tag}
+										</Typography>
+										<Box
+											sx={{
+												width: "1px",
+												background: "#cccccc",
+												height: "18px",
+												mx: 1,
+											}}
+										/>
+										{selected.dishName}
+										{selected.kidsIcon && (
+											<Box sx={{ ml: 2 }}>{selected.kidsIcon}</Box>
+										)}
+									</Box>
+								) : (
+									"Select a dish"
+								)
+							}
+						>
+							{/* List of dishes with icon, tag, and kids icon */}
+							{dishlist.map((item) => (
+								<MenuItem key={item.dishName} value={item}>
+									<Box sx={{ display: "flex", alignItems: "center" }}>
+										{item.icon && (
+											<Box
+												sx={{
+													display: "flex",
+													alignItems: "center",
+													mr: 1,
+												}}
+											>
+												{item.icon}
+											</Box>
+										)}
+										<Typography
+											variant="body2"
+											color="textSecondary"
+											sx={{ mr: 1 }}
+										>
+											{item.tag}
+										</Typography>
+										<Box
+											sx={{
+												width: "1px",
+												background: "#cccccc",
+												height: "18px",
+												mx: 1,
+											}}
+										/>
+										<Typography>{item.description}</Typography>
+										{item.kidsIcon && (
+											<Box sx={{ ml: 2 }}>{item.kidsIcon}</Box>
+										)}
+									</Box>
+								</MenuItem>
+							))}
+						</Select>
+					</Box>
 				</Box>
 			</Card>
 		</Box>
@@ -158,7 +264,7 @@ const DishEditModal = ({ open, setOpen }) => {
 									tag: "Meat",
 								},
 								{
-									dishName: "Salad Caprese",
+									dishName: "Adults",
 									description:
 										"Vine-ripened tomatoes, basil, and balsamic reduction.",
 									icon: menuicons.meat,
