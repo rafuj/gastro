@@ -233,8 +233,7 @@ export const MenuContent = ({ disabledBtn }) => {
 					))}
 				</Stack>
 			</Box>
-			{/* <DishEditModal open={open} setOpen={setOpen} /> */}
-			<DishEditModal open={true} setOpen={setOpen} />
+			<DishEditModal open={open} setOpen={setOpen} />
 		</Box>
 	);
 };
