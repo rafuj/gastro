@@ -97,7 +97,8 @@ export const MenuContent = ({ disabledBtn }) => {
 															color: alpha("#000000", 0.5),
 														},
 													}}
-													disabled={!item.status}
+													// disabled={!item.status}
+													disabled={disabledBtn}
 													onClick={() => setOpen(true)}
 												>
 													{menuicons.penIcon}
@@ -243,7 +244,7 @@ const menuData = [
 		id: 1,
 		title: "Wedding",
 		subtitle: "3 Courses",
-		status: true,
+		// status: false,
 		submenus: [
 			{
 				title: "1 - Course",
@@ -278,7 +279,7 @@ const menuData = [
 		id: 2,
 		title: "Birthday",
 		subtitle: "7 Courses",
-		status: false,
+		// status: false,
 		submenus: [
 			{
 				title: "1 - Course",
@@ -340,7 +341,7 @@ const menuData = [
 		id: 3,
 		title: "School Party",
 		subtitle: "2 Courses",
-		status: false,
+		// status: false,
 		submenus: [
 			{
 				title: "1 - Course",
