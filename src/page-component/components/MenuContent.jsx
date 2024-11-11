@@ -12,7 +12,7 @@ import DishEditModal from "./DishEditModal";
 
 export const MenuContent = ({ guests }) => {
 	const [open, setOpen] = React.useState(false);
-
+	const [menuData, setMenuData] = React.useState(demoData);
 	return (
 		<Box sx={{ mt: 3 }}>
 			<Box sx={{ overflowX: "auto" }}>
@@ -236,7 +236,7 @@ export const MenuContent = ({ guests }) => {
 											guests > item.maxCount
 										}
 									>
-										Select Menu at - CHF 6’000
+										Select Menu at - CHF {guests * 600}
 									</Button>
 								</Box>
 							</Stack>
@@ -249,7 +249,7 @@ export const MenuContent = ({ guests }) => {
 	);
 };
 
-const menuData = [
+const demoData = [
 	{
 		id: 1,
 		title: "Wedding",

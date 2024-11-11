@@ -10,8 +10,7 @@ import {
 	Typography,
 } from "@mui/material";
 import React from "react";
-const DishCard = ({ icon, kidsIcon, dishlist }) => {
-	const [activeDish, setActiveDish] = React.useState(dishlist[0]);
+const DishCard = ({ icon, kidsIcon, dishlist, activeDish, setActiveDish }) => {
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
 			<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
@@ -205,6 +204,8 @@ const DishCard = ({ icon, kidsIcon, dishlist }) => {
 };
 
 const DishEditModal = ({ open, setOpen }) => {
+	const [activeDish, setActiveDish] = React.useState(null);
+	const [activeSubDish, setActiveSubDish] = React.useState(null);
 	return (
 		<Dialog
 			open={open}
@@ -271,6 +272,8 @@ const DishEditModal = ({ open, setOpen }) => {
 									tag: "Meat",
 								},
 							]}
+							activeDish={activeDish}
+							setActiveDish={setActiveDish}
 						/>
 						<Box
 							sx={{
@@ -319,6 +322,8 @@ const DishEditModal = ({ open, setOpen }) => {
 										tag: "Meat",
 									},
 								]}
+								activeDish={activeSubDish}
+								setActiveDish={setActiveSubDish}
 							/>
 						</Box>
 					</Box>
@@ -347,6 +352,9 @@ const DishEditModal = ({ open, setOpen }) => {
 							variant="contained"
 							color="primary"
 							sx={{ height: "42px", boxShadow: "none" }}
+							onClick={() => {
+								setOpen(false);
+							}}
 						>
 							CONFIRM SAVE
 						</Button>
