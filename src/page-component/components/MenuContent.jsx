@@ -248,9 +248,11 @@ export const MenuContent = ({ guests }) => {
 					))}
 				</Stack>
 			</Box>
-			<DishEditModal
-				{...{ modalData, setMenuData, setOpen, open, menuData }}
-			/>
+			{open && (
+				<DishEditModal
+					{...{ modalData, setMenuData, setOpen, open, menuData }}
+				/>
+			)}
 		</Box>
 	);
 };

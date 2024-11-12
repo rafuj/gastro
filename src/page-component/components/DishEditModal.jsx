@@ -9,7 +9,166 @@ import {
 	Select,
 	Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
+	const [menu, setMenu] = useState(menuData);
+
+	const handleConfirm = () => {
+		setMenuData(menu);
+		setOpen(false);
+	};
+
+	return (
+		<Dialog
+			open={open}
+			sx={{
+				".MuiDialog-paperScrollPaper": {
+					maxWidth: "927px",
+					width: "100%",
+					margin: "0 auto",
+					m: 1,
+				},
+			}}
+			onClose={() => setOpen(false)}
+		>
+			<DialogContent>
+				<Box
+					sx={{
+						padding: { xs: 2, md: 4 },
+						width: "100%",
+						margin: "0 auto",
+					}}
+				>
+					{/* Main Dish Section */}
+
+					{modalData && (
+						<>
+							<Typography variant="h6" sx={{ fontWeight: "bold" }}>
+								{modalData?.title}
+							</Typography>
+							<Box position="relative">
+								<Typography
+									variant="subtitle2"
+									color="textSecondary"
+									sx={{
+										marginTop: 2,
+										alignSelf: "flex-start",
+										m: 0,
+										position: "absolute",
+										left: "10px",
+										top: "0",
+										zIndex: 1,
+										background: "#fff",
+										px: 0.7,
+									}}
+								>
+									<div style={{ transform: "translateY(-50%)" }}>
+										Dish
+									</div>
+								</Typography>
+
+								<DishCard
+									dishName={modalData.subtitle}
+									description={modalData.text}
+									icon={modalData.icon}
+									tag={modalData.selectedMenu}
+									kidsIcon={menuicons.kids}
+									dishlist={modalData.dishList}
+									menuId={modalData.id}
+									setMenu={setMenu}
+									menu={menu}
+								/>
+								{modalData?.subdata?.length > 0 && (
+									<Box
+										sx={{
+											ml: { xs: 2, md: 4 },
+											mt: 2,
+											position: "relative",
+										}}
+									>
+										{modalData?.subdata?.map((subitem) => (
+											<>
+												<Typography
+													variant="subtitle2"
+													color="textSecondary"
+													sx={{
+														marginTop: 2,
+														alignSelf: "flex-start",
+														m: 0,
+														position: "absolute",
+														left: "10px",
+														top: "0",
+														zIndex: 1,
+														background: "#fff",
+														px: 0.7,
+													}}
+												>
+													<div
+														style={{
+															transform: "translateY(-50%)",
+														}}
+													>
+														Sub Dish
+													</div>
+												</Typography>
+
+												<DishCard
+													dishName={subitem.subtitle}
+													description={subitem.text}
+													icon={subitem.icon}
+													tag={modalData.selectedMenu}
+													dishlist={subitem.dishList}
+													menuId={subitem.id}
+													menu={menu}
+													setMenu={setMenu}
+													isSubDish
+												/>
+											</>
+										))}
+									</Box>
+								)}
+							</Box>
+						</>
+					)}
+
+					{/* Action Buttons */}
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "flex-end",
+							marginTop: 4,
+						}}
+					>
+						<Button
+							variant="contained"
+							color="inherit"
+							sx={{
+								marginRight: 1,
+								boxShadow: "none",
+								backgroundColor: "#cccccc",
+							}}
+							onClick={() => setOpen(false)}
+						>
+							CANCEL
+						</Button>
+						<Button
+							variant="contained"
+							color="primary"
+							sx={{ height: "42px", boxShadow: "none" }}
+							onClick={() => {
+								handleConfirm(menu);
+								setOpen(false);
+							}}
+						>
+							CONFIRM SAVE
+						</Button>
+					</Box>
+				</Box>
+			</DialogContent>
+		</Dialog>
+	);
+};
 
 const DishCard = ({
 	icon,
@@ -19,23 +178,35 @@ const DishCard = ({
 	dishName,
 	setMenu,
 	menuId,
-	subdata,
 	menu,
+	isSubDish,
 }) => {
 	const [activeDish, setActiveDish] = useState(
 		dishlist.find((item) => item.tag === tag) || null
 	);
-
 	const handleSelectChange = (e) => {
 		const selectedDish = e.target.value;
 		setActiveDish(selectedDish);
-
 		setMenu((prev) =>
-			prev.map((item) =>
-				item.id === menuId
-					? { ...item, selectedMenu: selectedDish.tag }
-					: item
-			)
+			prev.map((item) => {
+				if (item.id === menuId) {
+					// Update based on whether it's a subdish or a main dish
+					if (isSubDish && item.submenus) {
+						return {
+							...item,
+							submenus: item.submenus.map((subItem) =>
+								subItem.id === subMenuId // Assuming subMenuId identifies the exact submenu
+									? { ...subItem, selectedMenu: selectedDish.tag }
+									: subItem
+							),
+						};
+					} else {
+						// Update the main dish level
+						return { ...item, selectedMenu: selectedDish.tag };
+					}
+				}
+				return item; // Return unchanged items
+			})
 		);
 	};
 
@@ -133,172 +304,6 @@ const DishCard = ({
 				</Box>
 			</Card>
 		</Box>
-	);
-};
-
-const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
-	const [menu, setMenu] = useState(menuData);
-	useEffect(() => {
-		if (open) {
-			console.log("menuData", menuData);
-			setMenu(menuData);
-		}
-	}, [open, menuData]);
-
-	const handleConfirm = () => {
-		setMenuData((prev) =>
-			prev.map((item) => (item.id === modalData.id ? menu : item))
-		);
-		setOpen(false);
-	};
-
-	return (
-		<Dialog
-			open={open}
-			sx={{
-				".MuiDialog-paperScrollPaper": {
-					maxWidth: "927px",
-					width: "100%",
-					margin: "0 auto",
-				},
-			}}
-			onClose={() => setOpen(false)}
-		>
-			<DialogContent>
-				<Box
-					sx={{
-						padding: 4,
-						width: "100%",
-						margin: "0 auto",
-					}}
-				>
-					{/* Main Dish Section */}
-
-					{modalData && (
-						<>
-							<Typography variant="h6" sx={{ fontWeight: "bold" }}>
-								{modalData?.title}
-							</Typography>
-							<Box position="relative">
-								<Typography
-									variant="subtitle2"
-									color="textSecondary"
-									sx={{
-										marginTop: 2,
-										alignSelf: "flex-start",
-										m: 0,
-										position: "absolute",
-										left: "10px",
-										top: "0",
-										zIndex: 1,
-										background: "#fff",
-										px: 0.7,
-									}}
-								>
-									<div style={{ transform: "translateY(-50%)" }}>
-										Dish
-									</div>
-								</Typography>
-
-								<DishCard
-									dishName={modalData.subtitle}
-									description={modalData.text}
-									icon={modalData.icon}
-									tag={modalData.selectedMenu}
-									kidsIcon={menuicons.kids}
-									dishlist={modalData.dishList}
-									menuId={modalData.id}
-									setMenu={setMenu}
-									menu={menu}
-								/>
-								{modalData?.subdata?.length > 0 && (
-									<Box
-										sx={{
-											ml: { xs: 2, md: 4 },
-											mt: 2,
-											position: "relative",
-										}}
-									>
-										{modalData?.subdata?.map((subitem) => (
-											<>
-												<Typography
-													variant="subtitle2"
-													color="textSecondary"
-													sx={{
-														marginTop: 2,
-														alignSelf: "flex-start",
-														m: 0,
-														position: "absolute",
-														left: "10px",
-														top: "0",
-														zIndex: 1,
-														background: "#fff",
-														px: 0.7,
-													}}
-												>
-													<div
-														style={{
-															transform: "translateY(-50%)",
-														}}
-													>
-														Sub Dish
-													</div>
-												</Typography>
-
-												{/* <DishCard
-													dishName={subitem.subtitle}
-													description={subitem.text}
-													icon={subitem.icon}
-													tag={subitem.tag}
-													dishlist={subitem.dishList}
-													menuId={subitem.id}
-													menu={menu}
-													setMenu={setMenu}
-													subdata
-												/> */}
-											</>
-										))}
-									</Box>
-								)}
-							</Box>
-						</>
-					)}
-
-					{/* Action Buttons */}
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "flex-end",
-							marginTop: 4,
-						}}
-					>
-						<Button
-							variant="contained"
-							color="inherit"
-							sx={{
-								marginRight: 1,
-								boxShadow: "none",
-								backgroundColor: "#cccccc",
-							}}
-							onClick={() => setOpen(false)}
-						>
-							CANCEL
-						</Button>
-						<Button
-							variant="contained"
-							color="primary"
-							sx={{ height: "42px", boxShadow: "none" }}
-							onClick={() => {
-								handleConfirm(menu);
-								setOpen(false);
-							}}
-						>
-							CONFIRM SAVE
-						</Button>
-					</Box>
-				</Box>
-			</DialogContent>
-		</Dialog>
 	);
 };
 
