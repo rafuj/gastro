@@ -9,88 +9,39 @@ import {
 	Select,
 	Typography,
 } from "@mui/material";
-import React from "react";
-const DishCard = ({ icon, kidsIcon, dishlist, activeDish, setActiveDish }) => {
+import { useEffect, useState } from "react";
+
+const DishCard = ({
+	icon,
+	kidsIcon,
+	tag,
+	dishlist,
+	dishName,
+	setMenu,
+	menuId,
+	subdata,
+	menu,
+}) => {
+	const [activeDish, setActiveDish] = useState(
+		dishlist.find((item) => item.tag === tag) || null
+	);
+
+	const handleSelectChange = (e) => {
+		const selectedDish = e.target.value;
+		setActiveDish(selectedDish);
+
+		setMenu((prev) =>
+			prev.map((item) =>
+				item.id === menuId
+					? { ...item, selectedMenu: selectedDish.tag }
+					: item
+			)
+		);
+	};
+
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
 			<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
-				{/* <Box
-					sx={{
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-					}}
-				>
-					<Box
-						sx={{
-							width: "0",
-							flexGrow: 1,
-						}}
-					>
-						<TextField
-							variant="outlined"
-							value={activeDish.description}
-							readOnly
-							disabled
-							sx={{
-								width: "100%",
-								flexGrow: 1,
-								position: "relative",
-								zIndex: 1,
-								border: "none",
-								fieldset: {
-									border: "none",
-								},
-								legend: {
-									display: "none",
-								},
-							}}
-						/>
-					</Box>
-					<Box sx={{ display: "flex", alignItems: "center" }}>
-						{icon && (
-							<Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
-								{activeDish.icon}
-							</Box>
-						)}
-						<Typography
-							variant="body2"
-							color="textSecondary"
-							sx={{ mr: 2 }}
-						>
-							{activeDish.tag}
-						</Typography>
-						<Box
-							sx={{
-								width: "1px",
-								background: "#cccccc",
-								height: "18px",
-							}}
-						/>
-						<Box
-							sx={{
-								transform: "translateX(7px)",
-								display: "inline-flex",
-							}}
-						>
-							{kidsIcon}
-						</Box>
-						<Select
-							defaultValue="kids"
-							variant="outlined"
-							size="small"
-							sx={{
-								fieldset: { border: "none", outline: "none" },
-							}}
-							value={activeDish}
-							onChange={(e) => setActiveDish(e.target.value)}
-						>
-							{dishlist.map((item) => (
-								<MenuItem value={item}>{item.dishName}</MenuItem>
-							))}
-						</Select>
-					</Box>
-				</Box> */}
 				<Box
 					sx={{
 						display: "flex",
@@ -98,15 +49,10 @@ const DishCard = ({ icon, kidsIcon, dishlist, activeDish, setActiveDish }) => {
 						alignItems: "center",
 					}}
 				>
-					<Box
-						sx={{
-							width: "0",
-							flexGrow: 1,
-						}}
-					>
+					<Box sx={{ width: "0", flexGrow: 1 }}>
 						<Select
-							value={activeDish} // controlled value
-							onChange={(e) => setActiveDish(e.target.value)}
+							value={activeDish}
+							onChange={handleSelectChange}
 							displayEmpty
 							variant="outlined"
 							sx={{
@@ -123,75 +69,62 @@ const DishCard = ({ icon, kidsIcon, dishlist, activeDish, setActiveDish }) => {
 							renderValue={(selected) =>
 								selected ? (
 									<Box sx={{ display: "flex", alignItems: "center" }}>
+										<Typography fontWeight="700" mr={0.4}>
+											{selected.dishName}
+											{console.log("selected", selected)}
+										</Typography>
 										<Typography flexGrow={1}>
 											{selected.description}
 										</Typography>
-										{selected.icon && (
-											<Box
-												sx={{
-													display: "flex",
-													alignItems: "center",
-													mr: 1,
-												}}
-											>
-												{selected.icon}
-											</Box>
-										)}
+										<Box
+											sx={{
+												display: "flex",
+												alignItems: "center",
+												mr: 1,
+											}}
+										>
+											{selected.icon}
+										</Box>
 										<Typography variant="body2" color="textSecondary">
 											{selected.tag}
 										</Typography>
-										<Box
-											sx={{
-												width: "1px",
-												background: "#cccccc",
-												height: "18px",
-												mx: 1,
-											}}
-										/>
-										{selected.dishName}
-										{selected.kidsIcon && (
-											<Box sx={{ ml: 2 }}>{selected.kidsIcon}</Box>
-										)}
 									</Box>
 								) : (
 									"Select a dish"
 								)
 							}
 						>
-							{/* List of dishes with icon, tag, and kids icon */}
 							{dishlist.map((item) => (
 								<MenuItem key={item.dishName} value={item}>
-									<Box sx={{ display: "flex", alignItems: "center" }}>
-										{item.icon && (
-											<Box
-												sx={{
-													display: "flex",
-													alignItems: "center",
-													mr: 1,
-												}}
-											>
-												{item.icon}
-											</Box>
-										)}
-										<Typography
-											variant="body2"
-											color="textSecondary"
-											sx={{ mr: 1 }}
-										>
-											{item.tag}
+									<Box
+										sx={{
+											display: "flex",
+											width: "100%",
+											alignItems: "center",
+										}}
+									>
+										{/* Updated content for clarity */}
+										<Typography fontWeight="700" mr={1}>
+											{item.dishName}
 										</Typography>
+										<Typography>{item.description}</Typography>
 										<Box
 											sx={{
-												width: "1px",
-												background: "#cccccc",
-												height: "18px",
-												mx: 1,
+												ml: "auto",
+												display: "flex",
+												alignItems: "center",
+												mr: 1,
 											}}
-										/>
-										<Typography>{item.description}</Typography>
-										{item.kidsIcon && (
-											<Box sx={{ ml: 2 }}>{item.kidsIcon}</Box>
-										)}
+										>
+											{item.icon}
+											<Typography
+												variant="body2"
+												color="textSecondary"
+												ml={1}
+											>
+												{item.tag}
+											</Typography>
+										</Box>
 									</Box>
 								</MenuItem>
 							))}
@@ -203,9 +136,22 @@ const DishCard = ({ icon, kidsIcon, dishlist, activeDish, setActiveDish }) => {
 	);
 };
 
-const DishEditModal = ({ open, setOpen }) => {
-	const [activeDish, setActiveDish] = React.useState(null);
-	const [activeSubDish, setActiveSubDish] = React.useState(null);
+const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
+	const [menu, setMenu] = useState(menuData);
+	useEffect(() => {
+		if (open) {
+			console.log("menuData", menuData);
+			setMenu(menuData);
+		}
+	}, [open, menuData]);
+
+	const handleConfirm = () => {
+		setMenuData((prev) =>
+			prev.map((item) => (item.id === modalData.id ? menu : item))
+		);
+		setOpen(false);
+	};
+
 	return (
 		<Dialog
 			open={open}
@@ -226,107 +172,97 @@ const DishEditModal = ({ open, setOpen }) => {
 						margin: "0 auto",
 					}}
 				>
-					<Typography variant="h6" sx={{ fontWeight: "bold" }}>
-						1 - Course
-					</Typography>
-
 					{/* Main Dish Section */}
-					<Box position="relative">
-						<Typography
-							variant="subtitle2"
-							color="textSecondary"
-							sx={{
-								marginTop: 2,
-								alignSelf: "flex-start",
-								m: 0,
-								position: "absolute",
-								left: "10px",
-								top: "0",
-								zIndex: 1,
-								background: "#fff",
-								px: 0.7,
-							}}
-						>
-							<div style={{ transform: "translateY(-50%)" }}>Dish</div>
-						</Typography>
 
-						<DishCard
-							dishName="Caprese Salad"
-							description="Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction."
-							icon={menuicons.meat}
-							tag="Meat"
-							kidsIcon={menuicons.kids}
-							dishlist={[
-								{
-									dishName: "Kids",
-									description:
-										"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-									icon: menuicons.meat,
-									tag: "Meat",
-								},
-								{
-									dishName: "Adults",
-									description:
-										"Vine-ripened tomatoes, basil, and balsamic reduction.",
-									icon: menuicons.meat,
-									tag: "Meat",
-								},
-							]}
-							activeDish={activeDish}
-							setActiveDish={setActiveDish}
-						/>
-						<Box
-							sx={{
-								ml: { xs: 2, md: 4 },
-								mt: 2,
-								position: "relative",
-							}}
-						>
-							<Typography
-								variant="subtitle2"
-								color="textSecondary"
-								sx={{
-									marginTop: 2,
-									alignSelf: "flex-start",
-									m: 0,
-									position: "absolute",
-									left: "10px",
-									top: "0",
-									zIndex: 1,
-									background: "#fff",
-									px: 0.7,
-								}}
-							>
-								<div style={{ transform: "translateY(-50%)" }}>
-									Sub Dish
-								</div>
+					{modalData && (
+						<>
+							<Typography variant="h6" sx={{ fontWeight: "bold" }}>
+								{modalData?.title}
 							</Typography>
-							<DishCard
-								dishName="Caprese Salad"
-								description="Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction."
-								icon={menuicons.meat}
-								tag="Meat"
-								dishlist={[
-									{
-										dishName: "Kids",
-										description:
-											"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-										icon: menuicons.meat,
-										tag: "Meat",
-									},
-									{
-										dishName: "Caprese Salad",
-										description:
-											"Vine-ripened tomatoes, basil, and balsamic reduction.",
-										icon: menuicons.meat,
-										tag: "Meat",
-									},
-								]}
-								activeDish={activeSubDish}
-								setActiveDish={setActiveSubDish}
-							/>
-						</Box>
-					</Box>
+							<Box position="relative">
+								<Typography
+									variant="subtitle2"
+									color="textSecondary"
+									sx={{
+										marginTop: 2,
+										alignSelf: "flex-start",
+										m: 0,
+										position: "absolute",
+										left: "10px",
+										top: "0",
+										zIndex: 1,
+										background: "#fff",
+										px: 0.7,
+									}}
+								>
+									<div style={{ transform: "translateY(-50%)" }}>
+										Dish
+									</div>
+								</Typography>
+
+								<DishCard
+									dishName={modalData.subtitle}
+									description={modalData.text}
+									icon={modalData.icon}
+									tag={modalData.selectedMenu}
+									kidsIcon={menuicons.kids}
+									dishlist={modalData.dishList}
+									menuId={modalData.id}
+									setMenu={setMenu}
+									menu={menu}
+								/>
+								{modalData?.subdata?.length > 0 && (
+									<Box
+										sx={{
+											ml: { xs: 2, md: 4 },
+											mt: 2,
+											position: "relative",
+										}}
+									>
+										{modalData?.subdata?.map((subitem) => (
+											<>
+												<Typography
+													variant="subtitle2"
+													color="textSecondary"
+													sx={{
+														marginTop: 2,
+														alignSelf: "flex-start",
+														m: 0,
+														position: "absolute",
+														left: "10px",
+														top: "0",
+														zIndex: 1,
+														background: "#fff",
+														px: 0.7,
+													}}
+												>
+													<div
+														style={{
+															transform: "translateY(-50%)",
+														}}
+													>
+														Sub Dish
+													</div>
+												</Typography>
+
+												{/* <DishCard
+													dishName={subitem.subtitle}
+													description={subitem.text}
+													icon={subitem.icon}
+													tag={subitem.tag}
+													dishlist={subitem.dishList}
+													menuId={subitem.id}
+													menu={menu}
+													setMenu={setMenu}
+													subdata
+												/> */}
+											</>
+										))}
+									</Box>
+								)}
+							</Box>
+						</>
+					)}
 
 					{/* Action Buttons */}
 					<Box
@@ -353,6 +289,7 @@ const DishEditModal = ({ open, setOpen }) => {
 							color="primary"
 							sx={{ height: "42px", boxShadow: "none" }}
 							onClick={() => {
+								handleConfirm(menu);
 								setOpen(false);
 							}}
 						>
