@@ -315,6 +315,7 @@ const demoData = [
 						id: "wedding-2-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+						selectedMenu: "Meat",
 						dishList: [
 							{
 								dishName: "Kids",
@@ -327,8 +328,8 @@ const demoData = [
 								dishName: "Adults",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
+								icon: menuicons.fish,
+								tag: "Fish",
 							},
 						],
 					},
@@ -420,6 +421,7 @@ const demoData = [
 						id: "birthday-2-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+						selectedMenu: "Meat",
 						dishList: [
 							{
 								dishName: "Kids",
@@ -432,8 +434,8 @@ const demoData = [
 								dishName: "Adults",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
+								icon: menuicons.fish,
+								tag: "Fish",
 							},
 						],
 					},
@@ -515,6 +517,7 @@ const demoData = [
 						id: "birthday-5-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+						selectedMenu: "Fish",
 						dishList: [
 							{
 								dishName: "Kids",
@@ -527,8 +530,8 @@ const demoData = [
 								dishName: "Adults",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
+								icon: menuicons.fish,
+								tag: "Fish",
 							},
 						],
 					},
@@ -619,6 +622,7 @@ const demoData = [
 						id: "school-2-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+						selectedMenu: "Fish",
 						dishList: [
 							{
 								dishName: "Kids",
@@ -631,8 +635,8 @@ const demoData = [
 								dishName: "Adults",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
+								icon: menuicons.fish,
+								tag: "Fish",
 							},
 						],
 					},
