@@ -556,7 +556,7 @@ const demoData = [
 				title: "2 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "birthdat-5-1",
+				selectedMenu: "birthday-5-1",
 				icon: menuicons.meat,
 				dishList: [
 					{
