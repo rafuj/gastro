@@ -14,6 +14,7 @@ export const MenuContent = ({ guests }) => {
 	const [open, setOpen] = React.useState(false);
 	const [menuData, setMenuData] = React.useState(demoData);
 	const [modalData, setModalData] = React.useState({});
+
 	return (
 		<Box sx={{ mt: 3 }}>
 			<Box sx={{ overflowX: "auto" }}>
@@ -270,18 +271,20 @@ const demoData = [
 				title: "1 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Fish",
+				selectedMenu: "sub-wedding-1-1",
 				icon: menuicons.fish,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "sub-wedding-1-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.fish,
 						tag: "Fish",
 					},
 					{
-						dishName: "Adults",
+						id: "sub-wedding-1-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
@@ -294,18 +297,20 @@ const demoData = [
 				title: "2 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Meat",
+				selectedMenu: "sub-wedding-2-1",
 				icon: menuicons.meat,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "sub-wedding-2-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
 						tag: "Meat",
 					},
 					{
-						dishName: "Adults",
+						id: "sub-wedding-2-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
@@ -317,17 +322,19 @@ const demoData = [
 						id: "wedding-2-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "Meat",
+						selectedMenu: "sub-wedding-2-1-1",
 						dishList: [
 							{
-								dishName: "Kids",
+								id: "sub-wedding-2-1-1",
+								dishName: "Caprese Saled",
 								description:
 									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.meat,
 								tag: "Meat",
 							},
 							{
-								dishName: "Adults",
+								id: "sub-wedding-2-1-2",
+								dishName: "Caprese Saled",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.fish,
@@ -342,18 +349,20 @@ const demoData = [
 				title: "3 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Vegetarian",
+				selectedMenu: "sub-wedding-3-1",
 				icon: menuicons.vegetarian,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "sub-wedding-3-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.vegetarian,
 						tag: "Vegetarian",
 					},
 					{
-						dishName: "Adults",
+						id: "sub-wedding-3-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.vegetarian,
@@ -375,18 +384,20 @@ const demoData = [
 				title: "1 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Fish",
+				selectedMenu: "birthday-1-1",
 				icon: menuicons.fish,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "birthday-1-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.fish,
 						tag: "Meat",
 					},
 					{
-						dishName: "Adults",
+						id: "birthday-1-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 
@@ -400,18 +411,20 @@ const demoData = [
 				title: "2 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Meat",
+				selectedMenu: "birthday-2-1",
 				icon: menuicons.meat,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "birthday-2-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
 						tag: "Meat",
 					},
 					{
-						dishName: "Adults",
+						id: "birthday-2-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
@@ -420,20 +433,22 @@ const demoData = [
 				],
 				subdata: [
 					{
-						id: "birthday-2-1",
+						id: "sub-birthday-2-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "Meat",
+						selectedMenu: "sub-birthday-2-1-1",
 						dishList: [
 							{
-								dishName: "Kids",
+								id: "sub-birthday-2-1-1",
+								dishName: "Caprese Saled",
 								description:
 									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.meat,
 								tag: "Meat",
 							},
 							{
-								dishName: "Adults",
+								id: "sub-birthday-2-1-2",
+								dishName: "Daprese Saled",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.fish,
@@ -448,18 +463,20 @@ const demoData = [
 				title: "3 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Vegetarian",
+				selectedMenu: "birthday-3-1",
 				icon: menuicons.vegetarian,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "birthday-3-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.vegetarian,
 						tag: "Vegetarian",
 					},
 					{
-						dishName: "Adults",
+						id: "birthday-3-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.vegetarian,
@@ -472,18 +489,20 @@ const demoData = [
 				title: "1 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Fish",
+				selectedMenu: "birthday-4-1",
 				icon: menuicons.fish,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "birthday-4-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
 						tag: "Meat",
 					},
 					{
-						dishName: "Adults",
+						id: "birthday-4-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
@@ -496,18 +515,20 @@ const demoData = [
 				title: "2 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Meat",
+				selectedMenu: "birthdat-5-1",
 				icon: menuicons.meat,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "birthday-5-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
 						tag: "Meat",
 					},
 					{
-						dishName: "Adults",
+						id: "birthday-5-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
@@ -516,20 +537,22 @@ const demoData = [
 				],
 				subdata: [
 					{
-						id: "birthday-5-1",
+						id: "sub-birthday-5-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "Fish",
+						selectedMenu: "sub-birthday-5-1-1",
 						dishList: [
 							{
-								dishName: "Kids",
+								id: "sub-birthday-5-1-1",
+								dishName: "Caprese Saled",
 								description:
 									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.meat,
 								tag: "Meat",
 							},
 							{
-								dishName: "Adults",
+								id: "sub-birthday-5-1-2",
+								dishName: "Daprese Saled",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.fish,
@@ -544,18 +567,20 @@ const demoData = [
 				title: "3 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Vegetarian",
+				selectedMenu: "birthday-6-1",
 				icon: menuicons.vegetarian,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "birthday-6-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.vegetarian,
 						tag: "Vegetarian",
 					},
 					{
-						dishName: "Adults",
+						id: "birthday-6-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.vegetarian,
@@ -577,18 +602,20 @@ const demoData = [
 				title: "1 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Fish",
+				selectedMenu: "school-1-1",
 				icon: menuicons.fish,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "school-1-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.fish,
 						tag: "Fish",
 					},
 					{
-						dishName: "Adults",
+						id: "school-1-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.fish,
@@ -601,18 +628,20 @@ const demoData = [
 				title: "2 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "Meat",
+				selectedMenu: "school-2-1",
 				icon: menuicons.meat,
 				dishList: [
 					{
-						dishName: "Kids",
+						id: "school-2-1",
+						dishName: "Caprese Saled",
 						description:
 							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
 						tag: "Meat",
 					},
 					{
-						dishName: "Adults",
+						id: "school-2-2",
+						dishName: "Daprese Saled",
 						description:
 							"Vine-ripened tomatoes, basil, and balsamic reduction.",
 						icon: menuicons.meat,
@@ -621,20 +650,22 @@ const demoData = [
 				],
 				subdata: [
 					{
-						id: "school-2-1",
+						id: "sub-school-2-1",
 						subtitle: "Caprese Saled",
 						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "Fish",
+						selectedMenu: "sub-school-2-1-1",
 						dishList: [
 							{
-								dishName: "Kids",
+								id: "sub-school-2-1-1",
+								dishName: "Caprese Saled",
 								description:
 									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.meat,
 								tag: "Meat",
 							},
 							{
-								dishName: "Adults",
+								id: "sub-school-2-1-2",
+								dishName: "Daprese Saled",
 								description:
 									"Vine-ripened tomatoes, basil, and balsamic reduction.",
 								icon: menuicons.fish,

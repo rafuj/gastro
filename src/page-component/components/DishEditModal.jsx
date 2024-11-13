@@ -16,7 +16,11 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 
 	const handleConfirm = () => {
 		setMenuData(menu);
-		setOpen(false);
+		console.log("fuck", menu);
+		const timer = setTimeout(() => {
+			setOpen(false);
+		}, 0);
+		return () => clearTimeout(timer);
 	};
 
 	return (
@@ -67,18 +71,19 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 										Dish
 									</div>
 								</Typography>
-
+								{console.log("selectedMenu", modalData)}
 								<DishCard
 									dishName={modalData.subtitle}
 									description={modalData.text}
 									icon={modalData.icon}
-									tag={modalData.selectedMenu}
+									selected={modalData.selectedMenu}
 									kidsIcon={menuicons.kids}
 									dishlist={modalData.dishList}
 									menuId={modalData.id}
 									setMenu={setMenu}
 									menu={menu}
 								/>
+
 								{modalData?.subdata?.length > 0 && (
 									<Box
 										sx={{
@@ -117,12 +122,12 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 													dishName={subitem.subtitle}
 													description={subitem.text}
 													icon={subitem.icon}
-													tag={modalData.selectedMenu}
+													selected={subitem.selectedMenu}
 													dishlist={subitem.dishList}
 													menuId={subitem.id}
 													menu={menu}
 													setMenu={setMenu}
-													isSubDish
+													isSubDish={true}
 												/>
 											</>
 										))}
@@ -158,7 +163,6 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 							sx={{ height: "42px", boxShadow: "none" }}
 							onClick={() => {
 								handleConfirm(menu);
-								setOpen(false);
 							}}
 						>
 							CONFIRM SAVE
@@ -177,36 +181,40 @@ const DishCard = ({
 	dishlist,
 	dishName,
 	setMenu,
-	menuId,
+	menuId: submenuId,
 	menu,
 	isSubDish,
+	selected: selectedMenu,
 }) => {
 	const [activeDish, setActiveDish] = useState(
-		dishlist.find((item) => item.tag === tag) || null
+		dishlist.find((item) => item.id === selectedMenu) || null
 	);
+
 	const handleSelectChange = (e) => {
 		const selectedDish = e.target.value;
 		setActiveDish(selectedDish);
+
+		console.log("selectedDish", selectedDish);
+
 		setMenu((prev) =>
-			prev.map((item) => {
-				if (item.id === menuId) {
-					// Update based on whether it's a subdish or a main dish
-					if (isSubDish && item.submenus) {
+			prev.map((menuItem) => ({
+				...menuItem,
+				submenus: menuItem.submenus.map((submenu) => {
+					if (isSubDish && submenu.subdata) {
 						return {
-							...item,
-							submenus: item.submenus.map((subItem) =>
-								subItem.id === subMenuId // Assuming subMenuId identifies the exact submenu
-									? { ...subItem, selectedMenu: selectedDish.tag }
+							...submenu,
+							subdata: submenu.subdata.map((subItem) =>
+								subItem.id === selectedDish.id
+									? { ...subItem, selectedMenu: selectedDish.id }
 									: subItem
 							),
 						};
-					} else {
-						// Update the main dish level
-						return { ...item, selectedMenu: selectedDish.tag };
+					} else if (submenu.id === submenuId) {
+						return { ...submenu, selectedMenu: selectedDish.id };
 					}
-				}
-				return item; // Return unchanged items
-			})
+					return submenu;
+				}),
+			}))
 		);
 	};
 
