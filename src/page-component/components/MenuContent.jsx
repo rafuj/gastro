@@ -7,7 +7,7 @@ import {
 	Typography,
 	alpha,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import DishEditModal from "./DishEditModal";
 
 export const MenuContent = ({ guests }) => {
@@ -62,127 +62,17 @@ export const MenuContent = ({ guests }) => {
 							>
 								<Stack gap={2}>
 									{item?.submenus?.map((subitem, index) => (
-										<Stack
-											key={index}
-											sx={{
-												border: "1px solid rgba(0, 0, 0, 0.1)",
-												borderRadius: "8px",
-												p: 2,
+										<MenuCard
+											{...{
+												subitem,
+												item,
+												setModalData,
+												setOpen,
+												guests,
+												setMenuData,
 											}}
-										>
-											<Stack
-												direction="row"
-												justifyContent="space-between"
-												alignItems="center"
-												mb={1}
-											>
-												<Typography
-													sx={{
-														fontSize: "16px",
-														fontWeight: "700",
-													}}
-													variant="h5"
-												>
-													{subitem.title}
-												</Typography>
-												<Button
-													type="button"
-													sx={{
-														border: "none",
-														outline: "none",
-														boxShadow: "none",
-														background: "transparent",
-														p: 0,
-														minWidth: "0",
-														"&[disabled]": {
-															cursor: "not-allowed",
-															color: alpha("#000000", 0.5),
-														},
-													}}
-													disabled={
-														guests < item.minCount ||
-														guests > item.maxCount
-													}
-													onClick={() => {
-														setModalData(subitem);
-														setOpen(true);
-													}}
-												>
-													{menuicons.penIcon}
-												</Button>
-											</Stack>
-											<Stack direction="row" alignItems="center">
-												<Box width="0" flexGrow={1}>
-													<Typography
-														variant="h6"
-														sx={{
-															fontSize: "14px",
-															fontWeight: "600",
-														}}
-														mb={1}
-													>
-														{subitem.subtitle}
-													</Typography>
-													<Typography
-														variant="body1"
-														sx={{
-															fontSize: "14px",
-															fontWeight: "500",
-															color: alpha("#000000", 0.8),
-														}}
-													>
-														{subitem.text}
-													</Typography>
-												</Box>
-												<Box
-													ml={3}
-													pl={3}
-													sx={{
-														borderLeft: "1px solid #00000010",
-														minHeight: "45px",
-														display: "flex",
-														alignItems: "center",
-														gap: "6px",
-													}}
-												>
-													{subitem?.icon}
-													{subitem?.selectedMenu}
-												</Box>
-											</Stack>
-											{subitem?.subdata?.length > 0 &&
-												subitem?.subdata?.map((subdata, index) => (
-													<Stack
-														direction="row"
-														sx={{
-															pl: { xs: 2, sm: 3 },
-															mt: 1,
-														}}
-														key={index}
-													>
-														<Box width="0" flexGrow={1}>
-															<Typography
-																variant="h6"
-																sx={{
-																	fontSize: "15px",
-																	fontWeight: "600",
-																}}
-															>
-																{subitem.subtitle}
-															</Typography>
-															<Typography
-																variant="body1"
-																sx={{
-																	fontSize: "13px",
-																	fontWeight: "500",
-																	color: alpha("#000000", 0.8),
-																}}
-															>
-																{subitem.text}
-															</Typography>
-														</Box>
-													</Stack>
-												))}
-										</Stack>
+											key={subitem.id}
+										/>
 									))}
 								</Stack>
 							</Box>
@@ -257,7 +147,158 @@ export const MenuContent = ({ guests }) => {
 		</Box>
 	);
 };
-
+const MenuCard = ({
+	subitem,
+	item,
+	setModalData,
+	setOpen,
+	guests,
+	setMenuData,
+}) => {
+	const [activeMenu, setActiveMenu] = React.useState(
+		subitem?.dishList?.find((dish) => dish.id === subitem.selectedMenu)
+	);
+	useEffect(() => {
+		setActiveMenu(
+			subitem?.dishList?.find((dish) => dish.id === subitem.selectedMenu)
+		);
+	}, [subitem.selectedMenu]);
+	return (
+		<>
+			<Stack
+				sx={{
+					border: "1px solid rgba(0, 0, 0, 0.1)",
+					borderRadius: "8px",
+					p: 2,
+				}}
+			>
+				<Stack
+					direction="row"
+					justifyContent="space-between"
+					alignItems="center"
+					mb={1}
+				>
+					<Typography
+						sx={{
+							fontSize: "16px",
+							fontWeight: "700",
+						}}
+						variant="h5"
+					>
+						{subitem.title}
+					</Typography>
+					<Button
+						type="button"
+						sx={{
+							border: "none",
+							outline: "none",
+							boxShadow: "none",
+							background: "transparent",
+							p: 0,
+							minWidth: "0",
+							"&[disabled]": {
+								cursor: "not-allowed",
+								color: alpha("#000000", 0.5),
+							},
+						}}
+						disabled={guests < item.minCount || guests > item.maxCount}
+						onClick={() => {
+							setModalData(subitem);
+							setOpen(true);
+						}}
+					>
+						{menuicons.penIcon}
+					</Button>
+				</Stack>
+				<Stack direction="row" alignItems="center">
+					<Box width="0" flexGrow={1}>
+						<Typography
+							variant="h6"
+							sx={{
+								fontSize: "14px",
+								fontWeight: "600",
+							}}
+							mb={1}
+						>
+							{/* {subitem.subtitle} */}
+							{activeMenu?.subtitle || activeMenu?.dishName}
+						</Typography>
+						<Typography
+							variant="body1"
+							sx={{
+								fontSize: "14px",
+								fontWeight: "500",
+								color: alpha("#000000", 0.8),
+							}}
+						>
+							{/* {subitem.text} */}
+							{activeMenu?.description || activeMenu?.text}
+						</Typography>
+					</Box>
+					<Box
+						ml={3}
+						pl={3}
+						sx={{
+							borderLeft: "1px solid #00000010",
+							minHeight: "45px",
+							display: "flex",
+							alignItems: "center",
+							gap: "6px",
+						}}
+					>
+						{/* {subitem?.icon} */}
+						{/* {subitem?.selectedMenu} */}
+						{activeMenu?.icon}
+						{activeMenu?.tag}
+					</Box>
+				</Stack>
+				{subitem?.subdata?.length > 0 &&
+					subitem?.subdata?.map((subdata, index) => (
+						<Stack
+							direction="row"
+							sx={{
+								pl: { xs: 2, sm: 3 },
+								mt: 1,
+							}}
+							key={index}
+						>
+							<Box width="0" flexGrow={1}>
+								<Typography
+									variant="h6"
+									sx={{
+										fontSize: "15px",
+										fontWeight: "600",
+									}}
+								>
+									{/* {subitem.subtitle} */}
+									{
+										subdata?.dishList?.find(
+											(dish) => dish.id === subdata.selectedMenu
+										)?.dishName
+									}
+								</Typography>
+								<Typography
+									variant="body1"
+									sx={{
+										fontSize: "13px",
+										fontWeight: "500",
+										color: alpha("#000000", 0.8),
+									}}
+								>
+									{/* {subitem.text} */}
+									{
+										subdata?.dishList?.find(
+											(dish) => dish.id === subdata.selectedMenu
+										)?.description
+									}
+								</Typography>
+							</Box>
+						</Stack>
+					))}
+			</Stack>
+		</>
+	);
+};
 const demoData = [
 	{
 		id: 1,

@@ -194,8 +194,6 @@ const DishCard = ({
 		const selectedDish = e.target.value;
 		setActiveDish(selectedDish);
 
-		console.log("selectedDish", selectedDish);
-
 		setMenu((prev) =>
 			prev.map((menuItem) => ({
 				...menuItem,
