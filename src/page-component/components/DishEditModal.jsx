@@ -204,7 +204,7 @@ const DishCard = ({
 						return {
 							...submenu,
 							subdata: submenu.subdata.map((subItem) =>
-								subItem.id === selectedDish.id
+								subItem.id == submenuId
 									? { ...subItem, selectedMenu: selectedDish.id }
 									: subItem
 							),
