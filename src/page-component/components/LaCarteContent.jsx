@@ -1,9 +1,12 @@
+import { icons } from "@/components/icons";
 import { menuicons } from "@/components/menuicons";
 import {
 	Box,
 	Button,
+	ButtonBase,
 	Card,
 	Collapse,
+	IconButton,
 	MenuItem,
 	Select,
 	Stack,
@@ -16,194 +19,221 @@ const LaCarteContent = () => {
 	const [open, setOpen] = React.useState(false);
 	const [menuData, setMenuData] = React.useState(cartFakeData);
 	const [modalData, setModalData] = React.useState({});
-	const [accordionOpenIds, setAccordionOpenIds] = React.useState([1, 2, 3]);
+	const [accordionOpenIds, setAccordionOpenIds] = React.useState([1, 2]);
 
 	return (
 		<>
 			<Stack gap={1} mt={3}>
-				{menuData.map(({ id, submenus, title }, index) => (
-					<Card
-						key={id}
-						sx={{ boxShadow: "0 0 5px rgba(0,0,0,0.1)", p: 2 }}
-					>
-						<Stack flexDirection="row" justifyContent="space-between">
-							<Typography fontSize="20px" fontWeight="600" mr="auto">
-								{title}
-							</Typography>
-							<Typography fontSize="20px" fontWeight="600">
-								CHF 0'00{" "}
-								<Button
-									type="button"
-									sx={{
-										p: 0,
-										m: 0,
-										minWidth: 0,
-										background: "transparent",
-									}}
-									onClick={() =>
-										setAccordionOpenIds((prev) =>
-											prev.includes(id)
-												? prev.filter((item) => item !== id)
-												: [...prev, id]
-										)
-									}
-								>
-									{accordionOpenIds.includes(id)
-										? menuicons.caretUp
-										: menuicons.caretDown}
-								</Button>
-							</Typography>
-						</Stack>
-						<Collapse in={accordionOpenIds.includes(id)}>
-							<Box>
-								{Object.keys(submenus).length > 0 && (
-									<Box>
-										<Typography
-											variant="h6"
-											sx={{ fontWeight: "bold" }}
-										>
-											{submenus?.title}
-										</Typography>
-										{submenus.map((subitem, index) => (
-											<Box position="relative" mb={2}>
-												<>
-													<Typography
-														variant="subtitle2"
-														color="textSecondary"
-														sx={{
-															marginTop: 2,
-															alignSelf: "flex-start",
-															m: 0,
-															position: "absolute",
-															left: "10px",
-															top: "0",
-															zIndex: 1,
-															background: "#fff",
-															px: 0.7,
-														}}
-													>
-														<div
-															style={{
-																transform: "translateY(-50%)",
+				{menuData.map((item, index) => {
+					const { id, submenus, title } = item;
+					return (
+						<Card
+							key={id}
+							sx={{ boxShadow: "0 0 5px rgba(0,0,0,0.1)", p: 2 }}
+						>
+							<Stack flexDirection="row" justifyContent="space-between">
+								<Typography fontSize="20px" fontWeight="600" mr="auto">
+									{title}
+								</Typography>
+								<Typography fontSize="20px" fontWeight="600">
+									CHF 0'00{" "}
+									<Button
+										type="button"
+										sx={{
+											p: 0,
+											m: 0,
+											minWidth: 0,
+											background: "transparent",
+										}}
+										onClick={() =>
+											setAccordionOpenIds((prev) =>
+												prev.includes(id)
+													? prev.filter((item) => item !== id)
+													: [...prev, id]
+											)
+										}
+									>
+										{accordionOpenIds.includes(id)
+											? menuicons.caretUp
+											: menuicons.caretDown}
+									</Button>
+								</Typography>
+							</Stack>
+							<Collapse in={accordionOpenIds.includes(id)}>
+								<Box>
+									{Object.keys(submenus).length > 0 && (
+										<Box>
+											<Typography
+												variant="h6"
+												sx={{ fontWeight: "bold" }}
+											>
+												{submenus?.title}
+											</Typography>
+											{submenus.map((subitem, index) => (
+												<Box position="relative" mb={2}>
+													<>
+														<Typography
+															variant="subtitle2"
+															color="textSecondary"
+															sx={{
+																marginTop: 2,
+																alignSelf: "flex-start",
+																m: 0,
+																position: "absolute",
+																left: "10px",
+																top: "0",
+																zIndex: 1,
+																background: "#fff",
+																px: 0.7,
 															}}
 														>
-															Dish
-														</div>
-													</Typography>
-													<CartItem
-														dishName={subitem.subtitle}
-														description={subitem.text}
-														icon={subitem.icon}
-														selected={subitem.selectedMenu}
-														kidsIcon={menuicons.kids}
-														dishlist={subitem.dishList}
-														menuId={subitem.id}
-														menu={""}
-														// setMenu={setMenu}
-														// menu={menu}
-													/>
-													{subitem?.subdata?.length > 0 && (
-														<>
-															{subitem?.subdata?.map(
-																(subSubmenu) => (
-																	<Box
-																		sx={{
-																			ml: {
-																				xs: 2,
-																				md: 4,
-																			},
-																			mt: 2,
-																			mb: 2,
-																			position: "relative",
-																		}}
-																		key={subSubmenu.id}
-																	>
-																		{subSubmenu.dishList.map(
-																			(
-																				subSubItem,
-																				index
-																			) => (
-																				<Box
-																					position="relative"
-																					mb={2}
-																					key={
-																						subSubItem.id
-																					}
+															<div
+																style={{
+																	transform:
+																		"translateY(-50%)",
+																}}
+															>
+																Dish
+															</div>
+														</Typography>
+														<CartItem
+															dishName={subitem.subtitle}
+															description={subitem.text}
+															icon={subitem.icon}
+															selected={subitem.selectedMenu}
+															kidsIcon={menuicons.kids}
+															dishlist={subitem.dishList}
+															menuId={subitem.id}
+															menu={""}
+															// setMenu={setMenu}
+															// menu={menu}
+														/>
+														{subitem?.subdata?.length > 0 && (
+															<>
+																{subitem?.subdata?.map(
+																	(subSubmenu) => (
+																		<Box
+																			sx={{
+																				ml: {
+																					xs: 2,
+																					md: 4,
+																				},
+																				mt: 2,
+																				mb: 2,
+																				position:
+																					"relative",
+																			}}
+																			key={subSubmenu.id}
+																		>
+																			<Typography
+																				variant="subtitle2"
+																				color="textSecondary"
+																				sx={{
+																					marginTop: 2,
+																					alignSelf:
+																						"flex-start",
+																					m: 0,
+																					position:
+																						"absolute",
+																					left: "10px",
+																					top: "0",
+																					zIndex: 1,
+																					background:
+																						"#fff",
+																					px: 0.7,
+																				}}
+																			>
+																				<div
+																					style={{
+																						transform:
+																							"translateY(-50%)",
+																					}}
 																				>
-																					<Typography
-																						variant="subtitle2"
-																						color="textSecondary"
-																						sx={{
-																							marginTop: 2,
-																							alignSelf:
-																								"flex-start",
-																							m: 0,
-																							position:
-																								"absolute",
-																							left: "10px",
-																							top: "0",
-																							zIndex: 1,
-																							background:
-																								"#fff",
-																							px: 0.7,
-																						}}
-																					>
-																						<div
-																							style={{
-																								transform:
-																									"translateY(-50%)",
-																							}}
-																						>
-																							Sub Dish
-																						</div>
-																					</Typography>
-																					<CartItem
-																						dishName={
-																							subSubItem.subtitle
-																						}
-																						description={
-																							subSubItem.text
-																						}
-																						icon={
-																							subSubItem.icon
-																						}
-																						selected={
-																							subSubmenu.selectedMenu
-																						}
-																						kidsIcon={
-																							menuicons.kids
-																						}
-																						dishlist={
-																							subSubmenu.dishList
-																						}
-																						menuId={
-																							subSubItem.id
-																						}
-																						menu={""}
-																						// setMenu={setMenu}
-																						// menu={menu}
-																					/>
-																				</Box>
-																			)
-																		)}
-																	</Box>
-																)
-															)}
-														</>
-													)}
-												</>
-											</Box>
-										))}
-									</Box>
-								)}
-							</Box>
-						</Collapse>
-					</Card>
-				))}
+																					Sub Dish
+																				</div>
+																			</Typography>
+																			<CartItem
+																				dishName={
+																					subSubmenu.subtitle
+																				}
+																				description={
+																					subSubmenu.text
+																				}
+																				icon={
+																					subSubmenu.icon
+																				}
+																				selected={
+																					subSubmenu.selectedMenu
+																				}
+																				kidsIcon={
+																					menuicons.kids
+																				}
+																				dishlist={
+																					subSubmenu.dishList
+																				}
+																				menuId={
+																					subSubmenu.id
+																				}
+																				menu={""}
+																				// setMenu={setMenu}
+																				// menu={menu}
+																			/>
+																		</Box>
+																	)
+																)}
+															</>
+														)}
+													</>
+												</Box>
+											))}
+											<Stack
+												flexDirection={"row"}
+												justifyContent={"flex-end"}
+											>
+												<ButtonBase
+													variant="contained"
+													sx={{
+														background: "#8211011A",
+														color: "#821101",
+														height: "42px",
+														width: "150px",
+														borderRadius: "5px",
+														textTransform: "uppercase",
+														fontSize: "15px",
+														fontWeight: "700",
+														mr: { xl: "170px" },
+													}}
+													onClick={() => {
+														setModalData(
+															index == 0
+																? dish1
+																: index == 1
+																? dish2
+																: dish3
+														);
+														setOpen(true);
+													}}
+												>
+													{icons.increment2} Add Meal
+												</ButtonBase>
+											</Stack>
+										</Box>
+									)}
+								</Box>
+							</Collapse>
+						</Card>
+					);
+				})}
 			</Stack>
 			{open && (
 				<DishEditModal
-					{...{ modalData, setMenuData, setOpen, open, menuData }}
+					{...{
+						modalData,
+						setMenuData,
+						setOpen,
+						open,
+						menuData,
+					}}
 				/>
 			)}
 		</>
@@ -252,8 +282,27 @@ export const CartItem = ({
 		// );
 	};
 
+	const [guests, setGuests] = React.useState(9);
+
+	const handleIncrement = () => {
+		setGuests((prev) => prev + 1);
+	};
+	const handleDecrement = () => {
+		if (guests > 0) {
+			setGuests((prev) => prev - 1);
+		}
+	};
+
 	return (
-		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
+		<Box
+			sx={{
+				display: "flex",
+				flexWrap: "wrap",
+				alignItems: "center",
+				marginY: 1,
+				gap: 2,
+			}}
+		>
 			<Card variant="outlined" sx={{ width: "0", padding: 0, flexGrow: 1 }}>
 				<Box
 					sx={{
@@ -262,7 +311,7 @@ export const CartItem = ({
 						alignItems: "center",
 					}}
 				>
-					<Box sx={{ width: "0", flexGrow: 1 }}>
+					<Box sx={{ width: "200px", flexGrow: 1 }}>
 						<Select
 							value={activeDish}
 							onChange={handleSelectChange}
@@ -345,7 +394,53 @@ export const CartItem = ({
 					</Box>
 				</Box>
 			</Card>
-			<Typography fontSize="18px" fontWeight="600" mr={2} ml={4}>
+
+			<Box
+				sx={{
+					border: "1px solid #ccc",
+					borderRadius: "8px",
+					padding: "4px 16px",
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "center",
+					width: "150px",
+					position: "relative",
+				}}
+			>
+				<Typography
+					variant="caption"
+					color="textSecondary"
+					sx={{
+						alignSelf: "flex-start",
+						m: 0,
+						position: "absolute",
+						left: "10px",
+						top: "-10px",
+						zIndex: 1,
+						background: "#ffffff",
+						px: 0.7,
+					}}
+				>
+					Guests
+				</Typography>
+				<Box
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "space-between",
+						width: "100%",
+					}}
+				>
+					<IconButton onClick={handleDecrement} size="small">
+						{icons.decrement}
+					</IconButton>
+					<Typography variant="h6">{guests}</Typography>
+					<IconButton onClick={handleIncrement} size="small">
+						{icons.increment}
+					</IconButton>
+				</Box>
+			</Box>
+			<Typography fontSize="18px" fontWeight="600" ml={2}>
 				CHF 25’00
 			</Typography>
 			<Button
@@ -484,33 +579,6 @@ export const cartFakeData = [
 		maxCount: 20,
 		submenus: [
 			{
-				id: "birthday-1",
-				title: "1 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "birthday-1-1",
-				icon: menuicons.fish,
-				dishList: [
-					{
-						id: "birthday-1-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.fish,
-						tag: "Meat",
-					},
-					{
-						id: "birthday-1-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-
-						icon: menuicons.fish,
-						tag: "Meat",
-					},
-				],
-			},
-			{
 				id: "birthday-2",
 				title: "2 - Course",
 				subtitle: "Caprese Saled",
@@ -553,64 +621,11 @@ export const cartFakeData = [
 							{
 								id: "sub-birthday-2-1-2",
 								dishName: "Daprese Saled",
-								description:
-									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.fish,
-								tag: "Fish",
+								description: "Fresh mozzarella, vine-ripened tomatoes",
+								icon: menuicons.meat,
+								tag: "Meat",
 							},
 						],
-					},
-				],
-			},
-			{
-				id: "birthday-3",
-				title: "3 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "birthday-3-1",
-				icon: menuicons.vegetarian,
-				dishList: [
-					{
-						id: "birthday-3-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.vegetarian,
-						tag: "Vegetarian",
-					},
-					{
-						id: "birthday-3-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.vegetarian,
-						tag: "Vegetarian",
-					},
-				],
-			},
-			{
-				id: "birthday-4",
-				title: "1 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "birthday-4-1",
-				icon: menuicons.fish,
-				dishList: [
-					{
-						id: "birthday-4-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-					{
-						id: "birthday-4-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
 					},
 				],
 			},
@@ -782,5 +797,109 @@ export const cartFakeData = [
 		],
 	},
 ];
+
+const dish1 = {
+	id: "wedding-2",
+	title: "1 - Course",
+	subtitle: "Caprese Saled",
+	text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+	selectedMenu: "sub-wedding-2-1",
+	icon: menuicons.meat,
+	dishList: [
+		{
+			id: "sub-wedding-2-1",
+			dishName: "Caprese Saled",
+			description:
+				"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+			icon: menuicons.meat,
+			tag: "Meat",
+		},
+		{
+			id: "sub-wedding-2-2",
+			dishName: "Daprese Saled",
+			description: "Vine-ripened tomatoes, basil, and balsamic reduction.",
+			icon: menuicons.meat,
+			tag: "Meat",
+		},
+	],
+};
+
+const dish2 = {
+	id: "wedding-2",
+	title: "2 - Course",
+	subtitle: "Caprese Saled",
+	text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+	selectedMenu: "sub-wedding-2-1",
+	icon: menuicons.meat,
+	dishList: [
+		{
+			id: "sub-wedding-2-1",
+			dishName: "Caprese Saled",
+			description:
+				"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+			icon: menuicons.meat,
+			tag: "Meat",
+		},
+		{
+			id: "sub-wedding-2-2",
+			dishName: "Daprese Saled",
+			description: "Vine-ripened tomatoes, basil, and balsamic reduction.",
+			icon: menuicons.meat,
+			tag: "Meat",
+		},
+	],
+	subdata: [
+		{
+			id: "wedding-2-1",
+			subtitle: "Caprese Saled",
+			text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+			selectedMenu: "sub-wedding-2-1-1",
+			dishList: [
+				{
+					id: "sub-wedding-2-1-1",
+					dishName: "Caprese Saled",
+					description:
+						"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+					icon: menuicons.meat,
+					tag: "Meat",
+				},
+				{
+					id: "sub-wedding-2-1-2",
+					dishName: "Caprese Saled",
+					description:
+						"Vine-ripened tomatoes, basil, and balsamic reduction.",
+					icon: menuicons.fish,
+					tag: "Fish",
+				},
+			],
+		},
+	],
+};
+
+const dish3 = {
+	id: "wedding-2",
+	title: "3 - Course",
+	subtitle: "Caprese Saled",
+	text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+	selectedMenu: "sub-wedding-2-1",
+	icon: menuicons.meat,
+	dishList: [
+		{
+			id: "sub-wedding-2-1",
+			dishName: "Caprese Saled",
+			description:
+				"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+			icon: menuicons.meat,
+			tag: "Meat",
+		},
+		{
+			id: "sub-wedding-2-2",
+			dishName: "Daprese Saled",
+			description: "Vine-ripened tomatoes, basil, and balsamic reduction.",
+			icon: menuicons.meat,
+			tag: "Meat",
+		},
+	],
+};
 
 export default LaCarteContent;
