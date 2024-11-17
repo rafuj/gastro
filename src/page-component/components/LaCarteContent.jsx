@@ -36,45 +36,36 @@ const LaCarteContent = () => {
 								mb: 2,
 							}}
 						>
+							<Stack flexDirection="row" justifyContent="space-between">
+								<Typography fontSize="20px" fontWeight="600" mr="auto">
+									{title}
+								</Typography>
+								<Typography fontSize="20px" fontWeight="600">
+									CHF 0&apos;00{" "}
+									<Button
+										type="button"
+										sx={{
+											p: 0,
+											m: 0,
+											minWidth: 0,
+											background: "transparent",
+										}}
+										onClick={() =>
+											setAccordionOpenIds((prev) =>
+												prev.includes(id)
+													? prev.filter((item) => item !== id)
+													: [...prev, id]
+											)
+										}
+									>
+										{accordionOpenIds.includes(id)
+											? menuicons.caretUp
+											: menuicons.caretDown}
+									</Button>
+								</Typography>
+							</Stack>
 							<Box sx={{ overflowX: "auto" }}>
 								<Box minWidth={"700px"}>
-									<Stack
-										flexDirection="row"
-										justifyContent="space-between"
-									>
-										<Typography
-											fontSize="20px"
-											fontWeight="600"
-											mr="auto"
-										>
-											{title}
-										</Typography>
-										<Typography fontSize="20px" fontWeight="600">
-											CHF 0&apos;00{" "}
-											<Button
-												type="button"
-												sx={{
-													p: 0,
-													m: 0,
-													minWidth: 0,
-													background: "transparent",
-												}}
-												onClick={() =>
-													setAccordionOpenIds((prev) =>
-														prev.includes(id)
-															? prev.filter(
-																	(item) => item !== id
-															  )
-															: [...prev, id]
-													)
-												}
-											>
-												{accordionOpenIds.includes(id)
-													? menuicons.caretUp
-													: menuicons.caretDown}
-											</Button>
-										</Typography>
-									</Stack>
 									<Collapse in={accordionOpenIds.includes(id)}>
 										<Box>
 											{Object.keys(submenus).length > 0 && (
