@@ -10,6 +10,7 @@ import {
 	MenuItem,
 	Select,
 	Stack,
+	TextField,
 	Typography,
 } from "@mui/material";
 import React from "react";
@@ -224,6 +225,75 @@ const LaCarteContent = () => {
 						</Card>
 					);
 				})}
+				<Box sx={{ opacity: "0.3", my: 1 }}>
+					<hr />
+				</Box>
+				<Stack flexDirection={"row"}>
+					<Typography fontSize="20px" fontWeight="600" marginRight="auto">
+						Subtotal
+					</Typography>
+					<Typography
+						fontSize="20px"
+						fontWeight="500"
+						sx={{
+							mr: { xs: 0, md: 2, lg: 7 },
+						}}
+					>
+						21 Guests
+					</Typography>
+					<Typography fontSize="20px" fontWeight="600">
+						CHF 0'00
+					</Typography>
+				</Stack>
+				<Box sx={{ opacity: "0.3", my: 1 }}>
+					<hr />
+				</Box>
+				<TextField
+					variant="outlined"
+					placeholder="Add remarks here..."
+					label="Add Remarks"
+					sx={{
+						width: "100%",
+					}}
+				/>
+				<Stack flexDirection="row" justifyContent="space-between">
+					<Stack
+						flexDirection="row"
+						alignItems="center"
+						gap="6px"
+						sx={{
+							py: 3,
+							fontWeight: "500",
+							width: "100%",
+							maxWidth: "771px",
+						}}
+					>
+						{icons.info}{" "}
+						<Box sx={{ width: "0", flexGrow: "1" }}>
+							Feed allergies, specific food instrctions or questions
+							about the origion of meat: Please contact the restaurant
+							directly at{" "}
+							<a href="tel:+41585620030" style={{ color: "#1D9BF0" }}>
+								+41585620030
+							</a>{" "}
+							or add your questions to the remark section.
+						</Box>
+					</Stack>
+					<Button
+						type="button"
+						variant="contained"
+						color="primary"
+						sx={{
+							fontSize: "14px",
+							fontWeight: "600",
+							textTransform: "uppercase",
+							height: "44px",
+							mt: 2,
+						}}
+					>
+						Request Menu
+					</Button>
+				</Stack>
 			</Stack>
 			{open && (
 				<DishEditModal

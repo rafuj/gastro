@@ -1,3 +1,4 @@
+import { icons } from "@/components/icons";
 import { menuicons } from "@/components/menuicons";
 import {
 	Box,
@@ -138,6 +139,14 @@ export const MenuContent = ({ guests }) => {
 						</Stack>
 					))}
 				</Stack>
+			</Box>
+			<Box sx={{ py: 3, fontWeight: "500" }}>
+				{icons.info} Feed allergies, specific food instrctions or questions
+				about the origion of meat: Please contact the restaurant directly at{" "}
+				<a href="tel:+41585620030" style={{ color: "#1D9BF0" }}>
+					+41585620030
+				</a>{" "}
+				or add your questions to the remark section.
 			</Box>
 			{open && (
 				<DishEditModal

@@ -19,6 +19,9 @@ svg {
 	display: inline-block;
 }
 /* scrollbar design */
+body {
+	background: #fff;
+}
 body *::-webkit-scrollbar {
 	width: 5px;
 	height: 5px;
