@@ -16,7 +16,6 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 
 	const handleConfirm = () => {
 		setMenuData(menu);
-		console.log("fuck", menu);
 		const timer = setTimeout(() => {
 			setOpen(false);
 		}, 0);
@@ -71,7 +70,6 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 										Dish
 									</div>
 								</Typography>
-								{console.log("selectedMenu", modalData)}
 								<DishCard
 									dishName={modalData.subtitle}
 									description={modalData.text}
@@ -174,7 +172,7 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 	);
 };
 
-const DishCard = ({
+export const DishCard = ({
 	icon,
 	kidsIcon,
 	tag,

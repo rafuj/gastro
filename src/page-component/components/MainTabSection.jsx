@@ -1,6 +1,7 @@
 import { icons } from "@/components/icons";
 import { Box } from "@mui/material";
 import React from "react";
+import LaCarteContent from "./LaCarteContent";
 import { MenuCarte } from "./MenuCarte";
 import { MenuContent } from "./MenuContent";
 
@@ -65,8 +66,8 @@ export const MainTabSection = () => {
 				</Tabs>
 			</Box>
 			<SearchOptions /> */}
-			<MenuCarte guests={guests} setGuests={setGuests} />
-			<MenuContent guests={guests} />
+			<MenuCarte {...{ guests, setGuests, value, setValue }} />
+			{value === 0 ? <LaCarteContent /> : <MenuContent guests={guests} />}
 		</Box>
 	);
 };

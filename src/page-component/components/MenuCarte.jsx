@@ -1,9 +1,7 @@
 import { icons } from "@/components/icons";
 import { Box, IconButton, Stack, Tab, Tabs, Typography } from "@mui/material";
-import React from "react";
 
-export const MenuCarte = ({ guests, setGuests }) => {
-	const [value, setValue] = React.useState(0);
+export const MenuCarte = ({ guests, setGuests, value, setValue }) => {
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
