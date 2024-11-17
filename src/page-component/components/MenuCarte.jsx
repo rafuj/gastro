@@ -22,6 +22,7 @@ export const MenuCarte = ({ guests, setGuests, value, setValue }) => {
 			justifyContent="space-between"
 			alignItems="center"
 			gap={1}
+			sx={{ rowGap: 3 }}
 		>
 			<Typography
 				sx={{ fontSize: "20px", fontWeight: "600", marginRight: "auto" }}
