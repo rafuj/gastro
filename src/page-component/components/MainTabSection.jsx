@@ -6,7 +6,7 @@ import { MenuCarte } from "./MenuCarte";
 import { MenuContent } from "./MenuContent";
 
 export const MainTabSection = () => {
-	const [value, setValue] = React.useState(0);
+	const [value, setValue] = React.useState(1);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
