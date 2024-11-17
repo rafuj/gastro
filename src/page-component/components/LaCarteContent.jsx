@@ -37,7 +37,7 @@ const LaCarteContent = () => {
 									{title}
 								</Typography>
 								<Typography fontSize="20px" fontWeight="600">
-									CHF 0'00{" "}
+									CHF 0&apos;00{" "}
 									<Button
 										type="button"
 										sx={{
@@ -71,7 +71,7 @@ const LaCarteContent = () => {
 												{submenus?.title}
 											</Typography>
 											{submenus.map((subitem, index) => (
-												<Box position="relative" mb={2}>
+												<Box position="relative" mb={2} key={index}>
 													<>
 														<Typography
 															variant="subtitle2"
@@ -242,7 +242,7 @@ const LaCarteContent = () => {
 						21 Guests
 					</Typography>
 					<Typography fontSize="20px" fontWeight="600">
-						CHF 0'00
+						CHF 0&apos;00
 					</Typography>
 				</Stack>
 				<Box sx={{ opacity: "0.3", my: 1 }}>
