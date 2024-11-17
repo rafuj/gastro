@@ -25,19 +25,19 @@ const LaCarteContent = () => {
 	return (
 		<>
 			<Stack gap={1} mt={3}>
-				<Box sx={{ overflowX: "auto" }}>
-					<Box minWidth={"900px"}>
-						{menuData.map((item, index) => {
-							const { id, submenus, title } = item;
-							return (
-								<Card
-									key={id}
-									sx={{
-										boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-										p: 2,
-										mb: 2,
-									}}
-								>
+				{menuData.map((item, index) => {
+					const { id, submenus, title } = item;
+					return (
+						<Card
+							key={id}
+							sx={{
+								boxShadow: "0 0 5px rgba(0,0,0,0.1)",
+								p: 2,
+								mb: 2,
+							}}
+						>
+							<Box sx={{ overflowX: "auto" }}>
+								<Box minWidth={"700px"}>
 									<Stack
 										flexDirection="row"
 										justifyContent="space-between"
@@ -252,11 +252,11 @@ const LaCarteContent = () => {
 											)}
 										</Box>
 									</Collapse>
-								</Card>
-							);
-						})}
-					</Box>
-				</Box>
+								</Box>
+							</Box>
+						</Card>
+					);
+				})}
 				<Box sx={{ opacity: "0.3", my: 1 }}>
 					<hr />
 				</Box>
