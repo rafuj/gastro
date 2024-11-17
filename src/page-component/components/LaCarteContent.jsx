@@ -283,15 +283,19 @@ const LaCarteContent = () => {
 					flexDirection="row"
 					justifyContent="space-between"
 					alignItems={"center"}
+					flexWrap={"wrap-reverse"}
+					sx={{
+						py: 3,
+						rowGap: 2,
+					}}
 				>
 					<Stack
 						flexDirection="row"
 						alignItems="center"
 						gap="6px"
 						sx={{
-							py: 3,
 							fontWeight: "500",
-							width: "0",
+							width: { xs: "100%", sm: "0" },
 							maxWidth: "771px",
 							flexGrow: "1",
 						}}
@@ -316,7 +320,7 @@ const LaCarteContent = () => {
 							fontWeight: "600",
 							textTransform: "uppercase",
 							height: "44px",
-							mt: 2,
+							ml: "auto",
 						}}
 					>
 						Request Menu
