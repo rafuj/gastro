@@ -254,7 +254,7 @@ export const CartItem = ({
 
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
-			<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
+			<Card variant="outlined" sx={{ width: "0", padding: 0, flexGrow: 1 }}>
 				<Box
 					sx={{
 						display: "flex",
@@ -345,6 +345,20 @@ export const CartItem = ({
 					</Box>
 				</Box>
 			</Card>
+			<Typography fontSize="18px" fontWeight="600" mr={2} ml={4}>
+				CHF 25’00
+			</Typography>
+			<Button
+				type="button"
+				sx={{
+					border: "none",
+					outline: "none",
+					minWidth: "0",
+					background: "transparent",
+				}}
+			>
+				{menuicons.trash}
+			</Button>
 		</Box>
 	);
 };
