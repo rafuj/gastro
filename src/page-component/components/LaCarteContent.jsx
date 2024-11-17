@@ -20,7 +20,7 @@ const LaCarteContent = () => {
 	const [open, setOpen] = React.useState(false);
 	const [menuData, setMenuData] = React.useState(cartFakeData);
 	const [modalData, setModalData] = React.useState({});
-	const [accordionOpenIds, setAccordionOpenIds] = React.useState([1, 2]);
+	const [accordionOpenIds, setAccordionOpenIds] = React.useState([1, 2, 3]);
 
 	return (
 		<>
@@ -844,80 +844,19 @@ export const cartFakeData = [
 		maxCount: 60,
 		submenus: [
 			{
-				id: "school-1",
-				title: "1 - Course",
+				id: "wedding-2",
+				title: "3 - Course",
 				subtitle: "Caprese Saled",
 				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "school-1-1",
-				icon: menuicons.fish,
+				selectedMenu: "sub-wedding-2-1",
+				icon: menuicons.vegetarian,
 				dishList: [
 					{
-						id: "school-1-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.fish,
-						tag: "Fish",
-					},
-					{
-						id: "school-1-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.fish,
-						tag: "Fish",
-					},
-				],
-			},
-			{
-				id: "school-2",
-				title: "2 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "school-2-1",
-				icon: menuicons.meat,
-				dishList: [
-					{
-						id: "school-2-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-					{
-						id: "school-2-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-				],
-				subdata: [
-					{
-						id: "sub-school-2-1",
-						subtitle: "Caprese Saled",
-						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "sub-school-2-1-1",
-						dishList: [
-							{
-								id: "sub-school-2-1-1",
-								dishName: "Caprese Saled",
-								description:
-									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
-							},
-							{
-								id: "sub-school-2-1-2",
-								dishName: "Daprese Saled",
-								description:
-									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.fish,
-								tag: "Fish",
-							},
-						],
+						id: "sub-wedding-2-1",
+						dishName: "Lava cake",
+						description: "Chocolate with ice cream",
+						icon: menuicons.vegetarian,
+						tag: "Vegetarian",
 					},
 				],
 			},
@@ -926,105 +865,130 @@ export const cartFakeData = [
 ];
 
 const dish1 = {
-	id: "wedding-2",
+	id: "course-1",
 	title: "1 - Course",
-	subtitle: "Caprese Saled",
-	text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-	selectedMenu: "sub-wedding-2-1",
+	selectedMenu: "course-1-1",
 	icon: menuicons.meat,
 	dishList: [
 		{
-			id: "sub-wedding-2-1",
-			dishName: "Caprese Saled",
-			description:
-				"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-			icon: menuicons.meat,
-			tag: "Meat",
+			id: "course-1-1",
+			dishName: "Stuffed Mushrooms",
+			description: "Garlic-herb stuffed mushrooms with crispy topping.",
+			icon: menuicons.vegetarian,
+			tag: "Vegetarian",
 		},
 		{
-			id: "sub-wedding-2-2",
-			dishName: "Daprese Saled",
-			description: "Vine-ripened tomatoes, basil, and balsamic reduction.",
+			id: "course-1-2",
+			dishName: "Caprese Skewers",
+			description: "Mozzarella, tomatoes, basil, and balsamic.",
+			icon: menuicons.vegetarian,
+			tag: "Vegetarian",
+		},
+		{
+			id: "course-1-3",
+			dishName: "Salmon Crostini",
+			description: "Smoked salmon on crostini with cream cheese.",
+			icon: menuicons.fish,
+			tag: "Fish",
+		},
+		{
+			id: "course-1-4",
+			dishName: "Shrimp Cocktail",
+			description: "Chilled shrimp with zesty sauce.",
+			icon: menuicons.fish,
+			tag: "Fish",
+		},
+		{
+			id: "course-1-5",
+			dishName: "Tomato Bruschetta",
+			description: "Baguette with tomato and basil.",
 			icon: menuicons.meat,
 			tag: "Meat",
 		},
 	],
+	// subdata: [
+	// 	{
+	// 		id: "wedding-2-1",
+	// 		subtitle: "Caprese Saled",
+	// 		text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
+	// 		selectedMenu: "sub-wedding-2-1-1",
+	// 		dishList: [
+	// 			{
+	// 				id: "sub-wedding-2-1-1",
+	// 				dishName: "Caprese Saled",
+	// 				description:
+	// 					"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+	// 				icon: menuicons.meat,
+	// 				tag: "Meat",
+	// 			},
+	// 			{
+	// 				id: "sub-wedding-2-1-2",
+	// 				dishName: "Caprese Saled",
+	// 				description:
+	// 					"Vine-ripened tomatoes, basil, and balsamic reduction.",
+	// 				icon: menuicons.fish,
+	// 				tag: "Fish",
+	// 			},
+	// 		],
+	// 	},
+	// ],
 };
 
 const dish2 = {
-	id: "wedding-2",
+	id: "course-2",
 	title: "2 - Course",
-	subtitle: "Caprese Saled",
-	text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-	selectedMenu: "sub-wedding-2-1",
-	icon: menuicons.meat,
+	selectedMenu: "course-2-3",
 	dishList: [
 		{
-			id: "sub-wedding-2-1",
-			dishName: "Caprese Saled",
-			description:
-				"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
+			id: "course-2-2",
+			dishName: "Vegetable Stir-Fry with Tofu",
+			description: "Colorful vegetables and tofu in a savory sauce.",
+			icon: menuicons.vegetarian,
+			tag: "Vegetarian",
+		},
+		{
+			id: "course-2-3",
+			dishName: "Grilled Salmon with Lemon-Dill Sauce",
+			description: "Juicy grilled salmon with a zesty lemon-dill sauce.",
+			icon: menuicons.fish,
+			tag: "Fish",
+		},
+		{
+			id: "course-2-4",
+			dishName: "Chicken Alfredo Pasta",
+			description: "Creamy pasta with tender chicken and Parmesan.",
 			icon: menuicons.meat,
 			tag: "Meat",
 		},
 		{
-			id: "sub-wedding-2-2",
-			dishName: "Daprese Saled",
-			description: "Vine-ripened tomatoes, basil, and balsamic reduction.",
+			id: "course-2-5",
+			dishName: "Stuffed Bell Peppers",
+			description: "Bell peppers filled with rice, beans, and vegetables.",
+			icon: menuicons.vegetarian,
+			tag: "Vegetarian",
+		},
+		{
+			id: "course-2-6",
+			dishName: "Spaghetti Bolognese",
+			description: "Classic spaghetti with rich tomato-meat sauce.",
 			icon: menuicons.meat,
 			tag: "Meat",
-		},
-	],
-	subdata: [
-		{
-			id: "wedding-2-1",
-			subtitle: "Caprese Saled",
-			text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-			selectedMenu: "sub-wedding-2-1-1",
-			dishList: [
-				{
-					id: "sub-wedding-2-1-1",
-					dishName: "Caprese Saled",
-					description:
-						"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-					icon: menuicons.meat,
-					tag: "Meat",
-				},
-				{
-					id: "sub-wedding-2-1-2",
-					dishName: "Caprese Saled",
-					description:
-						"Vine-ripened tomatoes, basil, and balsamic reduction.",
-					icon: menuicons.fish,
-					tag: "Fish",
-				},
-			],
+			kidsIcon: menuicons.kids,
 		},
 	],
 };
 
 const dish3 = {
-	id: "wedding-2",
+	id: "course-3",
 	title: "3 - Course",
-	subtitle: "Caprese Saled",
-	text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
 	selectedMenu: "sub-wedding-2-1",
-	icon: menuicons.meat,
 	dishList: [
 		{
 			id: "sub-wedding-2-1",
-			dishName: "Caprese Saled",
-			description:
-				"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-			icon: menuicons.meat,
-			tag: "Meat",
-		},
-		{
-			id: "sub-wedding-2-2",
-			dishName: "Daprese Saled",
-			description: "Vine-ripened tomatoes, basil, and balsamic reduction.",
-			icon: menuicons.meat,
-			tag: "Meat",
+			dishName: "Lava cake",
+			description: "Chocolate with ice cream",
+			icon: menuicons.vegetarian,
+			tag: "Vegetarian",
 		},
 	],
 };

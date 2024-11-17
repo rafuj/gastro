@@ -7,6 +7,7 @@ import {
 	DialogContent,
 	MenuItem,
 	Select,
+	Stack,
 	Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -263,6 +264,25 @@ export const DishCard = ({
 										<Typography variant="body2" color="textSecondary">
 											{selected.tag}
 										</Typography>
+										{selected.kidsIcon && (
+											<>
+												<Box
+													sx={{
+														height: "12px",
+														width: "1px",
+														background: "#00000030",
+														ml: 1,
+													}}
+												/>
+												<Stack
+													variant="body2"
+													color="textSecondary"
+													pl={1}
+												>
+													{selected.kidsIcon}
+												</Stack>
+											</>
+										)}
 									</Box>
 								) : (
 									"Select a dish"
@@ -299,6 +319,25 @@ export const DishCard = ({
 											>
 												{item.tag}
 											</Typography>
+											{item.kidsIcon && (
+												<>
+													<Box
+														sx={{
+															height: "12px",
+															width: "1px",
+															background: "#00000030",
+															ml: 1,
+														}}
+													/>
+													<Stack
+														variant="body2"
+														color="textSecondary"
+														pl={1}
+													>
+														{item.kidsIcon}
+													</Stack>
+												</>
+											)}
 										</Box>
 									</Box>
 								</MenuItem>
