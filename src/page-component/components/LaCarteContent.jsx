@@ -223,7 +223,10 @@ const LaCarteContent = () => {
 																	lg: "15px",
 																},
 																fontWeight: "700",
-																mr: { md: "170px" },
+																mr: {
+																	xs: "160px",
+																	lg: "170px",
+																},
 															}}
 															onClick={() => {
 																setModalData(
