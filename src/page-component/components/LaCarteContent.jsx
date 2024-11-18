@@ -506,7 +506,7 @@ export const CartItem = ({
 					}}
 					ml={2}
 				>
-					CHF 25'00
+					CHF 2500
 				</Typography>
 				<Button
 					type="button"
