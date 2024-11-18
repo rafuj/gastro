@@ -137,82 +137,6 @@ const LaCarteContent = () => {
 																		setCartData,
 																	}}
 																/>
-																{/* {subitem?.subdata?.length >
-																	0 && (
-																	<>
-																		{subitem?.subdata?.map(
-																			(subSubmenu) => (
-																				<Box
-																					sx={{
-																						ml: {
-																							xs: 2,
-																							md: 4,
-																						},
-																						mt: 2,
-																						mb: 2,
-																						position:
-																							"relative",
-																					}}
-																					key={
-																						subSubmenu.id
-																					}
-																				>
-																					<Typography
-																						variant="subtitle2"
-																						color="textSecondary"
-																						sx={{
-																							marginTop: 2,
-																							alignSelf:
-																								"flex-start",
-																							m: 0,
-																							position:
-																								"absolute",
-																							left: "10px",
-																							top: "0",
-																							zIndex: 1,
-																							background:
-																								"#fff",
-																							px: 0.7,
-																						}}
-																					>
-																						<div
-																							style={{
-																								transform:
-																									"translateY(-50%)",
-																							}}
-																						>
-																							Sub Dish
-																						</div>
-																					</Typography>
-																					<CartItem
-																						dishName={
-																							subSubmenu.subtitle
-																						}
-																						description={
-																							subSubmenu.text
-																						}
-																						icon={
-																							subSubmenu.icon
-																						}
-																						selected={
-																							subSubmenu.id
-																						}
-																						kidsIcon={
-																							menuicons.kids
-																						}
-																						dishlist={
-																							dishList
-																						}
-																						menuId={
-																							subSubmenu.id
-																						}
-																						menu={""}
-																					/>
-																				</Box>
-																			)
-																		)}
-																	</>
-																)} */}
 															</>
 														</Box>
 													))}
@@ -404,190 +328,251 @@ export const CartItem = ({
 	};
 
 	return (
-		<Box
-			sx={{
-				display: "flex",
-				alignItems: "center",
-				marginY: 1,
-				gap: 2,
-			}}
-		>
-			<Card variant="outlined" sx={{ width: "0", padding: 0, flexGrow: 1 }}>
-				<Box
-					sx={{
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-						flexWrap: "wrap",
-					}}
+		<>
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					marginY: 1,
+					gap: 2,
+				}}
+			>
+				<Card
+					variant="outlined"
+					sx={{ width: "0", padding: 0, flexGrow: 1 }}
 				>
-					<Box sx={{ width: "200px", flexGrow: 1 }}>
-						<Select
-							value={activeDish}
-							onChange={handleSelectChange}
-							displayEmpty
-							variant="outlined"
-							sx={{
-								width: "100%",
-								position: "relative",
-								zIndex: 1,
-								"& .MuiOutlinedInput-notchedOutline": {
-									border: "none", // Removes default border
-								},
-								"& .MuiSelect-select": {
-									padding: "10px 14px", // Adjust padding for appearance
-								},
-							}}
-							renderValue={(selected) =>
-								selected ? (
-									<Box sx={{ display: "flex", alignItems: "center" }}>
-										<Typography fontWeight="700" mr={0.4}>
-											{selected.dishName}
-										</Typography>
-										<Typography flexGrow={1} width="0">
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							flexWrap: "wrap",
+						}}
+					>
+						<Box sx={{ width: "200px", flexGrow: 1 }}>
+							<Select
+								value={activeDish}
+								onChange={handleSelectChange}
+								displayEmpty
+								variant="outlined"
+								sx={{
+									width: "100%",
+									position: "relative",
+									zIndex: 1,
+									"& .MuiOutlinedInput-notchedOutline": {
+										border: "none", // Removes default border
+									},
+									"& .MuiSelect-select": {
+										padding: "10px 14px", // Adjust padding for appearance
+									},
+								}}
+								renderValue={(selected) =>
+									selected ? (
+										<Box
+											sx={{ display: "flex", alignItems: "center" }}
+										>
+											<Typography fontWeight="700" mr={0.4}>
+												{selected.dishName}
+											</Typography>
+											<Typography flexGrow={1} width="0">
+												<Box
+													sx={{
+														display: "-webkit-flex",
+														WebkitBoxOrient: "vertical",
+														WebkitLineClamp: 1,
+														overflow: "hidden",
+														textOverflow: "ellipsis",
+														mr: 1,
+													}}
+												>
+													{selected.description}
+												</Box>
+											</Typography>
 											<Box
 												sx={{
-													display: "-webkit-flex",
-													WebkitBoxOrient: "vertical",
-													WebkitLineClamp: 1,
-													overflow: "hidden",
-													textOverflow: "ellipsis",
+													display: "flex",
+													alignItems: "center",
 													mr: 1,
 												}}
 											>
-												{selected.description}
+												{selected.icon}
 											</Box>
-										</Typography>
-										<Box
-											sx={{
-												display: "flex",
-												alignItems: "center",
-												mr: 1,
-											}}
-										>
-											{selected.icon}
-										</Box>
-										<Typography variant="body2" color="textSecondary">
-											{selected.tag}
-										</Typography>
-									</Box>
-								) : (
-									"Select a dish"
-								)
-							}
-						>
-							{dishlist.map((item) => (
-								<MenuItem key={item.dishName} value={item}>
-									<Box
-										sx={{
-											display: "flex",
-											width: "100%",
-											alignItems: "center",
-										}}
-									>
-										{/* Updated content for clarity */}
-										<Typography fontWeight="700" mr={1}>
-											{item.dishName}
-										</Typography>
-										<Typography>{item.description}</Typography>
-										<Box
-											sx={{
-												ml: "auto",
-												display: "flex",
-												alignItems: "center",
-												mr: 1,
-											}}
-										>
-											{item.icon}
 											<Typography
 												variant="body2"
 												color="textSecondary"
-												ml={1}
 											>
-												{item.tag}
+												{selected.tag}
 											</Typography>
 										</Box>
-									</Box>
-								</MenuItem>
-							))}
-						</Select>
+									) : (
+										"Select a dish"
+									)
+								}
+							>
+								{dishlist.map((item) => (
+									<MenuItem key={item.dishName} value={item}>
+										<Box
+											sx={{
+												display: "flex",
+												width: "100%",
+												alignItems: "center",
+											}}
+										>
+											{/* Updated content for clarity */}
+											<Typography fontWeight="700" mr={1}>
+												{item.dishName}
+											</Typography>
+											<Typography>{item.description}</Typography>
+											<Box
+												sx={{
+													ml: "auto",
+													display: "flex",
+													alignItems: "center",
+													mr: 1,
+												}}
+											>
+												{item.icon}
+												<Typography
+													variant="body2"
+													color="textSecondary"
+													ml={1}
+												>
+													{item.tag}
+												</Typography>
+											</Box>
+										</Box>
+									</MenuItem>
+								))}
+							</Select>
+						</Box>
 					</Box>
-				</Box>
-			</Card>
+				</Card>
 
-			<Box
-				sx={{
-					border: "1px solid #ccc",
-					borderRadius: "8px",
-					padding: "4px 16px",
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-					width: {
-						xs: "120px",
-						lg: "150px",
-					},
-					position: "relative",
-				}}
-			>
-				<Typography
-					variant="caption"
-					color="textSecondary"
-					sx={{
-						alignSelf: "flex-start",
-						m: 0,
-						position: "absolute",
-						left: "10px",
-						top: "-10px",
-						zIndex: 1,
-						background: "#ffffff",
-						px: 0.7,
-					}}
-				>
-					Guests
-				</Typography>
 				<Box
 					sx={{
+						border: "1px solid #ccc",
+						borderRadius: "8px",
+						padding: "4px 16px",
 						display: "flex",
+						flexDirection: "column",
 						alignItems: "center",
-						justifyContent: "space-between",
-						width: "100%",
+						width: {
+							xs: "120px",
+							lg: "150px",
+						},
+						position: "relative",
 					}}
 				>
-					<IconButton onClick={handleDecrement} size="small">
-						{icons.decrement}
-					</IconButton>
-					<Typography variant="h6">{guests}</Typography>
-					<IconButton onClick={handleIncrement} size="small">
-						{icons.increment}
-					</IconButton>
+					<Typography
+						variant="caption"
+						color="textSecondary"
+						sx={{
+							alignSelf: "flex-start",
+							m: 0,
+							position: "absolute",
+							left: "10px",
+							top: "-10px",
+							zIndex: 1,
+							background: "#ffffff",
+							px: 0.7,
+						}}
+					>
+						Guests
+					</Typography>
+					<Box
+						sx={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between",
+							width: "100%",
+						}}
+					>
+						<IconButton onClick={handleDecrement} size="small">
+							{icons.decrement}
+						</IconButton>
+						<Typography variant="h6">{guests}</Typography>
+						<IconButton onClick={handleIncrement} size="small">
+							{icons.increment}
+						</IconButton>
+					</Box>
 				</Box>
+				<Typography
+					sx={{
+						fontWeight: "600",
+						fontSize: {
+							xs: "16px",
+							lg: "18px",
+						},
+					}}
+					ml={2}
+				>
+					CHF 25'00
+				</Typography>
+				<Button
+					type="button"
+					sx={{
+						border: "none",
+						outline: "none",
+						minWidth: "0",
+						background: "transparent",
+					}}
+					onClick={handleDelete}
+				>
+					{menuicons.trash}
+				</Button>
 			</Box>
-			<Typography
-				sx={{
-					fontWeight: "600",
-					fontSize: {
-						xs: "16px",
-						lg: "18px",
-					},
-				}}
-				ml={2}
-			>
-				CHF 25'00
-			</Typography>
-			<Button
-				type="button"
-				sx={{
-					border: "none",
-					outline: "none",
-					minWidth: "0",
-					background: "transparent",
-				}}
-				onClick={handleDelete}
-			>
-				{menuicons.trash}
-			</Button>
-		</Box>
+			{activeDish?.subdata?.length > 0 &&
+				activeDish?.subdata?.map((subSubmenu) => (
+					<Box
+						sx={{
+							ml: {
+								xs: 2,
+								md: 4,
+							},
+							mt: 2,
+							mb: 2,
+							position: "relative",
+						}}
+						key={subSubmenu.id}
+					>
+						<Typography
+							variant="subtitle2"
+							color="textSecondary"
+							sx={{
+								marginTop: 2,
+								alignSelf: "flex-start",
+								m: 0,
+								position: "absolute",
+								left: "10px",
+								top: "0",
+								zIndex: 1,
+								background: "#fff",
+								px: 0.7,
+							}}
+						>
+							<div
+								style={{
+									transform: "translateY(-50%)",
+								}}
+							>
+								Sub Dish
+							</div>
+						</Typography>
+						{console.log({ subSubmenu })}
+						<CartItem
+							dishName={subSubmenu.subtitle}
+							description={subSubmenu.text}
+							icon={subSubmenu.icon}
+							selected={subSubmenu.selectedMenu}
+							dishlist={subSubmenu.dishList}
+							{...{
+								cartData,
+								setCartData,
+							}}
+						/>
+					</Box>
+				))}
+		</>
 	);
 };
 export const cartFakeData = [
