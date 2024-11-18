@@ -522,56 +522,58 @@ export const CartItem = ({
 				</Button>
 			</Box>
 			{activeDish?.subdata?.length > 0 &&
-				activeDish?.subdata?.map((subSubmenu) => (
-					<Box
-						sx={{
-							ml: {
-								xs: 2,
-								md: 4,
-							},
-							mt: 2,
-							mb: 2,
-							position: "relative",
-						}}
-						key={subSubmenu.id}
-					>
-						<Typography
-							variant="subtitle2"
-							color="textSecondary"
-							sx={{
-								marginTop: 2,
-								alignSelf: "flex-start",
-								m: 0,
-								position: "absolute",
-								left: "10px",
-								top: "0",
-								zIndex: 1,
-								background: "#fff",
-								px: 0.7,
-							}}
-						>
-							<div
-								style={{
-									transform: "translateY(-50%)",
+				activeDish?.subdata?.map(
+					(subSubmenu) =>
+						subSubmenu.selectedMenu && (
+							<Box
+								sx={{
+									ml: {
+										xs: 2,
+										md: 4,
+									},
+									mt: 2,
+									mb: 2,
+									position: "relative",
 								}}
+								key={subSubmenu.id}
 							>
-								Sub Dish
-							</div>
-						</Typography>
-						{console.log({ subSubmenu })}
-						<CartItem
-							dishName={subSubmenu.subtitle}
-							description={subSubmenu.text}
-							icon={subSubmenu.icon}
-							selected={subSubmenu.selectedMenu}
-							dishlist={subSubmenu.dishList}
-							{...{
-								cartData,
-								setCartData,
-							}}
-						/>
-					</Box>
-				))}
+								<Typography
+									variant="subtitle2"
+									color="textSecondary"
+									sx={{
+										marginTop: 2,
+										alignSelf: "flex-start",
+										m: 0,
+										position: "absolute",
+										left: "10px",
+										top: "0",
+										zIndex: 1,
+										background: "#fff",
+										px: 0.7,
+									}}
+								>
+									<div
+										style={{
+											transform: "translateY(-50%)",
+										}}
+									>
+										Sub Dish
+									</div>
+								</Typography>
+								<CartItem
+									dishName={subSubmenu.subtitle}
+									description={subSubmenu.text}
+									icon={subSubmenu.icon}
+									selected={subSubmenu.selectedMenu}
+									dishlist={subSubmenu.dishList}
+									{...{
+										cartData,
+										setCartData,
+									}}
+								/>
+							</Box>
+						)
+				)}
 		</>
 	);
 };
