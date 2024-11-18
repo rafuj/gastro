@@ -13,20 +13,37 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
-import React from "react";
-import DishEditModal from "./DishEditModal";
+import React, { useEffect } from "react";
+import CartEditModal from "./CartEditModal";
 
 const LaCarteContent = () => {
 	const [open, setOpen] = React.useState(false);
-	const [menuData, setMenuData] = React.useState(cartFakeData);
+	const [cartData, setCartData] = React.useState(cartFakeData);
 	const [modalData, setModalData] = React.useState({});
-	const [accordionOpenIds, setAccordionOpenIds] = React.useState([1, 2, 3]);
+	const [total, setTotal] = React.useState(0);
+	const [guestTotal, setGuestTotal] = React.useState(0);
+	const [accordionOpenIds, setAccordionOpenIds] = React.useState([
+		"course-1",
+		"course-2",
+		"course-3",
+	]);
+
+	useEffect(() => {
+		let total = 0;
+		cartData.forEach((course) => {
+			total += course.subTotal;
+		});
+		setTotal(total);
+	}, [cartData]);
 
 	return (
 		<>
 			<Stack gap={1} mt={3}>
-				{menuData.map((item, index) => {
+				{cartData.map((item, index) => {
 					const { id, submenus, title } = item;
+					const courseData =
+						index == 0 ? dish1 : index == 1 ? dish2 : dish3;
+					const { dishList } = courseData;
 					return (
 						<Card
 							key={id}
@@ -80,7 +97,7 @@ const LaCarteContent = () => {
 														<Box
 															position="relative"
 															mb={2}
-															key={index}
+															key={subitem.id}
 														>
 															<>
 																<Typography
@@ -107,21 +124,20 @@ const LaCarteContent = () => {
 																		Dish
 																	</div>
 																</Typography>
+
 																<CartItem
 																	dishName={subitem.subtitle}
 																	description={subitem.text}
 																	icon={subitem.icon}
-																	selected={
-																		subitem.selectedMenu
-																	}
+																	selected={subitem.id}
 																	kidsIcon={menuicons.kids}
-																	dishlist={subitem.dishList}
-																	menuId={subitem.id}
-																	menu={""}
-																	// setMenu={setMenu}
-																	// menu={menu}
+																	dishlist={dishList}
+																	{...{
+																		cartData,
+																		setCartData,
+																	}}
 																/>
-																{subitem?.subdata?.length >
+																{/* {subitem?.subdata?.length >
 																	0 && (
 																	<>
 																		{subitem?.subdata?.map(
@@ -179,71 +195,69 @@ const LaCarteContent = () => {
 																							subSubmenu.icon
 																						}
 																						selected={
-																							subSubmenu.selectedMenu
+																							subSubmenu.id
 																						}
 																						kidsIcon={
 																							menuicons.kids
 																						}
 																						dishlist={
-																							subSubmenu.dishList
+																							dishList
 																						}
 																						menuId={
 																							subSubmenu.id
 																						}
 																						menu={""}
-																						// setMenu={setMenu}
-																						// menu={menu}
 																					/>
 																				</Box>
 																			)
 																		)}
 																	</>
-																)}
+																)} */}
 															</>
 														</Box>
 													))}
-													<Stack
-														flexDirection={"row"}
-														justifyContent={"flex-end"}
-													>
-														<ButtonBase
-															variant="contained"
-															sx={{
-																background: "#8211011A",
-																color: "#821101",
-																height: "42px",
-																width: {
-																	xs: "120px",
-																	lg: "150px",
-																},
-																borderRadius: "5px",
-																textTransform: "uppercase",
-																fontSize: {
-																	xs: "12px",
-																	lg: "15px",
-																},
-																fontWeight: "700",
-																mr: {
-																	xs: "160px",
-																	lg: "170px",
-																},
-															}}
-															onClick={() => {
-																setModalData(
-																	index == 0
-																		? dish1
-																		: index == 1
-																		? dish2
-																		: dish3
-																);
-																setOpen(true);
-															}}
-														>
-															{icons.increment2} Add Meal
-														</ButtonBase>
-													</Stack>
 												</Box>
 											)}
+											<Stack
+												flexDirection={"row"}
+												justifyContent={"flex-end"}
+											>
+												<ButtonBase
+													variant="contained"
+													sx={{
+														background: "#8211011A",
+														color: "#821101",
+														height: "42px",
+														width: {
+															xs: "120px",
+															lg: "150px",
+														},
+														borderRadius: "5px",
+														textTransform: "uppercase",
+														fontSize: {
+															xs: "12px",
+															lg: "15px",
+														},
+														fontWeight: "700",
+														mr: {
+															xs: "160px",
+															lg: "170px",
+														},
+													}}
+													onClick={() => {
+														setModalData(
+															index == 0
+																? dish1
+																: index == 1
+																? dish2
+																: dish3
+														);
+														setOpen(true);
+													}}
+												>
+													{icons.increment2} Add Meal
+												</ButtonBase>
+											</Stack>
 										</Box>
 									</Collapse>
 								</Box>
@@ -331,13 +345,14 @@ const LaCarteContent = () => {
 				</Stack>
 			</Stack>
 			{open && (
-				<DishEditModal
+				<CartEditModal
 					{...{
 						modalData,
-						setMenuData,
+						setMenuData: setCartData,
 						setOpen,
 						open,
-						menuData,
+						menuData: cartData,
+						setModalData,
 					}}
 				/>
 			)}
@@ -351,43 +366,21 @@ export const CartItem = ({
 	tag,
 	dishlist,
 	dishName,
-	setMenu,
-	menuId: submenuId,
-	menu,
 	isSubDish,
-	selected: selectedMenu,
+	selected,
+	cartData,
+	setCartData,
 }) => {
 	const [activeDish, setActiveDish] = React.useState(
-		dishlist.find((item) => item.id === selectedMenu) || null
+		dishlist.find((item) => item.id === selected) || null
 	);
 
 	const handleSelectChange = (e) => {
 		const selectedDish = e.target.value;
 		setActiveDish(selectedDish);
-
-		// setMenu((prev) =>
-		// 	prev.map((menuItem) => ({
-		// 		...menuItem,
-		// 		submenus: menuItem.submenus.map((submenu) => {
-		// 			if (isSubDish && submenu.subdata) {
-		// 				return {
-		// 					...submenu,
-		// 					subdata: submenu.subdata.map((subItem) =>
-		// 						subItem.id == submenuId
-		// 							? { ...subItem, selectedMenu: selectedDish.id }
-		// 							: subItem
-		// 					),
-		// 				};
-		// 			} else if (submenu.id === submenuId) {
-		// 				return { ...submenu, selectedMenu: selectedDish.id };
-		// 			}
-		// 			return submenu;
-		// 		}),
-		// 	}))
-		// );
 	};
 
-	const [guests, setGuests] = React.useState(9);
+	const [guests, setGuests] = React.useState(7);
 
 	const handleIncrement = () => {
 		setGuests((prev) => prev + 1);
@@ -396,6 +389,18 @@ export const CartItem = ({
 		if (guests > 0) {
 			setGuests((prev) => prev - 1);
 		}
+	};
+
+	const handleDelete = () => {
+		const updatedCartData = cartData.map((item) => {
+			return {
+				...item,
+				submenus: item.submenus.filter(
+					(submenu) => submenu.id !== selected
+				),
+			};
+		});
+		setCartData(updatedCartData);
 	};
 
 	return (
@@ -568,7 +573,7 @@ export const CartItem = ({
 				}}
 				ml={2}
 			>
-				CHF 25’00
+				CHF 25'00
 			</Typography>
 			<Button
 				type="button"
@@ -578,6 +583,7 @@ export const CartItem = ({
 					minWidth: "0",
 					background: "transparent",
 				}}
+				onClick={handleDelete}
 			>
 				{menuicons.trash}
 			</Button>
@@ -586,281 +592,31 @@ export const CartItem = ({
 };
 export const cartFakeData = [
 	{
-		id: 1,
+		id: "course-1",
 		title: "1 - Course Starter",
 		subtitle: "3 Courses",
 		minCount: 8,
 		maxCount: 10,
-		submenus: [
-			{
-				id: "wedding-1",
-				title: "1 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "sub-wedding-1-1",
-				icon: menuicons.fish,
-				dishList: [
-					{
-						id: "sub-wedding-1-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.fish,
-						tag: "Fish",
-					},
-					{
-						id: "sub-wedding-1-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-				],
-			},
-			{
-				id: "wedding-2",
-				title: "2 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "sub-wedding-2-1",
-				icon: menuicons.meat,
-				dishList: [
-					{
-						id: "sub-wedding-2-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-					{
-						id: "sub-wedding-2-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-				],
-				subdata: [
-					{
-						id: "wedding-2-1",
-						subtitle: "Caprese Saled",
-						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "sub-wedding-2-1-1",
-						dishList: [
-							{
-								id: "sub-wedding-2-1-1",
-								dishName: "Caprese Saled",
-								description:
-									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
-							},
-							{
-								id: "sub-wedding-2-1-2",
-								dishName: "Caprese Saled",
-								description:
-									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.fish,
-								tag: "Fish",
-							},
-						],
-					},
-				],
-			},
-			{
-				id: "wedding-3",
-				title: "3 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "sub-wedding-3-1",
-				icon: menuicons.vegetarian,
-				dishList: [
-					{
-						id: "sub-wedding-3-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.vegetarian,
-						tag: "Vegetarian",
-					},
-					{
-						id: "sub-wedding-3-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.vegetarian,
-						tag: "Vegetarian",
-					},
-				],
-			},
-		],
+		submenus: [],
+		subTotal: 0,
 	},
 	{
-		id: 2,
+		id: "course-2",
 		title: "2 - Course Main ",
 		subtitle: "7 Courses",
 		minCount: 11,
 		maxCount: 20,
-		submenus: [
-			{
-				id: "birthday-2",
-				title: "2 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "birthday-2-1",
-				icon: menuicons.meat,
-				dishList: [
-					{
-						id: "birthday-2-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-					{
-						id: "birthday-2-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-				],
-				subdata: [
-					{
-						id: "sub-birthday-2-1",
-						subtitle: "Caprese Saled",
-						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "sub-birthday-2-1-1",
-						dishList: [
-							{
-								id: "sub-birthday-2-1-1",
-								dishName: "Caprese Saled",
-								description:
-									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
-							},
-							{
-								id: "sub-birthday-2-1-2",
-								dishName: "Daprese Saled",
-								description: "Fresh mozzarella, vine-ripened tomatoes",
-								icon: menuicons.meat,
-								tag: "Meat",
-							},
-						],
-					},
-				],
-			},
-			{
-				id: "birthday-5",
-				title: "2 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "birthday-5-1",
-				icon: menuicons.meat,
-				dishList: [
-					{
-						id: "birthday-5-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-					{
-						id: "birthday-5-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.meat,
-						tag: "Meat",
-					},
-				],
-				subdata: [
-					{
-						id: "sub-birthday-5-1",
-						subtitle: "Caprese Saled",
-						text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-						selectedMenu: "sub-birthday-5-1-1",
-						dishList: [
-							{
-								id: "sub-birthday-5-1-1",
-								dishName: "Caprese Saled",
-								description:
-									"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.meat,
-								tag: "Meat",
-							},
-							{
-								id: "sub-birthday-5-1-2",
-								dishName: "Daprese Saled",
-								description:
-									"Vine-ripened tomatoes, basil, and balsamic reduction.",
-								icon: menuicons.fish,
-								tag: "Fish",
-							},
-						],
-					},
-				],
-			},
-			{
-				id: "birthday-6",
-				title: "3 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "birthday-6-1",
-				icon: menuicons.vegetarian,
-				dishList: [
-					{
-						id: "birthday-6-1",
-						dishName: "Caprese Saled",
-						description:
-							"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.vegetarian,
-						tag: "Vegetarian",
-					},
-					{
-						id: "birthday-6-2",
-						dishName: "Daprese Saled",
-						description:
-							"Vine-ripened tomatoes, basil, and balsamic reduction.",
-						icon: menuicons.vegetarian,
-						tag: "Vegetarian",
-					},
-				],
-			},
-		],
+		submenus: [],
+		subTotal: 0,
 	},
 	{
-		id: 3,
+		id: "course-3",
 		title: "3 - Course Dessert",
 		subtitle: "2 Courses",
 		minCount: 21,
 		maxCount: 60,
-		submenus: [
-			{
-				id: "wedding-2",
-				title: "3 - Course",
-				subtitle: "Caprese Saled",
-				text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-				selectedMenu: "sub-wedding-2-1",
-				icon: menuicons.vegetarian,
-				dishList: [
-					{
-						id: "sub-wedding-2-1",
-						dishName: "Lava cake",
-						description: "Chocolate with ice cream",
-						icon: menuicons.vegetarian,
-						tag: "Vegetarian",
-					},
-				],
-			},
-		],
+		submenus: [],
+		subTotal: 0,
 	},
 ];
 
@@ -876,6 +632,7 @@ const dish1 = {
 			description: "Garlic-herb stuffed mushrooms with crispy topping.",
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
+			price: 25,
 		},
 		{
 			id: "course-1-2",
@@ -883,6 +640,7 @@ const dish1 = {
 			description: "Mozzarella, tomatoes, basil, and balsamic.",
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
+			price: 25,
 		},
 		{
 			id: "course-1-3",
@@ -890,6 +648,7 @@ const dish1 = {
 			description: "Smoked salmon on crostini with cream cheese.",
 			icon: menuicons.fish,
 			tag: "Fish",
+			price: 20,
 		},
 		{
 			id: "course-1-4",
@@ -897,6 +656,7 @@ const dish1 = {
 			description: "Chilled shrimp with zesty sauce.",
 			icon: menuicons.fish,
 			tag: "Fish",
+			price: 20,
 		},
 		{
 			id: "course-1-5",
@@ -904,34 +664,9 @@ const dish1 = {
 			description: "Baguette with tomato and basil.",
 			icon: menuicons.meat,
 			tag: "Meat",
+			price: 22,
 		},
 	],
-	// subdata: [
-	// 	{
-	// 		id: "wedding-2-1",
-	// 		subtitle: "Caprese Saled",
-	// 		text: "Fresh mozzarella, vine-ripened, tomatoes, basil, and balsamic reduction.",
-	// 		selectedMenu: "sub-wedding-2-1-1",
-	// 		dishList: [
-	// 			{
-	// 				id: "sub-wedding-2-1-1",
-	// 				dishName: "Caprese Saled",
-	// 				description:
-	// 					"Fresh mozzarella, vine-ripened tomatoes, basil, and balsamic reduction.",
-	// 				icon: menuicons.meat,
-	// 				tag: "Meat",
-	// 			},
-	// 			{
-	// 				id: "sub-wedding-2-1-2",
-	// 				dishName: "Caprese Saled",
-	// 				description:
-	// 					"Vine-ripened tomatoes, basil, and balsamic reduction.",
-	// 				icon: menuicons.fish,
-	// 				tag: "Fish",
-	// 			},
-	// 		],
-	// 	},
-	// ],
 };
 
 const dish2 = {
@@ -945,6 +680,7 @@ const dish2 = {
 			description: "Colorful vegetables and tofu in a savory sauce.",
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
+			price: 33,
 		},
 		{
 			id: "course-2-3",
@@ -952,6 +688,7 @@ const dish2 = {
 			description: "Juicy grilled salmon with a zesty lemon-dill sauce.",
 			icon: menuicons.fish,
 			tag: "Fish",
+			price: 33,
 		},
 		{
 			id: "course-2-4",
@@ -959,6 +696,21 @@ const dish2 = {
 			description: "Creamy pasta with tender chicken and Parmesan.",
 			icon: menuicons.meat,
 			tag: "Meat",
+			price: 33,
+			subdata: [
+				{
+					id: "sub-course-2-4",
+					selectedMenu: "sub-course-2-4-1",
+					dishList: [
+						{
+							id: "sub-course-2-4-1",
+							dishName: "Fries",
+							description: "Fresh home made fries",
+							price: 20,
+						},
+					],
+				},
+			],
 		},
 		{
 			id: "course-2-5",
@@ -966,6 +718,21 @@ const dish2 = {
 			description: "Bell peppers filled with rice, beans, and vegetables.",
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
+			price: 33,
+			subdata: [
+				{
+					id: "sub-course-2-4",
+					selectedMenu: "sub-course-2-4-1",
+					dishList: [
+						{
+							id: "sub-course-2-4-1",
+							dishName: "Truffle fries",
+							description: "Fresh home made fries with tuffle",
+							price: 20,
+						},
+					],
+				},
+			],
 		},
 		{
 			id: "course-2-6",
@@ -974,6 +741,7 @@ const dish2 = {
 			icon: menuicons.meat,
 			tag: "Meat",
 			kidsIcon: menuicons.kids,
+			price: 25.5,
 		},
 	],
 };

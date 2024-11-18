@@ -7,16 +7,65 @@ import {
 	DialogContent,
 	MenuItem,
 	Select,
+	Stack,
 	Typography,
 } from "@mui/material";
 import { useState } from "react";
 
-const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
+const CartEditModal = ({
+	open,
+	setOpen,
+	modalData: prevModalData,
+	setModalData: setMainModalData,
+	setMenuData,
+	menuData,
+}) => {
 	const [menu, setMenu] = useState(menuData);
+	const [modalData, setModalData] = useState(prevModalData);
 
-	const handleConfirm = () => {
-		setMenuData(menu);
-		console.log("fuck", menu);
+	const handleAddToCart = () => {
+		// Set the modal data
+		setMainModalData(modalData);
+
+		// Update the menu with the selected dish
+		const updatedMenu = menu.map((course) => {
+			if (course.id === modalData.id) {
+				// Find the selected dish in modalData.dishList
+				const selectedDish = modalData.dishList.find(
+					(dish) => dish.id === modalData.selectedMenu
+				);
+
+				if (selectedDish) {
+					const updatedSubmenus = course.submenus.map((submenu) =>
+						submenu.id === selectedDish.id
+							? { ...submenu, ...selectedDish }
+							: {
+									...submenu,
+									dishList: modalData.dishList,
+							  }
+					);
+
+					// Check if the dish already exists in submenus
+					const dishExists = updatedSubmenus.some(
+						(submenu) => submenu.id === selectedDish.id
+					);
+
+					return {
+						...course,
+						submenus: dishExists
+							? updatedSubmenus // Update existing dish
+							: [...course.submenus, selectedDish], // Add new dish
+					};
+				}
+			}
+			return course; // Return course unchanged if no match
+		});
+
+		// Update the menu state
+		setMenu(updatedMenu);
+		setMenuData(updatedMenu);
+
+		// Close the modal after the update
 		const timer = setTimeout(() => {
 			setOpen(false);
 		}, 0);
@@ -71,7 +120,6 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 										Dish
 									</div>
 								</Typography>
-								{console.log("selectedMenu", modalData)}
 								<DishCard
 									dishName={modalData.subtitle}
 									description={modalData.text}
@@ -80,10 +128,9 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 									kidsIcon={menuicons.kids}
 									dishlist={modalData.dishList}
 									menuId={modalData.id}
-									setMenu={setMenu}
-									menu={menu}
+									setModalData={setModalData}
 								/>
-
+								{console.log({ modalData })}
 								{modalData?.subdata?.length > 0 && (
 									<Box
 										sx={{
@@ -125,9 +172,8 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 													selected={subitem.selectedMenu}
 													dishlist={subitem.dishList}
 													menuId={subitem.id}
-													menu={menu}
-													setMenu={setMenu}
 													isSubDish={true}
+													setModalData={setModalData}
 												/>
 											</>
 										))}
@@ -162,7 +208,7 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 							color="primary"
 							sx={{ height: "42px", boxShadow: "none" }}
 							onClick={() => {
-								handleConfirm(menu);
+								handleAddToCart(menu);
 							}}
 						>
 							CONFIRM SAVE
@@ -174,46 +220,27 @@ const DishEditModal = ({ open, setOpen, modalData, setMenuData, menuData }) => {
 	);
 };
 
-const DishCard = ({
+export const DishCard = ({
 	icon,
 	kidsIcon,
 	tag,
 	dishlist,
 	dishName,
-	setMenu,
 	menuId: submenuId,
-	menu,
 	isSubDish,
 	selected: selectedMenu,
+	setModalData,
 }) => {
 	const [activeDish, setActiveDish] = useState(
-		dishlist.find((item) => item.id === selectedMenu) || null
+		dishlist?.find((item) => item.id === selectedMenu) || null
 	);
-
 	const handleSelectChange = (e) => {
 		const selectedDish = e.target.value;
 		setActiveDish(selectedDish);
-
-		setMenu((prev) =>
-			prev.map((menuItem) => ({
-				...menuItem,
-				submenus: menuItem.submenus.map((submenu) => {
-					if (isSubDish && submenu.subdata) {
-						return {
-							...submenu,
-							subdata: submenu.subdata.map((subItem) =>
-								subItem.id == submenuId
-									? { ...subItem, selectedMenu: selectedDish.id }
-									: subItem
-							),
-						};
-					} else if (submenu.id === submenuId) {
-						return { ...submenu, selectedMenu: selectedDish.id };
-					}
-					return submenu;
-				}),
-			}))
-		);
+		setModalData((prev) => ({
+			...prev,
+			selectedMenu: selectedDish.id,
+		}));
 	};
 
 	return (
@@ -265,6 +292,25 @@ const DishCard = ({
 										<Typography variant="body2" color="textSecondary">
 											{selected.tag}
 										</Typography>
+										{selected.kidsIcon && (
+											<>
+												<Box
+													sx={{
+														height: "12px",
+														width: "1px",
+														background: "#00000030",
+														ml: 1,
+													}}
+												/>
+												<Stack
+													variant="body2"
+													color="textSecondary"
+													pl={1}
+												>
+													{selected.kidsIcon}
+												</Stack>
+											</>
+										)}
 									</Box>
 								) : (
 									"Select a dish"
@@ -301,6 +347,25 @@ const DishCard = ({
 											>
 												{item.tag}
 											</Typography>
+											{item.kidsIcon && (
+												<>
+													<Box
+														sx={{
+															height: "12px",
+															width: "1px",
+															background: "#00000030",
+															ml: 1,
+														}}
+													/>
+													<Stack
+														variant="body2"
+														color="textSecondary"
+														pl={1}
+													>
+														{item.kidsIcon}
+													</Stack>
+												</>
+											)}
 										</Box>
 									</Box>
 								</MenuItem>
@@ -313,4 +378,4 @@ const DishCard = ({
 	);
 };
 
-export default DishEditModal;
+export default CartEditModal;
