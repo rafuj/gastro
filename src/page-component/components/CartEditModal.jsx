@@ -72,14 +72,16 @@ const CartEditModal = ({
 									</div>
 								</Typography>
 								<DishCard
-									dishName={modalData.subtitle}
-									description={modalData.text}
-									icon={modalData.icon}
-									selected={modalData.selectedMenu}
-									kidsIcon={menuicons.kids}
-									dishlist={modalData.dishList}
-									menuId={modalData.id}
-									setModalData={setModalData}
+									{...{
+										dishName: modalData.subtitle,
+										description: modalData.text,
+										icon: modalData.icon,
+										kidsIcon: menuicons.kids,
+										dishlist: modalData.dishList,
+										menuId: modalData.id,
+										setModalData,
+										modalData,
+									}}
 								/>
 							</Box>
 						</>
@@ -123,24 +125,14 @@ const CartEditModal = ({
 export const DishCard = ({
 	icon,
 	kidsIcon,
-	tag,
 	dishlist,
-	dishName,
-	menuId: submenuId,
-	isSubDish,
-	selected: selectedMenu,
 	setModalData,
+	modalData,
 }) => {
-	const [activeDish, setActiveDish] = useState(
-		dishlist?.find((item) => item.id === selectedMenu) || null
-	);
-	const handleSelectChange = (e) => {
-		const selectedDish = e.target.value;
-		setActiveDish(selectedDish);
-		setModalData((prev) => ({
-			...prev,
-			selectedMenu: selectedDish.id,
-		}));
+	const [selectedDish, setSelectedDish] = useState(null);
+
+	const handleChange = (e) => {
+		setSelectedDish(e.target.value);
 	};
 
 	return (
@@ -156,8 +148,8 @@ export const DishCard = ({
 					>
 						<Box sx={{ width: "0", flexGrow: 1 }}>
 							<Select
-								value={activeDish}
-								onChange={handleSelectChange}
+								value={selectedDish}
+								onChange={handleChange}
 								displayEmpty
 								variant="outlined"
 								sx={{
@@ -282,7 +274,7 @@ export const DishCard = ({
 				</Card>
 			</Box>
 
-			{activeDish?.subdata?.length > 0 && (
+			{selectedDish?.subdata?.length > 0 && (
 				<Box
 					sx={{
 						ml: { xs: 2, md: 4 },
@@ -290,7 +282,7 @@ export const DishCard = ({
 						position: "relative",
 					}}
 				>
-					{activeDish?.subdata?.map((subitem) => (
+					{selectedDish?.subdata?.map((subitem) => (
 						<>
 							<Typography
 								variant="subtitle2"
@@ -317,14 +309,16 @@ export const DishCard = ({
 							</Typography>
 
 							<DishCard
-								dishName={subitem.subtitle}
-								description={subitem.text}
-								icon={subitem.icon}
-								selected={subitem.selectedMenu}
-								dishlist={subitem.dishList}
-								menuId={subitem.id}
-								isSubDish={true}
-								setModalData={setModalData}
+								{...{
+									dishName: subitem.subtitle,
+									description: subitem.text,
+									icon: subitem.icon,
+									kidsIcon: menuicons.kids,
+									dishlist: subitem.dishList,
+									menuId: subitem.id,
+									setModalData,
+									modalData: subitem,
+								}}
 							/>
 						</>
 					))}
