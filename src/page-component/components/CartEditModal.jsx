@@ -23,59 +23,6 @@ const CartEditModal = ({
 	const [menu, setMenu] = useState(menuData);
 	const [modalData, setModalData] = useState(prevModalData);
 
-	const handleAddToCart = () => {
-		// Set the modal data
-		setMainModalData(modalData);
-
-		// Update the menu with the selected dish
-		const updatedMenu = menu.map((course) => {
-			if (course.id === modalData.id) {
-				// Find the selected dish in modalData.dishList
-				const selectedDish = modalData.dishList.find(
-					(dish) => dish.id === modalData.selectedMenu
-				);
-
-				if (selectedDish) {
-					const updatedSubmenus = course.submenus.map((submenu) =>
-						submenu.id === selectedDish.id
-							? {
-									...submenu,
-									...selectedDish,
-							  }
-							: {
-									...submenu,
-									dishList: modalData.dishList,
-							  }
-					);
-
-					// Check if the dish already exists in submenus
-					const dishExists = updatedSubmenus.some(
-						(submenu) => submenu.id === selectedDish.id
-					);
-
-					return {
-						...course,
-						submenus: dishExists
-							? updatedSubmenus // Update existing dish
-							: [...course.submenus, selectedDish], // Add new dish
-						subTotal: course.subTotal + selectedDish.price,
-					};
-				}
-			}
-			return course; // Return course unchanged if no match
-		});
-
-		// Update the menu state
-		setMenu(updatedMenu);
-		setMenuData(updatedMenu);
-
-		// Close the modal after the update
-		const timer = setTimeout(() => {
-			setOpen(false);
-		}, 0);
-		return () => clearTimeout(timer);
-	};
-
 	return (
 		<Dialog
 			open={open}
@@ -162,9 +109,7 @@ const CartEditModal = ({
 							variant="contained"
 							color="primary"
 							sx={{ height: "42px", boxShadow: "none" }}
-							onClick={() => {
-								handleAddToCart(menu);
-							}}
+							onClick={() => setOpen(false)}
 						>
 							CONFIRM SAVE
 						</Button>

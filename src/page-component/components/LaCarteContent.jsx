@@ -127,7 +127,6 @@ const LaCarteContent = () => {
 																</Typography>
 
 																<CartItem
-																	dishName={subitem.subtitle}
 																	description={subitem.text}
 																	icon={subitem.icon}
 																	selected={subitem.id}
@@ -137,7 +136,6 @@ const LaCarteContent = () => {
 																		cartData,
 																		setCartData,
 																	}}
-																	mainMenuId={id}
 																/>
 															</>
 														</Box>
@@ -289,14 +287,10 @@ const LaCarteContent = () => {
 export const CartItem = ({
 	icon,
 	kidsIcon,
-	tag,
 	dishlist,
-	dishName,
-	isSubDish,
 	selected,
 	cartData,
 	setCartData,
-	mainMenuId,
 }) => {
 	const [activeDish, setActiveDish] = React.useState(
 		dishlist.find((item) => item.id === selected) || null
@@ -304,72 +298,7 @@ export const CartItem = ({
 
 	const handleSelectChange = (e) => {
 		const selectedDish = e.target.value;
-		setActiveDish(selectedDish);
 	};
-
-	const [guests, setGuests] = React.useState(activeDish?.guests || 1);
-
-	const handleIncrement = () => {
-		setGuests((prev) => prev + 1);
-		const updatedCartData = cartData.map((item) => {
-			return {
-				...item,
-				// subTotal: item.subTotal + activeDish.price,
-				subTotal:
-					item.id === mainMenuId
-						? item.subTotal + activeDish.price
-						: item.subTotal,
-				submenus: item.submenus.map((submenu) => {
-					if (submenu.id === selected) {
-						return {
-							...submenu,
-							guests: submenu.guests + 1,
-						};
-					}
-					return submenu;
-				}),
-			};
-		});
-		setCartData(updatedCartData);
-	};
-	const handleDecrement = () => {
-		if (guests > 1) {
-			setGuests((prev) => prev - 1);
-			const updatedCartData = cartData.map((item) => {
-				return {
-					...item,
-					subTotal:
-						item.id === mainMenuId
-							? item.subTotal - activeDish.price
-							: item.subTotal,
-					submenus: item.submenus.map((submenu) => {
-						if (submenu.id === selected) {
-							return {
-								...submenu,
-								guests: submenu.guests - 1,
-							};
-						}
-						return submenu;
-					}),
-				};
-			});
-			setCartData(updatedCartData);
-		}
-	};
-
-	const handleDelete = () => {
-		const updatedCartData = cartData.map((item) => {
-			return {
-				...item,
-				submenus: item.submenus.filter(
-					(submenu) => submenu.id !== selected
-				),
-				subTotal: item.subTotal - activeDish.price,
-			};
-		});
-		setCartData(updatedCartData);
-	};
-
 	return (
 		<>
 			<Box
@@ -394,7 +323,7 @@ export const CartItem = ({
 					>
 						<Box sx={{ width: "200px", flexGrow: 1 }}>
 							<Select
-								value={activeDish}
+								value={""}
 								onChange={handleSelectChange}
 								displayEmpty
 								variant="outlined"
@@ -530,13 +459,9 @@ export const CartItem = ({
 							width: "100%",
 						}}
 					>
-						<IconButton onClick={handleDecrement} size="small">
-							{icons.decrement}
-						</IconButton>
-						<Typography variant="h6">{guests}</Typography>
-						<IconButton onClick={handleIncrement} size="small">
-							{icons.increment}
-						</IconButton>
+						<IconButton size="small">{icons.decrement}</IconButton>
+						<Typography variant="h6">10</Typography>
+						<IconButton size="small">{icons.increment}</IconButton>
 					</Box>
 				</Box>
 				<Typography
@@ -549,7 +474,7 @@ export const CartItem = ({
 					}}
 					ml={2}
 				>
-					CHF {activeDish.price.toFixed(2)}
+					CHF 50.00
 				</Typography>
 				<Button
 					type="button"
@@ -559,7 +484,7 @@ export const CartItem = ({
 						minWidth: "0",
 						background: "transparent",
 					}}
-					onClick={handleDelete}
+					// onClick={handleDelete}
 				>
 					{menuicons.trash}
 				</Button>
@@ -627,8 +552,18 @@ export const cartFakeData = [
 		subtitle: "3 Courses",
 		minCount: 8,
 		maxCount: 10,
-		submenus: [],
+		submenus: [
+			{
+				id: "course-1-1",
+				dishName: "Stuffed Mushrooms",
+				description: "Garlic-herb stuffed mushrooms with crispy topping.",
+				icon: menuicons.vegetarian,
+				tag: "Vegetarian",
+				price: 25,
+			},
+		],
 		subTotal: 0,
+		guestCount: 0,
 	},
 	{
 		id: "course-2",
@@ -636,8 +571,32 @@ export const cartFakeData = [
 		subtitle: "7 Courses",
 		minCount: 11,
 		maxCount: 20,
-		submenus: [],
+		submenus: [
+			{
+				id: "course-2-4",
+				dishName: "Chicken Alfredo Pasta",
+				description: "Creamy pasta with tender chicken and Parmesan.",
+				icon: menuicons.meat,
+				tag: "Meat",
+				price: 33,
+				subdata: [
+					{
+						id: "sub-course-2-4",
+						// selectedMenu: "sub-course-2-4-1",
+						dishList: [
+							{
+								id: "sub-course-2-4-1",
+								dishName: "Fries",
+								description: "Fresh home made fries",
+								price: 20,
+							},
+						],
+					},
+				],
+			},
+		],
 		subTotal: 0,
+		guestCount: 0,
 	},
 	{
 		id: "course-3",
@@ -647,6 +606,7 @@ export const cartFakeData = [
 		maxCount: 60,
 		submenus: [],
 		subTotal: 0,
+		guestCount: 0,
 	},
 ];
 
@@ -730,7 +690,7 @@ const dish2 = {
 			subdata: [
 				{
 					id: "sub-course-2-4",
-					selectedMenu: "sub-course-2-4-1",
+					// selectedMenu: "sub-course-2-4-1",
 					dishList: [
 						{
 							id: "sub-course-2-4-1",
@@ -752,7 +712,7 @@ const dish2 = {
 			subdata: [
 				{
 					id: "sub-course-2-4",
-					selectedMenu: "sub-course-2-4-1",
+					// selectedMenu: "sub-course-2-4-1",
 					dishList: [
 						{
 							id: "sub-course-2-4-1",
