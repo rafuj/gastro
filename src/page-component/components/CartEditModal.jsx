@@ -13,6 +13,99 @@ import { useState } from "react";
 import SelectGroup from "./SelectGroup";
 
 const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
+	const [selectedDish, setSelectedDish] = useState(null);
+	const [selectedSubDish, setSelectedSubDish] = useState(null);
+
+	const handleAddToCart = () => {
+		if (selectedDish) {
+			setCartData((prevCartData) =>
+				prevCartData.map((item) => {
+					if (item.id === modalData.id) {
+						// Update submenus for the target item
+						const updatedSubmenus = [...item.submenus];
+						const dishIndex = updatedSubmenus.findIndex(
+							(dish) => dish.id === selectedDish.id
+						);
+
+						if (dishIndex === -1) {
+							// Add the new dish with minimum guestCount of 1
+							updatedSubmenus.push({
+								...selectedDish,
+								guestCount: 1,
+								subdata: [],
+							});
+						} else if (selectedSubDish) {
+							// If subdish exists, update subdata for the dish
+							const updatedSubSubmenus = [...item.submenus];
+							let targetDish = updatedSubSubmenus[dishIndex];
+							if (!targetDish.subdata) {
+								// Initialize subdata if it doesn't exist
+								targetDish.subdata = [];
+							}
+
+							const subdataIndex = targetDish.subdata.findIndex(
+								(sub) => sub.id === selectedSubDish.id
+							);
+
+							if (subdataIndex === -1) {
+								// Add new subdish with a minimum guestCount of 1
+								targetDish.subdata.push({
+									...selectedSubDish,
+									guestCount: 1,
+								});
+							} else {
+								// If subdish exists, ensure its guestCount is at least 1
+								const updatedSubdish = {
+									...targetDish.subdata[subdataIndex],
+									guestCount:
+										targetDish.subdata[subdataIndex].guestCount || 1,
+								};
+								targetDish.subdata[subdataIndex] = updatedSubdish;
+							}
+						} else {
+							// If no subdish, ensure the dish guestCount is at least 1
+							updatedSubmenus[dishIndex] = {
+								...updatedSubmenus[dishIndex],
+								guestCount: Math.max(
+									updatedSubmenus[dishIndex].guestCount || 0,
+									1
+								),
+							};
+						}
+
+						// Recalculate subtotal
+						const subTotal = updatedSubmenus.reduce((total, menu) => {
+							let menuTotal = menu.price * menu.guestCount || 0;
+
+							if (menu.subdata) {
+								menuTotal += menu.subdata.reduce((subTotal, sub) => {
+									return (
+										subTotal +
+										(sub.dishList?.reduce(
+											(dishTotal, dish) =>
+												dishTotal +
+												dish.price *
+													Math.max(dish.guestCount || 0, 1),
+											0
+										) || 0)
+									);
+								}, 0);
+							}
+
+							return total + menuTotal;
+						}, 0);
+
+						return { ...item, submenus: updatedSubmenus, subTotal };
+					}
+
+					return item;
+				})
+			);
+
+			setOpen(false);
+		}
+	};
+
 	return (
 		<Dialog
 			open={open}
@@ -34,8 +127,6 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 						margin: "0 auto",
 					}}
 				>
-					{/* Main Dish Section */}
-
 					{modalData && (
 						<>
 							<Typography variant="h6" sx={{ fontWeight: "bold" }}>
@@ -48,9 +139,36 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 										cartData,
 										setCartData,
 										modalData,
+										selectedDish,
+										setSelectedDish,
 									}}
 								/>
 							</SelectGroup>
+
+							{selectedDish?.subdata?.length > 0 && (
+								<Box
+									sx={{
+										ml: { xs: 2, md: 4 },
+										mt: 2,
+										position: "relative",
+									}}
+								>
+									{selectedDish?.subdata?.map((subitem) => (
+										<SelectGroup title="Sub Dish">
+											<DishCard
+												{...{
+													dishlist: subitem.dishList,
+													cartData,
+													setCartData,
+													modalData,
+													selectedDish: selectedSubDish,
+													setSelectedDish: setSelectedSubDish,
+												}}
+											/>
+										</SelectGroup>
+									))}
+								</Box>
+							)}
 						</>
 					)}
 
@@ -78,7 +196,7 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 							variant="contained"
 							color="primary"
 							sx={{ height: "42px", boxShadow: "none" }}
-							onClick={() => setOpen(false)}
+							onClick={handleAddToCart}
 						>
 							CONFIRM SAVE
 						</Button>
@@ -89,83 +207,63 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 	);
 };
 
-export const DishCard = ({ dishlist, cartData, setCartData, modalData }) => {
-	const [selectedDish, setSelectedDish] = useState(null);
-
+export const DishCard = ({
+	dishlist,
+	cartData,
+	setCartData,
+	modalData,
+	selectedDish,
+	setSelectedDish,
+}) => {
 	const handleChange = (e) => {
 		setSelectedDish(e.target.value);
 	};
 
 	return (
-		<>
-			<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
-				<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "space-between",
-							alignItems: "center",
-						}}
-					>
-						<Box sx={{ width: "0", flexGrow: 1 }}>
-							<Select
-								value={selectedDish}
-								onChange={handleChange}
-								displayEmpty
-								variant="outlined"
-								sx={{
-									width: "100%",
-									position: "relative",
-									zIndex: 1,
-									"& .MuiOutlinedInput-notchedOutline": {
-										border: "none", // Removes default border
-									},
-									"& .MuiSelect-select": {
-										padding: "10px 14px", // Adjust padding for appearance
-									},
-								}}
-								renderValue={(selected) =>
-									selected ? (
-										<SelectedOption selected={selected} />
-									) : (
-										"Select a dish"
-									)
-								}
-							>
-								{dishlist.map((item) => (
-									<MenuItem key={item.dishName} value={item}>
-										<SelectOption {...{ item }} />
-									</MenuItem>
-								))}
-							</Select>
-						</Box>
-					</Box>
-				</Card>
-			</Box>
-
-			{selectedDish?.subdata?.length > 0 && (
+		<Box sx={{ display: "flex", alignItems: "center", marginY: 1 }}>
+			<Card variant="outlined" sx={{ width: "100%", padding: 0 }}>
 				<Box
 					sx={{
-						ml: { xs: 2, md: 4 },
-						mt: 2,
-						position: "relative",
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
 					}}
 				>
-					{selectedDish?.subdata?.map((subitem) => (
-						<SelectGroup title="Sub Dish">
-							<DishCard
-								{...{
-									dishlist: subitem.dishList,
-									cartData,
-									setCartData,
-									modalData,
-								}}
-							/>
-						</SelectGroup>
-					))}
+					<Box sx={{ width: "0", flexGrow: 1 }}>
+						<Select
+							value={selectedDish}
+							onChange={handleChange}
+							displayEmpty
+							variant="outlined"
+							sx={{
+								width: "100%",
+								position: "relative",
+								zIndex: 1,
+								"& .MuiOutlinedInput-notchedOutline": {
+									border: "none", // Removes default border
+								},
+								"& .MuiSelect-select": {
+									padding: "10px 14px", // Adjust padding for appearance
+								},
+							}}
+							renderValue={(selected) =>
+								selected ? (
+									<SelectedOption selected={selected} />
+								) : (
+									"Select a dish"
+								)
+							}
+						>
+							{dishlist.map((item) => (
+								<MenuItem key={item.dishName} value={item}>
+									<SelectOption {...{ item }} />
+								</MenuItem>
+							))}
+						</Select>
+					</Box>
 				</Box>
-			)}
-		</>
+			</Card>
+		</Box>
 	);
 };
 
@@ -220,7 +318,6 @@ const SelectedOption = ({ selected }) => {
 		<Box sx={{ display: "flex", alignItems: "center" }}>
 			<Typography fontWeight="700" mr={0.4}>
 				{selected.dishName}
-				{console.log("selected", selected)}
 			</Typography>
 			<Typography flexGrow={1}>{selected.description}</Typography>
 			<Box

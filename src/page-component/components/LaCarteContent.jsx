@@ -371,7 +371,8 @@ export const CartItem = ({
 									)
 								}
 							>
-								{dishlist.map((item) => (
+								{console.log({ dishlist })}
+								{dishlist?.map((item) => (
 									<MenuItem key={item.dishName} value={item}>
 										<Box
 											sx={{
