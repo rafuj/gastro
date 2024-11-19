@@ -38,7 +38,10 @@ const CartEditModal = ({
 				if (selectedDish) {
 					const updatedSubmenus = course.submenus.map((submenu) =>
 						submenu.id === selectedDish.id
-							? { ...submenu, ...selectedDish }
+							? {
+									...submenu,
+									...selectedDish,
+							  }
 							: {
 									...submenu,
 									dishList: modalData.dishList,
@@ -55,6 +58,7 @@ const CartEditModal = ({
 						submenus: dishExists
 							? updatedSubmenus // Update existing dish
 							: [...course.submenus, selectedDish], // Add new dish
+						subTotal: course.subTotal + selectedDish.price,
 					};
 				}
 			}

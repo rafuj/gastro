@@ -40,10 +40,11 @@ const LaCarteContent = () => {
 		<>
 			<Stack gap={1} mt={3}>
 				{cartData.map((item, index) => {
-					const { id, submenus, title } = item;
+					const { id, submenus, title, subTotal } = item;
 					const courseData =
 						index == 0 ? dish1 : index == 1 ? dish2 : dish3;
 					const { dishList } = courseData;
+
 					return (
 						<Card
 							key={id}
@@ -58,7 +59,7 @@ const LaCarteContent = () => {
 									{title}
 								</Typography>
 								<Typography fontSize="20px" fontWeight="600">
-									CHF 0&apos;00{" "}
+									CHF {item.subTotal.toFixed(2)}
 									<Button
 										type="button"
 										sx={{
@@ -136,6 +137,7 @@ const LaCarteContent = () => {
 																		cartData,
 																		setCartData,
 																	}}
+																	mainMenuId={id}
 																/>
 															</>
 														</Box>
@@ -294,6 +296,7 @@ export const CartItem = ({
 	selected,
 	cartData,
 	setCartData,
+	mainMenuId,
 }) => {
 	const [activeDish, setActiveDish] = React.useState(
 		dishlist.find((item) => item.id === selected) || null
@@ -304,14 +307,53 @@ export const CartItem = ({
 		setActiveDish(selectedDish);
 	};
 
-	const [guests, setGuests] = React.useState(7);
+	const [guests, setGuests] = React.useState(activeDish?.guests || 1);
 
 	const handleIncrement = () => {
 		setGuests((prev) => prev + 1);
+		const updatedCartData = cartData.map((item) => {
+			return {
+				...item,
+				// subTotal: item.subTotal + activeDish.price,
+				subTotal:
+					item.id === mainMenuId
+						? item.subTotal + activeDish.price
+						: item.subTotal,
+				submenus: item.submenus.map((submenu) => {
+					if (submenu.id === selected) {
+						return {
+							...submenu,
+							guests: submenu.guests + 1,
+						};
+					}
+					return submenu;
+				}),
+			};
+		});
+		setCartData(updatedCartData);
 	};
 	const handleDecrement = () => {
-		if (guests > 0) {
+		if (guests > 1) {
 			setGuests((prev) => prev - 1);
+			const updatedCartData = cartData.map((item) => {
+				return {
+					...item,
+					subTotal:
+						item.id === mainMenuId
+							? item.subTotal - activeDish.price
+							: item.subTotal,
+					submenus: item.submenus.map((submenu) => {
+						if (submenu.id === selected) {
+							return {
+								...submenu,
+								guests: submenu.guests - 1,
+							};
+						}
+						return submenu;
+					}),
+				};
+			});
+			setCartData(updatedCartData);
 		}
 	};
 
@@ -322,6 +364,7 @@ export const CartItem = ({
 				submenus: item.submenus.filter(
 					(submenu) => submenu.id !== selected
 				),
+				subTotal: item.subTotal - activeDish.price,
 			};
 		});
 		setCartData(updatedCartData);
@@ -506,7 +549,7 @@ export const CartItem = ({
 					}}
 					ml={2}
 				>
-					CHF 2500
+					CHF {activeDish.price.toFixed(2)}
 				</Typography>
 				<Button
 					type="button"
@@ -744,6 +787,7 @@ const dish3 = {
 			description: "Chocolate with ice cream",
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
+			price: 25,
 		},
 	],
 };
