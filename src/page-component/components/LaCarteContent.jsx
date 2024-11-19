@@ -23,7 +23,7 @@ const LaCarteContent = () => {
 	const [modalData, setModalData] = React.useState({});
 	const [total, setTotal] = React.useState(0);
 	const [guestTotal, setGuestTotal] = React.useState(0);
-
+	console.log({ cartData });
 	const [accordionOpenIds, setAccordionOpenIds] = React.useState([
 		"course-1",
 		"course-2",
@@ -328,7 +328,6 @@ export const CartItem = ({
 							<Select
 								value={selectedDish}
 								onChange={(e) => setSelectedDish(e.target.value)}
-								displayEmpty
 								variant="outlined"
 								sx={{
 									width: "100%",
@@ -423,7 +422,7 @@ export const CartItem = ({
 					}}
 					ml={2}
 				>
-					CHF 50.00
+					CHF {subitem?.price?.toFixed(2)}
 				</Typography>
 				<Button
 					type="button"
@@ -433,7 +432,7 @@ export const CartItem = ({
 						minWidth: "0",
 						background: "transparent",
 					}}
-					// onClick={handleDelete}
+					onClick={() => handleDelete(subitem.id)}
 				>
 					{menuicons.trash}
 				</Button>
@@ -466,7 +465,6 @@ export const CartItem = ({
 									mainList: dishlist,
 								}}
 							/>
-							{console.log("selectedDish", subSubmenu)}
 						</SelectGroup>
 					</Box>
 				))}
@@ -649,15 +647,10 @@ const dish2 = {
 			price: 33,
 			subdata: [
 				{
-					id: "sub-course-2-4",
-					dishList: [
-						{
-							id: "sub-course-2-4-1",
-							dishName: "Fries",
-							description: "Fresh home made fries",
-							price: 20,
-						},
-					],
+					id: "sub-course-2-4-1",
+					dishName: "Fries",
+					description: "Fresh home made fries",
+					price: 20,
 				},
 			],
 		},
@@ -670,15 +663,10 @@ const dish2 = {
 			price: 33,
 			subdata: [
 				{
-					id: "sub-course-2-4",
-					dishList: [
-						{
-							id: "sub-course-2-4-1",
-							dishName: "Truffle fries",
-							description: "Fresh home made fries with tuffle",
-							price: 20,
-						},
-					],
+					id: "sub-course-2-4-1",
+					dishName: "Truffle fries",
+					description: "Fresh home made fries with tuffle",
+					price: 20,
 				},
 			],
 		},

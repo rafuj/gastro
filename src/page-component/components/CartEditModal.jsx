@@ -9,20 +9,19 @@ import {
 	Stack,
 	Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectGroup from "./SelectGroup";
 
 const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 	const [selectedDish, setSelectedDish] = useState(null);
 	const [selectedSubDish, setSelectedSubDish] = useState(null);
-
 	const handleAddToCart = () => {
 		if (selectedDish) {
 			setCartData((prevCartData) =>
 				prevCartData.map((item) => {
 					if (item.id === modalData.id) {
-						// Update submenus for the target item
-						const updatedSubmenus = [...item.submenus];
+						// Update submenus for the target course
+						let updatedSubmenus = [...item.submenus];
 						const dishIndex = updatedSubmenus.findIndex(
 							(dish) => dish.id === selectedDish.id
 						);
@@ -49,51 +48,40 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 								targetDish.subdata = [];
 							}
 
-							const subdataIndex = targetDish.subdata.findIndex(
+							const subdishIndex = targetDish.subdata.findIndex(
 								(sub) => sub.id === selectedSubDish.id
 							);
 
-							if (subdataIndex === -1) {
+							if (subdishIndex === -1) {
 								// Add new subdish with a minimum guestCount of 1
 								targetDish.subdata.push({
 									...selectedSubDish,
 									guestCount: 1,
 								});
 							} else {
-								// If subdish exists, ensure its guestCount is at least 1
-								const updatedSubdish = {
-									...targetDish.subdata[subdataIndex],
-									guestCount:
-										targetDish.subdata[subdataIndex].guestCount || 1,
-								};
-								targetDish.subdata[subdataIndex] = updatedSubdish;
+								// Ensure subdish guestCount is at least 1
+								targetDish.subdata[subdishIndex].guestCount = Math.max(
+									targetDish.subdata[subdishIndex].guestCount || 0,
+									1
+								);
 							}
 						} else {
-							// If no subdish, ensure the dish guestCount is at least 1
-							updatedSubmenus[dishIndex] = {
-								...updatedSubmenus[dishIndex],
-								guestCount: Math.max(
-									updatedSubmenus[dishIndex].guestCount || 0,
-									1
-								),
-							};
+							// If no subdish, ensure dish guestCount is at least 1
+							updatedSubmenus[dishIndex].guestCount = Math.max(
+								updatedSubmenus[dishIndex].guestCount || 0,
+								1
+							);
 						}
 
 						// Recalculate subtotal
 						const subTotal = updatedSubmenus.reduce((total, menu) => {
-							let menuTotal = menu.price * menu.guestCount || 0;
+							let menuTotal = (menu.price || 0) * (menu.guestCount || 1);
 
 							if (menu.subdata) {
 								menuTotal += menu.subdata.reduce((subTotal, sub) => {
 									return (
 										subTotal +
-										(sub.dishList?.reduce(
-											(dishTotal, dish) =>
-												dishTotal +
-												dish.price *
-													Math.max(dish.guestCount || 0, 1),
-											0
-										) || 0)
+										(sub.price || 0) * (sub.guestCount || 1)
 									);
 								}, 0);
 							}
@@ -107,10 +95,13 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 					return item;
 				})
 			);
-
-			setOpen(false);
 		}
+		setOpen(false);
 	};
+
+	useEffect(() => {
+		setSelectedSubDish(null);
+	}, [selectedDish]);
 
 	return (
 		<Dialog
@@ -160,10 +151,10 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 									}}
 								>
 									{selectedDish?.subdata?.map((subitem) => (
-										<SelectGroup title="Side Dish">
+										<SelectGroup title="Side Dish" key={subitem.id}>
 											<DishCard
 												{...{
-													dishlist: subitem.dishList,
+													dishlist: selectedDish?.subdata,
 													cartData,
 													setCartData,
 													modalData,
