@@ -270,12 +270,11 @@ const LaCarteContent = () => {
 			{open && (
 				<CartEditModal
 					{...{
+						setCartData,
+						cartData,
 						modalData,
-						setMenuData: setCartData,
 						setOpen,
 						open,
-						menuData: cartData,
-						setModalData,
 					}}
 				/>
 			)}

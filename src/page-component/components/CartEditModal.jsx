@@ -1,4 +1,3 @@
-import { menuicons } from "@/components/menuicons";
 import {
 	Box,
 	Button,
@@ -13,16 +12,7 @@ import {
 import { useState } from "react";
 import SelectGroup from "./SelectGroup";
 
-const CartEditModal = ({
-	open,
-	setOpen,
-	modalData: prevModalData,
-	setMenuData,
-	menuData,
-}) => {
-	const [menu, setMenu] = useState(menuData);
-	const [modalData, setModalData] = useState(prevModalData);
-
+const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 	return (
 		<Dialog
 			open={open}
@@ -54,12 +44,9 @@ const CartEditModal = ({
 							<SelectGroup title="Dish">
 								<DishCard
 									{...{
-										dishName: modalData.subtitle,
-										description: modalData.text,
-										icon: modalData.icon,
-										kidsIcon: menuicons.kids,
 										dishlist: modalData.dishList,
-										menuId: modalData.id,
+										cartData,
+										setCartData,
 										modalData,
 									}}
 								/>
@@ -102,7 +89,7 @@ const CartEditModal = ({
 	);
 };
 
-export const DishCard = ({ dishlist, setModalData }) => {
+export const DishCard = ({ dishlist, cartData, setCartData, modalData }) => {
 	const [selectedDish, setSelectedDish] = useState(null);
 
 	const handleChange = (e) => {
@@ -139,51 +126,7 @@ export const DishCard = ({ dishlist, setModalData }) => {
 								}}
 								renderValue={(selected) =>
 									selected ? (
-										<Box
-											sx={{ display: "flex", alignItems: "center" }}
-										>
-											<Typography fontWeight="700" mr={0.4}>
-												{selected.dishName}
-												{console.log("selected", selected)}
-											</Typography>
-											<Typography flexGrow={1}>
-												{selected.description}
-											</Typography>
-											<Box
-												sx={{
-													display: "flex",
-													alignItems: "center",
-													mr: 1,
-												}}
-											>
-												{selected.icon}
-											</Box>
-											<Typography
-												variant="body2"
-												color="textSecondary"
-											>
-												{selected.tag}
-											</Typography>
-											{selected.kidsIcon && (
-												<>
-													<Box
-														sx={{
-															height: "12px",
-															width: "1px",
-															background: "#00000030",
-															ml: 1,
-														}}
-													/>
-													<Stack
-														variant="body2"
-														color="textSecondary"
-														pl={1}
-													>
-														{selected.kidsIcon}
-													</Stack>
-												</>
-											)}
-										</Box>
+										<SelectedOption selected={selected} />
 									) : (
 										"Select a dish"
 									)
@@ -191,55 +134,7 @@ export const DishCard = ({ dishlist, setModalData }) => {
 							>
 								{dishlist.map((item) => (
 									<MenuItem key={item.dishName} value={item}>
-										<Box
-											sx={{
-												display: "flex",
-												width: "100%",
-												alignItems: "center",
-											}}
-										>
-											{/* Updated content for clarity */}
-											<Typography fontWeight="700" mr={1}>
-												{item.dishName}
-											</Typography>
-											<Typography>{item.description}</Typography>
-											<Box
-												sx={{
-													ml: "auto",
-													display: "flex",
-													alignItems: "center",
-													mr: 1,
-												}}
-											>
-												{item.icon}
-												<Typography
-													variant="body2"
-													color="textSecondary"
-													ml={1}
-												>
-													{item.tag}
-												</Typography>
-												{item.kidsIcon && (
-													<>
-														<Box
-															sx={{
-																height: "12px",
-																width: "1px",
-																background: "#00000030",
-																ml: 1,
-															}}
-														/>
-														<Stack
-															variant="body2"
-															color="textSecondary"
-															pl={1}
-														>
-															{item.kidsIcon}
-														</Stack>
-													</>
-												)}
-											</Box>
-										</Box>
+										<SelectOption {...{ item }} />
 									</MenuItem>
 								))}
 							</Select>
@@ -260,14 +155,10 @@ export const DishCard = ({ dishlist, setModalData }) => {
 						<SelectGroup title="Sub Dish">
 							<DishCard
 								{...{
-									dishName: subitem.subtitle,
-									description: subitem.text,
-									icon: subitem.icon,
-									kidsIcon: menuicons.kids,
 									dishlist: subitem.dishList,
-									menuId: subitem.id,
-									setModalData,
-									modalData: subitem,
+									cartData,
+									setCartData,
+									modalData,
 								}}
 							/>
 						</SelectGroup>
@@ -275,6 +166,91 @@ export const DishCard = ({ dishlist, setModalData }) => {
 				</Box>
 			)}
 		</>
+	);
+};
+
+// this is for design purpose skip this
+const SelectOption = ({ item }) => {
+	return (
+		<Box
+			sx={{
+				display: "flex",
+				width: "100%",
+				alignItems: "center",
+			}}
+		>
+			{/* Updated content for clarity */}
+			<Typography fontWeight="700" mr={1}>
+				{item.dishName}
+			</Typography>
+			<Typography>{item.description}</Typography>
+			<Box
+				sx={{
+					ml: "auto",
+					display: "flex",
+					alignItems: "center",
+					mr: 1,
+				}}
+			>
+				{item.icon}
+				<Typography variant="body2" color="textSecondary" ml={1}>
+					{item.tag}
+				</Typography>
+				{item.kidsIcon && (
+					<>
+						<Box
+							sx={{
+								height: "12px",
+								width: "1px",
+								background: "#00000030",
+								ml: 1,
+							}}
+						/>
+						<Stack variant="body2" color="textSecondary" pl={1}>
+							{item.kidsIcon}
+						</Stack>
+					</>
+				)}
+			</Box>
+		</Box>
+	);
+};
+const SelectedOption = ({ selected }) => {
+	return (
+		<Box sx={{ display: "flex", alignItems: "center" }}>
+			<Typography fontWeight="700" mr={0.4}>
+				{selected.dishName}
+				{console.log("selected", selected)}
+			</Typography>
+			<Typography flexGrow={1}>{selected.description}</Typography>
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					mr: 1,
+				}}
+			>
+				{selected.icon}
+			</Box>
+			<Typography variant="body2" color="textSecondary">
+				{selected.tag}
+			</Typography>
+			{selected.kidsIcon && (
+				<>
+					<Box
+						sx={{
+							height: "12px",
+							width: "1px",
+							background: "#00000030",
+							ml: 1,
+						}}
+					/>
+					<Stack variant="body2" color="textSecondary" pl={1}>
+						{selected.kidsIcon}
+					</Stack>
+				</>
+			)}
+		</Box>
 	);
 };
 
