@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import CartEditModal from "./CartEditModal";
+import SelectGroup from "./SelectGroup";
 
 const LaCarteContent = () => {
 	const [open, setOpen] = React.useState(false);
@@ -22,6 +23,7 @@ const LaCarteContent = () => {
 	const [modalData, setModalData] = React.useState({});
 	const [total, setTotal] = React.useState(0);
 	const [guestTotal, setGuestTotal] = React.useState(0);
+
 	const [accordionOpenIds, setAccordionOpenIds] = React.useState([
 		"course-1",
 		"course-2",
@@ -35,6 +37,27 @@ const LaCarteContent = () => {
 		});
 		setTotal(total);
 	}, [cartData]);
+
+	const handleIncrement = (item) => {
+		const updatedCartData = cartData.map((course) => {
+			if (course.id === item.id) {
+				course.subTotal += item.price;
+				course.guestCount += 1;
+			}
+			return course;
+		});
+		setCartData(updatedCartData);
+	};
+	const handleDecrement = (item) => {
+		const updatedCartData = cartData.map((course) => {
+			if (course.id === item.id) {
+				course.subTotal -= item.price;
+				course.guestCount -= 1;
+			}
+			return course;
+		});
+		setCartData(updatedCartData);
+	};
 
 	return (
 		<>
@@ -94,50 +117,23 @@ const LaCarteContent = () => {
 														{submenus?.title}
 													</Typography>
 													{submenus.map((subitem, index) => (
-														<Box
-															position="relative"
-															mb={2}
-															key={subitem.id}
-														>
-															<>
-																<Typography
-																	variant="subtitle2"
-																	color="textSecondary"
-																	sx={{
-																		marginTop: 2,
-																		alignSelf: "flex-start",
-																		m: 0,
-																		position: "absolute",
-																		left: "10px",
-																		top: "0",
-																		zIndex: 1,
-																		background: "#fff",
-																		px: 0.7,
-																	}}
-																>
-																	<div
-																		style={{
-																			transform:
-																				"translateY(-50%)",
+														<React.Fragment key={subitem.id}>
+															{console.log("subitem", subitem)}
+															<Box mb={2}>
+																<SelectGroup title="Dish">
+																	<CartItem
+																		dishlist={dishList}
+																		{...{
+																			cartData,
+																			setCartData,
+																			subitem,
+																			handleDecrement,
+																			handleIncrement,
 																		}}
-																	>
-																		Dish
-																	</div>
-																</Typography>
-
-																<CartItem
-																	description={subitem.text}
-																	icon={subitem.icon}
-																	kidsIcon={menuicons.kids}
-																	dishlist={dishList}
-																	{...{
-																		cartData,
-																		setCartData,
-																		subitem,
-																	}}
-																/>
-															</>
-														</Box>
+																	/>
+																</SelectGroup>
+															</Box>
+														</React.Fragment>
 													))}
 												</Box>
 											)}
@@ -205,7 +201,7 @@ const LaCarteContent = () => {
 						21 Guests
 					</Typography>
 					<Typography fontSize="20px" fontWeight="600">
-						CHF 0&apos;00
+						CHF {total.toFixed(2)}
 					</Typography>
 				</Stack>
 				<Box sx={{ opacity: "0.3", my: 1 }}>
@@ -283,14 +279,29 @@ const LaCarteContent = () => {
 };
 
 export const CartItem = ({
-	icon,
-	kidsIcon,
 	dishlist,
-	selected,
 	cartData,
 	setCartData,
 	subitem,
+	handleDecrement,
+	handleIncrement,
+	// for subdish
+	isSubDishId = false,
+	mainList = [],
 }) => {
+	const [selectedDish, setSelectedDish] = React.useState(null);
+
+	useEffect(() => {
+		if (isSubDishId) {
+			const selectedArray = mainList.find((item) => item.id === isSubDishId);
+			setSelectedDish(
+				selectedArray?.subdata?.find((item) => item.id === subitem.id)
+			);
+		} else {
+			setSelectedDish(dishlist.find((item) => item.id === subitem.id));
+		}
+	}, []);
+
 	return (
 		<>
 			<Box
@@ -315,6 +326,8 @@ export const CartItem = ({
 					>
 						<Box sx={{ width: "200px", flexGrow: 1 }}>
 							<Select
+								value={selectedDish}
+								onChange={(e) => setSelectedDish(e.target.value)}
 								displayEmpty
 								variant="outlined"
 								sx={{
@@ -330,80 +343,15 @@ export const CartItem = ({
 								}}
 								renderValue={(selected) =>
 									selected ? (
-										<Box
-											sx={{ display: "flex", alignItems: "center" }}
-										>
-											<Typography fontWeight="700" mr={0.4}>
-												{selected.dishName}
-											</Typography>
-											<Typography flexGrow={1} width="0">
-												<Box
-													sx={{
-														display: "-webkit-flex",
-														WebkitBoxOrient: "vertical",
-														WebkitLineClamp: 1,
-														overflow: "hidden",
-														textOverflow: "ellipsis",
-														mr: 1,
-													}}
-												>
-													{selected.description}
-												</Box>
-											</Typography>
-											<Box
-												sx={{
-													display: "flex",
-													alignItems: "center",
-													mr: 1,
-												}}
-											>
-												{selected.icon}
-											</Box>
-											<Typography
-												variant="body2"
-												color="textSecondary"
-											>
-												{selected.tag}
-											</Typography>
-										</Box>
+										<SelectedOption selected={selected} />
 									) : (
 										"Select a dish"
 									)
 								}
 							>
-								{console.log({ dishlist })}
 								{dishlist?.map((item) => (
 									<MenuItem key={item.dishName} value={item}>
-										<Box
-											sx={{
-												display: "flex",
-												width: "100%",
-												alignItems: "center",
-											}}
-										>
-											{/* Updated content for clarity */}
-											<Typography fontWeight="700" mr={1}>
-												{item.dishName}
-											</Typography>
-											<Typography>{item.description}</Typography>
-											<Box
-												sx={{
-													ml: "auto",
-													display: "flex",
-													alignItems: "center",
-													mr: 1,
-												}}
-											>
-												{item.icon}
-												<Typography
-													variant="body2"
-													color="textSecondary"
-													ml={1}
-												>
-													{item.tag}
-												</Typography>
-											</Box>
-										</Box>
+										<SelectOption item={item} />
 									</MenuItem>
 								))}
 							</Select>
@@ -450,9 +398,19 @@ export const CartItem = ({
 							width: "100%",
 						}}
 					>
-						<IconButton size="small">{icons.decrement}</IconButton>
-						<Typography variant="h6">10</Typography>
-						<IconButton size="small">{icons.increment}</IconButton>
+						<IconButton
+							size="small"
+							onClick={() => handleDecrement(subitem)}
+						>
+							{icons.decrement}
+						</IconButton>
+						<Typography variant="h6">{subitem?.guestCount}</Typography>
+						<IconButton
+							size="small"
+							onClick={() => handleIncrement(subitem)}
+						>
+							{icons.increment}
+						</IconButton>
 					</Box>
 				</Box>
 				<Typography
@@ -480,6 +438,7 @@ export const CartItem = ({
 					{menuicons.trash}
 				</Button>
 			</Box>
+
 			{subitem?.subdata?.length > 0 &&
 				subitem?.subdata?.map((subSubmenu) => (
 					<Box
@@ -494,43 +453,91 @@ export const CartItem = ({
 						}}
 						key={subSubmenu.id}
 					>
-						<Typography
-							variant="subtitle2"
-							color="textSecondary"
-							sx={{
-								marginTop: 2,
-								alignSelf: "flex-start",
-								m: 0,
-								position: "absolute",
-								left: "10px",
-								top: "0",
-								zIndex: 1,
-								background: "#fff",
-								px: 0.7,
-							}}
-						>
-							<div
-								style={{
-									transform: "translateY(-50%)",
+						<SelectGroup title="Side Dish">
+							<CartItem
+								dishlist={subSubmenu.dishList}
+								{...{
+									cartData,
+									setCartData,
+									subitem: subSubmenu,
+									handleDecrement,
+									handleIncrement,
+									isSubDishId: subitem.id,
+									mainList: dishlist,
 								}}
-							>
-								Sub Dish
-							</div>
-						</Typography>
-						<CartItem
-							dishName={subSubmenu.subtitle}
-							description={subSubmenu.text}
-							icon={subSubmenu.icon}
-							dishlist={subSubmenu.dishList}
-							{...{
-								cartData,
-								setCartData,
-								subitem: subSubmenu,
-							}}
-						/>
+							/>
+							{console.log("selectedDish", subSubmenu)}
+						</SelectGroup>
 					</Box>
 				))}
 		</>
+	);
+};
+// ui for dropdown menu
+const SelectOption = ({ item }) => {
+	return (
+		<Box
+			sx={{
+				display: "flex",
+				width: "100%",
+				alignItems: "center",
+			}}
+		>
+			{/* Updated content for clarity */}
+			<Typography fontWeight="700" mr={1}>
+				{item.dishName}
+			</Typography>
+			<Typography>{item.description}</Typography>
+			<Box
+				sx={{
+					ml: "auto",
+					display: "flex",
+					alignItems: "center",
+					mr: 1,
+				}}
+			>
+				{item.icon}
+				<Typography variant="body2" color="textSecondary" ml={1}>
+					{item.tag}
+				</Typography>
+			</Box>
+		</Box>
+	);
+};
+// ui for selected menu;
+const SelectedOption = ({ selected }) => {
+	return (
+		<Box sx={{ display: "flex", alignItems: "center" }}>
+			<Typography fontWeight="700" mr={0.4}>
+				{selected.dishName}
+			</Typography>
+			<Typography flexGrow={1} width="0">
+				<Box
+					sx={{
+						display: "-webkit-flex",
+						WebkitBoxOrient: "vertical",
+						WebkitLineClamp: 1,
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						mr: 1,
+					}}
+				>
+					{selected.description}
+				</Box>
+			</Typography>
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					mr: 1,
+				}}
+			>
+				{selected.icon}
+			</Box>
+			<Typography variant="body2" color="textSecondary">
+				{selected.tag}
+			</Typography>
+		</Box>
 	);
 };
 

@@ -29,15 +29,21 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 
 						if (dishIndex === -1) {
 							// Add the new dish with minimum guestCount of 1
-							updatedSubmenus.push({
-								...selectedDish,
-								guestCount: 1,
-								subdata: [],
-							});
+							if (selectedSubDish) {
+								updatedSubmenus.push({
+									...selectedDish,
+									guestCount: 1,
+								});
+							} else {
+								updatedSubmenus.push({
+									...selectedDish,
+									guestCount: 1,
+									subdata: [],
+								});
+							}
 						} else if (selectedSubDish) {
 							// If subdish exists, update subdata for the dish
-							const updatedSubSubmenus = [...item.submenus];
-							let targetDish = updatedSubSubmenus[dishIndex];
+							let targetDish = updatedSubmenus[dishIndex];
 							if (!targetDish.subdata) {
 								// Initialize subdata if it doesn't exist
 								targetDish.subdata = [];
@@ -154,7 +160,7 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 									}}
 								>
 									{selectedDish?.subdata?.map((subitem) => (
-										<SelectGroup title="Sub Dish">
+										<SelectGroup title="Side Dish">
 											<DishCard
 												{...{
 													dishlist: subitem.dishList,
