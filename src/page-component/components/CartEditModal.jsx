@@ -90,9 +90,13 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 							return total + menuTotal;
 						}, 0);
 
-						return { ...item, submenus: updatedSubmenus, subTotal };
+						return {
+							...item,
+							submenus: updatedSubmenus,
+							subTotal,
+							guestCount: item.guestCount + 1,
+						};
 					}
-
 					return item;
 				})
 			);

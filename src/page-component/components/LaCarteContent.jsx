@@ -276,13 +276,13 @@ export const CartItem = ({
 				return {
 					...item,
 					submenus: item.submenus.map((submenuItem) => {
-						// const selectedArray = mainList.find(
-						// 	(item) => item.id === isSubDishId
-						// );
 						return {
 							...submenuItem,
 							subdata: submenuItem.subdata.map((subSubitem) => {
-								if (subSubitem.id === subitem.id) {
+								if (
+									subSubitem.id === subitem.id &&
+									subSubitem.guestCount < 21
+								) {
 									return {
 										...subSubitem,
 										guestCount: subSubitem.guestCount + 1,
@@ -296,31 +296,35 @@ export const CartItem = ({
 					}),
 				};
 			} else {
-				return {
-					...item,
-					// Initialize subtotal and guest count updates
-					subTotal: item.submenus.some(
-						(submenuItem) => submenuItem.id === subitem.id
-					)
-						? item.subTotal + subitem.price
-						: item.subTotal,
-					guestCount: item.submenus.some(
-						(submenuItem) => submenuItem.id === subitem.id
-					)
-						? item.guestCount + 1
-						: item.guestCount,
-					submenus: item.submenus.map((submenuItem) => {
-						// Update the specific submenuItem if its id matches subitem.id
-						if (submenuItem.id === subitem.id) {
-							return {
-								...submenuItem,
-								guestCount: submenuItem.guestCount + 1, // Increment guest count for this submenu
-							};
-						}
-						// Return unchanged submenuItem if no match
-						return submenuItem;
-					}),
-				};
+				if (item.guestCount < 21) {
+					return {
+						...item,
+						// Initialize subtotal and guest count updates
+						subTotal: item.submenus.some(
+							(submenuItem) => submenuItem.id === subitem.id
+						)
+							? item.subTotal + subitem.price
+							: item.subTotal,
+						guestCount: item.submenus.some(
+							(submenuItem) => submenuItem.id === subitem.id
+						)
+							? item.guestCount + 1
+							: item.guestCount,
+						submenus: item.submenus.map((submenuItem) => {
+							// Update the specific submenuItem if its id matches subitem.id
+							if (submenuItem.id === subitem.id) {
+								return {
+									...submenuItem,
+									guestCount: submenuItem.guestCount + 1, // Increment guest count for this submenu
+								};
+							}
+							// Return unchanged submenuItem if no match
+							return submenuItem;
+						}),
+					};
+				} else {
+					return item;
+				}
 			}
 		});
 		setCartData(updatedCartData);
