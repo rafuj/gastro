@@ -22,7 +22,7 @@ const LaCarteContent = () => {
 	const [cartData, setCartData] = React.useState(cartFakeData);
 	const [modalData, setModalData] = React.useState({});
 	const [total, setTotal] = React.useState(0);
-	const [guestTotal, setGuestTotal] = React.useState(0);
+
 	console.log({ cartData });
 	const [accordionOpenIds, setAccordionOpenIds] = React.useState([
 		"course-1",
@@ -42,7 +42,7 @@ const LaCarteContent = () => {
 		<>
 			<Stack gap={1} mt={3}>
 				{cartData.map((item, index) => {
-					const { id, submenus, title, subTotal } = item;
+					const { id, submenus, title } = item;
 					const dishData = index == 0 ? dish1 : index == 1 ? dish2 : dish3;
 					const { dishList } = dishData;
 
@@ -96,7 +96,7 @@ const LaCarteContent = () => {
 														{submenus?.title}
 													</Typography>
 													{submenus?.map(
-														(subitem, index) =>
+														(subitem) =>
 															subitem && (
 																<React.Fragment
 																	key={subitem?.id}
@@ -276,9 +276,9 @@ export const CartItem = ({
 				return {
 					...item,
 					submenus: item.submenus.map((submenuItem) => {
-						const selectedArray = mainList.find(
-							(item) => item.id === isSubDishId
-						);
+						// const selectedArray = mainList.find(
+						// 	(item) => item.id === isSubDishId
+						// );
 						return {
 							...submenuItem,
 							subdata: submenuItem.subdata.map((subSubitem) => {
@@ -331,9 +331,9 @@ export const CartItem = ({
 				return {
 					...item,
 					submenus: item.submenus.map((submenuItem) => {
-						const selectedArray = mainList.find(
-							(item) => item.id === isSubDishId
-						);
+						// const selectedArray = mainList.find(
+						// 	(item) => item.id === isSubDishId
+						// );
 						return {
 							...submenuItem,
 							subdata: submenuItem.subdata.map((subSubitem) => {
@@ -400,9 +400,9 @@ export const CartItem = ({
 				...item,
 				submenus: item.submenus.map((submenuItem) => {
 					if (isSubDishId) {
-						const selectedArray = mainList.find(
-							(item) => item.id === isSubDishId
-						);
+						// const selectedArray = mainList.find(
+						// 	(item) => item.id === isSubDishId
+						// );
 						return {
 							...submenuItem,
 							subdata: submenuItem.subdata.filter(
