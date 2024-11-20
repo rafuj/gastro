@@ -23,7 +23,7 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 						// Update submenus for the target course
 						let updatedSubmenus = [...item.submenus];
 						const dishIndex = updatedSubmenus.findIndex(
-							(dish) => dish.id === selectedDish.id
+							(dish) => dish?.id === selectedDish?.id
 						);
 
 						if (dishIndex === -1) {
@@ -75,7 +75,8 @@ const CartEditModal = ({ open, setOpen, modalData, setCartData, cartData }) => {
 
 						// Recalculate subtotal
 						const subTotal = updatedSubmenus.reduce((total, menu) => {
-							let menuTotal = (menu.price || 0) * (menu.guestCount || 1);
+							let menuTotal =
+								(menu?.price || 0) * (menu?.guestCount || 1);
 
 							if (menu.subdata) {
 								menuTotal += menu.subdata.reduce((subTotal, sub) => {

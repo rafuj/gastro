@@ -38,27 +38,6 @@ const LaCarteContent = () => {
 		setTotal(total);
 	}, [cartData]);
 
-	const handleIncrement = (item) => {
-		const updatedCartData = cartData.map((course) => {
-			if (course.id === item.id) {
-				course.subTotal += item.price;
-				course.guestCount += 1;
-			}
-			return course;
-		});
-		setCartData(updatedCartData);
-	};
-	const handleDecrement = (item) => {
-		const updatedCartData = cartData.map((course) => {
-			if (course.id === item.id) {
-				course.subTotal -= item.price;
-				course.guestCount -= 1;
-			}
-			return course;
-		});
-		setCartData(updatedCartData);
-	};
-
 	return (
 		<>
 			<Stack gap={1} mt={3}>
@@ -116,25 +95,27 @@ const LaCarteContent = () => {
 													>
 														{submenus?.title}
 													</Typography>
-													{submenus.map((subitem, index) => (
-														<React.Fragment key={subitem.id}>
-															{console.log("subitem", subitem)}
-															<Box mb={2}>
-																<SelectGroup title="Dish">
-																	<CartItem
-																		dishlist={dishList}
-																		{...{
-																			cartData,
-																			setCartData,
-																			subitem,
-																			handleDecrement,
-																			handleIncrement,
-																		}}
-																	/>
-																</SelectGroup>
-															</Box>
-														</React.Fragment>
-													))}
+													{submenus?.map(
+														(subitem, index) =>
+															subitem && (
+																<React.Fragment
+																	key={subitem?.id}
+																>
+																	<Box mb={2}>
+																		<SelectGroup title="Dish">
+																			<CartItem
+																				dishlist={dishList}
+																				{...{
+																					cartData,
+																					setCartData,
+																					subitem,
+																				}}
+																			/>
+																		</SelectGroup>
+																	</Box>
+																</React.Fragment>
+															)
+													)}
 												</Box>
 											)}
 											<Stack
@@ -283,13 +264,127 @@ export const CartItem = ({
 	cartData,
 	setCartData,
 	subitem,
-	handleDecrement,
-	handleIncrement,
 	// for subdish
 	isSubDishId = false,
 	mainList = [],
 }) => {
 	const [selectedDish, setSelectedDish] = React.useState(null);
+
+	const handleIncrement = () => {
+		const updatedCartData = cartData.map((item) => {
+			return {
+				...item,
+				submenus: item.submenus.map((submenuItem) => {
+					if (isSubDishId) {
+						const selectedArray = mainList.find(
+							(item) => item.id === isSubDishId
+						);
+						return {
+							...submenuItem,
+							subdata: submenuItem.subdata.map((subSubitem) => {
+								if (subSubitem.id === subitem.id) {
+									return {
+										...subSubitem,
+										guestCount: subSubitem.guestCount + 1,
+										subTotal:
+											subSubitem.price * (subSubitem.guestCount + 1),
+									};
+								}
+								return subSubitem;
+							}),
+						};
+					} else {
+						if (submenuItem?.id === subitem?.id) {
+							return {
+								...submenuItem,
+								guestCount: submenuItem.guestCount + 1,
+								subTotal:
+									submenuItem.price * (submenuItem.guestCount + 1),
+							};
+						} else {
+							return submenuItem;
+						}
+					}
+				}),
+			};
+		});
+		setCartData(updatedCartData);
+	};
+	const handleDecrement = () => {
+		const updatedCartData = cartData.map((item) => {
+			return {
+				...item,
+				submenus: item.submenus.map((submenuItem) => {
+					if (isSubDishId) {
+						const selectedArray = mainList.find(
+							(item) => item.id === isSubDishId
+						);
+						return {
+							...submenuItem,
+							subdata: submenuItem.subdata.map((subSubitem) => {
+								if (subSubitem.id === subitem.id) {
+									return {
+										...subSubitem,
+										guestCount: Math.max(
+											subSubitem.guestCount - 1,
+											0
+										),
+										subTotal:
+											subSubitem.price *
+											Math.max(subSubitem.guestCount - 1, 1),
+									};
+								}
+								return subSubitem;
+							}),
+						};
+					} else {
+						if (submenuItem.id === subitem.id) {
+							return {
+								...submenuItem,
+								guestCount: Math.max(submenuItem.guestCount - 1, 1),
+								subTotal:
+									submenuItem.price *
+									Math.max(submenuItem.guestCount - 1, 1),
+							};
+						} else {
+							return submenuItem;
+						}
+					}
+				}),
+			};
+		});
+		setCartData(updatedCartData);
+	};
+
+	const handleDelete = () => {
+		// both dish and subdish can be deleted
+		const updatedCartData = cartData.map((item) => {
+			return {
+				...item,
+				submenus: item.submenus.map((submenuItem) => {
+					if (isSubDishId) {
+						const selectedArray = mainList.find(
+							(item) => item.id === isSubDishId
+						);
+						return {
+							...submenuItem,
+							subdata: submenuItem.subdata.filter(
+								(subSubitem) => subSubitem.id !== subitem.id
+							),
+						};
+					} else {
+						if (submenuItem.id === subitem.id) {
+							// submenuItem delete from cart
+							return null;
+						} else {
+							return submenuItem;
+						}
+					}
+				}),
+			};
+		});
+		setCartData(updatedCartData);
+	};
 
 	useEffect(() => {
 		if (isSubDishId) {
@@ -399,15 +494,12 @@ export const CartItem = ({
 					>
 						<IconButton
 							size="small"
-							onClick={() => handleDecrement(subitem)}
+							onClick={subitem?.guestCount > 1 && handleDecrement}
 						>
 							{icons.decrement}
 						</IconButton>
 						<Typography variant="h6">{subitem?.guestCount}</Typography>
-						<IconButton
-							size="small"
-							onClick={() => handleIncrement(subitem)}
-						>
+						<IconButton size="small" onClick={handleIncrement}>
 							{icons.increment}
 						</IconButton>
 					</Box>
@@ -432,7 +524,7 @@ export const CartItem = ({
 						minWidth: "0",
 						background: "transparent",
 					}}
-					onClick={() => handleDelete(subitem.id)}
+					onClick={handleDelete}
 				>
 					{menuicons.trash}
 				</Button>
@@ -459,8 +551,6 @@ export const CartItem = ({
 									cartData,
 									setCartData,
 									subitem: subSubmenu,
-									handleDecrement,
-									handleIncrement,
 									isSubDishId: subitem.id,
 									mainList: dishlist,
 								}}
@@ -651,6 +741,7 @@ const dish2 = {
 					dishName: "Fries",
 					description: "Fresh home made fries",
 					price: 20,
+					guestCount: 1,
 				},
 			],
 		},
@@ -667,6 +758,7 @@ const dish2 = {
 					dishName: "Truffle fries",
 					description: "Fresh home made fries with tuffle",
 					price: 20,
+					guestCount: 1,
 				},
 			],
 		},
