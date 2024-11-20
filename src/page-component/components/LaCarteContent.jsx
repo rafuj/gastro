@@ -272,10 +272,10 @@ export const CartItem = ({
 
 	const handleIncrement = () => {
 		const updatedCartData = cartData.map((item) => {
-			return {
-				...item,
-				submenus: item.submenus.map((submenuItem) => {
-					if (isSubDishId) {
+			if (isSubDishId) {
+				return {
+					...item,
+					submenus: item.submenus.map((submenuItem) => {
 						const selectedArray = mainList.find(
 							(item) => item.id === isSubDishId
 						);
@@ -293,29 +293,44 @@ export const CartItem = ({
 								return subSubitem;
 							}),
 						};
-					} else {
-						if (submenuItem?.id === subitem?.id) {
+					}),
+				};
+			} else {
+				return {
+					...item,
+					// Initialize subtotal and guest count updates
+					subTotal: item.submenus.some(
+						(submenuItem) => submenuItem.id === subitem.id
+					)
+						? item.subTotal + subitem.price
+						: item.subTotal,
+					guestCount: item.submenus.some(
+						(submenuItem) => submenuItem.id === subitem.id
+					)
+						? item.guestCount + 1
+						: item.guestCount,
+					submenus: item.submenus.map((submenuItem) => {
+						// Update the specific submenuItem if its id matches subitem.id
+						if (submenuItem.id === subitem.id) {
 							return {
 								...submenuItem,
-								guestCount: submenuItem.guestCount + 1,
-								subTotal:
-									submenuItem.price * (submenuItem.guestCount + 1),
+								guestCount: submenuItem.guestCount + 1, // Increment guest count for this submenu
 							};
-						} else {
-							return submenuItem;
 						}
-					}
-				}),
-			};
+						// Return unchanged submenuItem if no match
+						return submenuItem;
+					}),
+				};
+			}
 		});
 		setCartData(updatedCartData);
 	};
 	const handleDecrement = () => {
 		const updatedCartData = cartData.map((item) => {
-			return {
-				...item,
-				submenus: item.submenus.map((submenuItem) => {
-					if (isSubDishId) {
+			if (isSubDishId) {
+				return {
+					...item,
+					submenus: item.submenus.map((submenuItem) => {
 						const selectedArray = mainList.find(
 							(item) => item.id === isSubDishId
 						);
@@ -337,21 +352,43 @@ export const CartItem = ({
 								return subSubitem;
 							}),
 						};
-					} else {
+					}),
+				};
+			} else {
+				return {
+					...item,
+					// Initialize subtotal and guest count updates
+					subTotal: item.submenus.some(
+						(submenuItem) => submenuItem.id === subitem.id
+					)
+						? item.subTotal - subitem.price
+						: item.subTotal,
+					guestCount: item.submenus.some(
+						(submenuItem) => submenuItem.id === subitem.id
+					)
+						? item.guestCount - 1
+						: item.guestCount,
+					submenus: item.submenus.map((submenuItem) => {
 						if (submenuItem.id === subitem.id) {
+							console.log(
+								"fuck you",
+								submenuItem,
+								Math.max(submenuItem.guestCount - 1, 1)
+							);
+							const price =
+								submenuItem.price *
+								Math.max(submenuItem.guestCount - 1, 1);
 							return {
 								...submenuItem,
 								guestCount: Math.max(submenuItem.guestCount - 1, 1),
-								subTotal:
-									submenuItem.price *
-									Math.max(submenuItem.guestCount - 1, 1),
+								subTotal: price,
 							};
 						} else {
 							return submenuItem;
 						}
-					}
-				}),
-			};
+					}),
+				};
+			}
 		});
 		setCartData(updatedCartData);
 	};
@@ -494,7 +531,7 @@ export const CartItem = ({
 					>
 						<IconButton
 							size="small"
-							onClick={subitem?.guestCount > 1 && handleDecrement}
+							onClick={subitem?.guestCount > 1 ? handleDecrement : null}
 						>
 							{icons.decrement}
 						</IconButton>
@@ -719,6 +756,7 @@ const dish2 = {
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
 			price: 33,
+			guestCount: 1,
 		},
 		{
 			id: "course-2-3",
@@ -727,6 +765,7 @@ const dish2 = {
 			icon: menuicons.fish,
 			tag: "Fish",
 			price: 33,
+			guestCount: 1,
 		},
 		{
 			id: "course-2-4",
@@ -735,6 +774,7 @@ const dish2 = {
 			icon: menuicons.meat,
 			tag: "Meat",
 			price: 33,
+			guestCount: 1,
 			subdata: [
 				{
 					id: "sub-course-2-4-1",
@@ -752,6 +792,7 @@ const dish2 = {
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
 			price: 33,
+			guestCount: 1,
 			subdata: [
 				{
 					id: "sub-course-2-4-1",
@@ -770,6 +811,7 @@ const dish2 = {
 			tag: "Meat",
 			kidsIcon: menuicons.kids,
 			price: 25.5,
+			guestCount: 1,
 		},
 	],
 };
@@ -786,6 +828,7 @@ const dish3 = {
 			icon: menuicons.vegetarian,
 			tag: "Vegetarian",
 			price: 25,
+			guestCount: 1,
 		},
 	],
 };
