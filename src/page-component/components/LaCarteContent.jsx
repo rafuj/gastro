@@ -341,11 +341,11 @@ export const CartItem = ({
                 subdata: submenuItem.subdata.map((subSubitem) => {
                   if (subSubitem.id === subitem.id) {
                     if (subSubitem.guestCount < 21) {
+                      const newGuestCount = subSubitem.guestCount + 1;
                       return {
                         ...subSubitem,
-                        guestCount: subSubitem.guestCount + 1,
-                        subTotal:
-                          subSubitem.price * (subSubitem.guestCount + 1),
+                        guestCount: newGuestCount,
+                        subTotal: subSubitem.price * newGuestCount,
                       };
                     } else {
                       errorToast(
@@ -369,9 +369,11 @@ export const CartItem = ({
           submenus: item.submenus.map((submenuItem) => {
             if (submenuItem.id === subitem.id) {
               if (submenuItem.guestCount < 21) {
+                const newGuestCount = submenuItem.guestCount + 1;
                 return {
                   ...submenuItem,
-                  guestCount: submenuItem.guestCount + 1,
+                  guestCount: newGuestCount,
+                  subTotal: submenuItem.price * newGuestCount,
                 };
               } else {
                 errorToast("Cannot have more than 21 guests for this dish.");
@@ -399,12 +401,14 @@ export const CartItem = ({
                 ...submenuItem,
                 subdata: submenuItem.subdata.map((subSubitem) => {
                   if (subSubitem.id === subitem.id) {
+                    const newGuestCount = Math.max(
+                      subSubitem.guestCount - 1,
+                      1
+                    );
                     return {
                       ...subSubitem,
-                      guestCount: Math.max(subSubitem.guestCount - 1, 1),
-                      subTotal:
-                        subSubitem.price *
-                        Math.max(subSubitem.guestCount - 1, 1),
+                      guestCount: newGuestCount,
+                      subTotal: subSubitem.price * newGuestCount,
                     };
                   }
                   return subSubitem;
@@ -422,9 +426,11 @@ export const CartItem = ({
           guestCount: item.guestCount - 1,
           submenus: item.submenus.map((submenuItem) => {
             if (submenuItem.id === subitem.id) {
+              const newGuestCount = Math.max(submenuItem.guestCount - 1, 1);
               return {
                 ...submenuItem,
-                guestCount: Math.max(submenuItem.guestCount - 1, 1),
+                guestCount: newGuestCount,
+                subTotal: submenuItem.price * newGuestCount,
               };
             }
             return submenuItem;
@@ -593,7 +599,7 @@ export const CartItem = ({
           }}
           ml={2}
         >
-          CHF {subitem?.price?.toFixed(2)}
+          CHF {(subitem?.price * subitem?.guestCount).toFixed(2)}
         </Typography>
         <Button
           type="button"
