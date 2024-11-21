@@ -25,26 +25,8 @@ import SelectGroup from "./SelectGroup";
  * @param {Object} course - The course object containing submenus and subdata.
  * @returns {number} - The recalculated subTotal for the course.
  */
-const recalculateCourseSubTotal = (course) => {
-  let courseSubTotal = 0;
 
-  course.submenus.forEach((submenuItem) => {
-    const submenuSubTotal = submenuItem.price * submenuItem.guestCount;
-
-    let subdataSubTotal = 0;
-    if (submenuItem.subdata && submenuItem.subdata.length > 0) {
-      subdataSubTotal = submenuItem.subdata.reduce((acc, subSubitem) => {
-        return acc + subSubitem.price * subSubitem.guestCount;
-      }, 0);
-    }
-
-    courseSubTotal += submenuSubTotal + subdataSubTotal;
-  });
-
-  return courseSubTotal;
-};
-
-const LaCarteContent = () => {
+const LaCarteContent = ({ referanceGuest }) => {
   // State variables
   const [open, setOpen] = React.useState(false);
   const [cartData, setCartData] = React.useState(cartFakeData);
@@ -135,7 +117,7 @@ const LaCarteContent = () => {
                   color="textSecondary"
                   mr={2}
                 >
-                  {getTotalGuestCountForCourse(item)} / 21 Guests
+                  {getTotalGuestCountForCourse(item)} / {referanceGuest} Guests
                 </Typography>
                 <Typography fontSize="20px" fontWeight="600">
                   CHF {item.subTotal.toFixed(2)}
@@ -167,14 +149,6 @@ const LaCarteContent = () => {
                     <Box>
                       {submenus?.length > 0 && (
                         <Box>
-                          {/* Optional: Add a title here if needed */}
-                          <Typography
-                            variant="h6"
-                            sx={{ fontWeight: "bold", mb: 1 }}
-                          >
-                            {/* Example: "Select Your Dishes" */}
-                            Select Your Dishes
-                          </Typography>
                           {submenus.map(
                             (subitem) =>
                               subitem && (
@@ -187,6 +161,8 @@ const LaCarteContent = () => {
                                         setCartData={setCartData}
                                         subitem={subitem}
                                         courseId={item.id}
+                                        referanceGuest={referanceGuest}
+                                        totalGuestCount={totalGuestCount}
                                       />
                                     </SelectGroup>
                                   </Box>
@@ -219,11 +195,9 @@ const LaCarteContent = () => {
                             },
                           }}
                           onClick={() => {
-                            const totalGuestCountForCourse =
-                              getTotalGuestCountForCourse(item);
-                            if (totalGuestCountForCourse >= 21) {
+                            if (totalGuestCount >= referanceGuest) {
                               errorToast(
-                                "Cannot add more than 21 guests to this course."
+                                `Cannot add more than ${referanceGuest} guests in total.`
                               );
                             } else {
                               setModalData({
@@ -330,6 +304,8 @@ const LaCarteContent = () => {
             modalData,
             setOpen,
             open,
+            referanceGuest,
+            totalGuestCount,
           }}
         />
       )}
@@ -350,6 +326,8 @@ export const CartItem = ({
   isSubDishId = false,
   mainList = [],
   courseId,
+  referanceGuest,
+  totalGuestCount,
 }) => {
   const [selectedDish, setSelectedDish] = React.useState(null);
 
@@ -402,14 +380,13 @@ export const CartItem = ({
    * Handles incrementing the guest count for a dish.
    */
   const handleIncrement = () => {
+    if (totalGuestCount >= referanceGuest) {
+      errorToast(`Cannot have more than ${referanceGuest} guests in total.`);
+      return;
+    }
+
     const updatedCartData = cartData.map((item) => {
       if (item.id !== courseId) return item; // Only update the relevant course
-
-      const totalGuestCountForCourse = getTotalGuestCountForCourse(item);
-      if (totalGuestCountForCourse >= 21) {
-        errorToast("Cannot have more than 21 guests for this course.");
-        return item;
-      }
 
       let newSubmenus = item.submenus.map((submenuItem) => {
         if (isSubDishId) {
@@ -419,7 +396,7 @@ export const CartItem = ({
               ...submenuItem,
               subdata: submenuItem.subdata.map((subSubitem) => {
                 if (subSubitem.id === subitem.id) {
-                  if (subSubitem.guestCount < 21) {
+                  if (subSubitem.guestCount < referanceGuest) {
                     const newGuestCount = subSubitem.guestCount + 1;
                     return {
                       ...subSubitem,
@@ -428,7 +405,7 @@ export const CartItem = ({
                     };
                   } else {
                     errorToast(
-                      "Cannot have more than 21 guests for this dish."
+                      `Cannot have more than ${referanceGuest} guests for this dish.`
                     );
                   }
                 }
@@ -440,14 +417,16 @@ export const CartItem = ({
         } else {
           // Handling main dishes
           if (submenuItem.id === subitem.id) {
-            if (submenuItem.guestCount < 21) {
+            if (submenuItem.guestCount < referanceGuest) {
               const newGuestCount = submenuItem.guestCount + 1;
               return {
                 ...submenuItem,
                 guestCount: newGuestCount,
               };
             } else {
-              errorToast("Cannot have more than 21 guests for this dish.");
+              errorToast(
+                `Cannot have more than ${referanceGuest} guests for this dish.`
+              );
             }
           }
           return submenuItem;
@@ -765,6 +744,8 @@ export const CartItem = ({
                 isSubDishId={subitem.id}
                 mainList={dishlist}
                 courseId={courseId}
+                referanceGuest={referanceGuest}
+                totalGuestCount={totalGuestCount}
               />
             </SelectGroup>
           </Box>
