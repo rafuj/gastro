@@ -16,27 +16,29 @@ import {
 import React, { useEffect } from "react";
 import CartEditModal from "./CartEditModal";
 import SelectGroup from "./SelectGroup";
+import { errorToast } from "@/utls/toasts"; // Make sure this is correctly imported
 
 const LaCarteContent = () => {
   const [open, setOpen] = React.useState(false);
   const [cartData, setCartData] = React.useState(cartFakeData);
   const [modalData, setModalData] = React.useState({});
   const [total, setTotal] = React.useState(0);
+  const [totalGuestCount, setTotalGuestCount] = React.useState(0);
 
   const [accordionOpenIds, setAccordionOpenIds] = React.useState([
     "course-1",
     "course-2",
     "course-3",
   ]);
-  const [totalGuestCount, setTotalGuestCount] = React.useState(0);
+
   useEffect(() => {
     let total = 0;
     let totalGuestCount = 0;
 
     cartData.forEach((course) => {
-      total += course.subTotal;
+      total += course.subTotal || 0;
 
-      course.submenus.forEach((submenu) => {
+      course.submenus?.forEach((submenu) => {
         totalGuestCount += submenu.guestCount || 0;
 
         if (submenu.subdata && submenu.subdata.length > 0) {
@@ -51,12 +53,28 @@ const LaCarteContent = () => {
     setTotalGuestCount(totalGuestCount);
   }, [cartData]);
 
+  const getTotalGuestCountForCourse = (course) => {
+    let totalGuestCount = 0;
+
+    course.submenus?.forEach((submenu) => {
+      totalGuestCount += submenu.guestCount || 0;
+
+      if (submenu.subdata && submenu.subdata.length > 0) {
+        submenu.subdata.forEach((subsubmenu) => {
+          totalGuestCount += subsubmenu.guestCount || 0;
+        });
+      }
+    });
+
+    return totalGuestCount;
+  };
+
   return (
     <>
       <Stack gap={1} mt={3}>
         {cartData.map((item, index) => {
           const { id, submenus, title } = item;
-          const dishData = index == 0 ? dish1 : index == 1 ? dish2 : dish3;
+          const dishData = index === 0 ? dish1 : index === 1 ? dish2 : dish3;
           const { dishList } = dishData;
 
           return (
@@ -71,6 +89,14 @@ const LaCarteContent = () => {
               <Stack flexDirection="row" justifyContent="space-between">
                 <Typography fontSize="20px" fontWeight="600" mr="auto">
                   {title}
+                </Typography>
+                <Typography
+                  fontSize="16px"
+                  fontWeight="500"
+                  color="textSecondary"
+                  mr={2}
+                >
+                  {getTotalGuestCountForCourse(item)} / 21 Guests
                 </Typography>
                 <Typography fontSize="20px" fontWeight="600">
                   CHF {item.subTotal.toFixed(2)}
@@ -100,15 +126,15 @@ const LaCarteContent = () => {
                 <Box minWidth={"700px"}>
                   <Collapse in={accordionOpenIds.includes(id)}>
                     <Box>
-                      {Object.keys(submenus).length > 0 && (
+                      {submenus?.length > 0 && (
                         <Box>
                           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                            {submenus?.title}
+                            {/* You can add a title here if needed */}
                           </Typography>
-                          {submenus?.map(
+                          {submenus.map(
                             (subitem) =>
                               subitem && (
-                                <React.Fragment key={subitem?.id}>
+                                <React.Fragment key={subitem.id}>
                                   <Box mb={2}>
                                     <SelectGroup title="Dish">
                                       <CartItem
@@ -117,6 +143,7 @@ const LaCarteContent = () => {
                                           cartData,
                                           setCartData,
                                           subitem,
+                                          courseId: item.id,
                                         }}
                                       />
                                     </SelectGroup>
@@ -150,10 +177,16 @@ const LaCarteContent = () => {
                             },
                           }}
                           onClick={() => {
-                            setModalData(
-                              index == 0 ? dish1 : index == 1 ? dish2 : dish3
-                            );
-                            setOpen(true);
+                            const totalGuestCountForCourse =
+                              getTotalGuestCountForCourse(item);
+                            if (totalGuestCountForCourse >= 21) {
+                              errorToast(
+                                "Cannot add more than 21 guests to this course."
+                              );
+                            } else {
+                              setModalData({ ...dishData, courseId: item.id });
+                              setOpen(true);
+                            }
                           }}
                         >
                           {icons.increment2} Add Meal
@@ -182,7 +215,6 @@ const LaCarteContent = () => {
           >
             {totalGuestCount} Guests
           </Typography>
-
           <Typography fontSize="20px" fontWeight="600">
             CHF {total.toFixed(2)}
           </Typography>
@@ -221,8 +253,8 @@ const LaCarteContent = () => {
           >
             {icons.info}{" "}
             <Box sx={{ width: "0", flexGrow: "1" }}>
-              Feed allergies, specific food instrctions or questions about the
-              origion of meat: Please contact the restaurant directly at{" "}
+              For allergies, specific food instructions, or questions about the
+              origin of meat: Please contact the restaurant directly at{" "}
               <a href="tel:+41585620030" style={{ color: "#1D9BF0" }}>
                 +41585620030
               </a>{" "}
@@ -268,123 +300,134 @@ export const CartItem = ({
   // for subdish
   isSubDishId = false,
   mainList = [],
+  courseId,
 }) => {
   const [selectedDish, setSelectedDish] = React.useState(null);
 
+  const getTotalGuestCountForCourse = (course) => {
+    let totalGuestCount = 0;
+
+    course.submenus?.forEach((submenu) => {
+      totalGuestCount += submenu.guestCount || 0;
+
+      if (submenu.subdata && submenu.subdata.length > 0) {
+        submenu.subdata.forEach((subsubmenu) => {
+          totalGuestCount += subsubmenu.guestCount || 0;
+        });
+      }
+    });
+
+    return totalGuestCount;
+  };
+
   const handleIncrement = () => {
     const updatedCartData = cartData.map((item) => {
+      if (item.id !== courseId) return item; // Only update the relevant course
+
+      const totalGuestCountForCourse = getTotalGuestCountForCourse(item);
+      if (totalGuestCountForCourse >= 21) {
+        errorToast("Cannot have more than 21 guests for this course.");
+        return item;
+      }
+
       if (isSubDishId) {
+        // For sub-dishes
         return {
           ...item,
           submenus: item.submenus.map((submenuItem) => {
-            return {
-              ...submenuItem,
-              subdata: submenuItem?.subdata.map((subSubitem) => {
-                if (
-                  subSubitem.id === subitem.id &&
-                  subSubitem.guestCount < 21
-                ) {
-                  return {
-                    ...subSubitem,
-                    guestCount: subSubitem.guestCount + 1,
-                    subTotal: subSubitem.price * (subSubitem.guestCount + 1),
-                  };
-                }
-                return subSubitem;
-              }),
-            };
+            if (submenuItem.id === isSubDishId) {
+              return {
+                ...submenuItem,
+                subdata: submenuItem.subdata.map((subSubitem) => {
+                  if (subSubitem.id === subitem.id) {
+                    if (subSubitem.guestCount < 21) {
+                      return {
+                        ...subSubitem,
+                        guestCount: subSubitem.guestCount + 1,
+                        subTotal:
+                          subSubitem.price * (subSubitem.guestCount + 1),
+                      };
+                    } else {
+                      errorToast(
+                        "Cannot have more than 21 guests for this dish."
+                      );
+                    }
+                  }
+                  return subSubitem;
+                }),
+              };
+            }
+            return submenuItem;
           }),
         };
       } else {
-        if (item.guestCount < 21) {
-          return {
-            ...item,
-            // Initialize subtotal and guest count updates
-            subTotal: item.submenus.some(
-              (submenuItem) => submenuItem.id === subitem.id
-            )
-              ? item.subTotal + subitem.price
-              : item.subTotal,
-            guestCount: item.submenus.some(
-              (submenuItem) => submenuItem.id === subitem.id
-            )
-              ? item.guestCount + 1
-              : item.guestCount,
-            submenus: item.submenus.map((submenuItem) => {
-              // Update the specific submenuItem if its id matches subitem.id
-              if (submenuItem.id === subitem.id) {
+        // For main dishes
+        return {
+          ...item,
+          subTotal: item.subTotal + subitem.price,
+          guestCount: item.guestCount + 1,
+          submenus: item.submenus.map((submenuItem) => {
+            if (submenuItem.id === subitem.id) {
+              if (submenuItem.guestCount < 21) {
                 return {
                   ...submenuItem,
-                  guestCount: submenuItem.guestCount + 1, // Increment guest count for this submenu
+                  guestCount: submenuItem.guestCount + 1,
                 };
+              } else {
+                errorToast("Cannot have more than 21 guests for this dish.");
               }
-              // Return unchanged submenuItem if no match
-              return submenuItem;
-            }),
-          };
-        } else {
-          return item;
-        }
+            }
+            return submenuItem;
+          }),
+        };
       }
     });
     setCartData(updatedCartData);
   };
+
   const handleDecrement = () => {
     const updatedCartData = cartData.map((item) => {
+      if (item.id !== courseId) return item; // Only update the relevant course
+
       if (isSubDishId) {
+        // For sub-dishes
         return {
           ...item,
           submenus: item.submenus.map((submenuItem) => {
-            // const selectedArray = mainList.find(
-            // 	(item) => item.id === isSubDishId
-            // );
-            return {
-              ...submenuItem,
-              subdata: submenuItem?.subdata.map((subSubitem) => {
-                if (subSubitem.id === subitem.id) {
-                  return {
-                    ...subSubitem,
-                    guestCount: Math.max(subSubitem.guestCount - 1, 0),
-                    subTotal:
-                      subSubitem.price * Math.max(subSubitem.guestCount - 1, 1),
-                  };
-                }
-                return subSubitem;
-              }),
-            };
+            if (submenuItem.id === isSubDishId) {
+              return {
+                ...submenuItem,
+                subdata: submenuItem.subdata.map((subSubitem) => {
+                  if (subSubitem.id === subitem.id) {
+                    return {
+                      ...subSubitem,
+                      guestCount: Math.max(subSubitem.guestCount - 1, 1),
+                      subTotal:
+                        subSubitem.price *
+                        Math.max(subSubitem.guestCount - 1, 1),
+                    };
+                  }
+                  return subSubitem;
+                }),
+              };
+            }
+            return submenuItem;
           }),
         };
       } else {
+        // For main dishes
         return {
           ...item,
-          // Initialize subtotal and guest count updates
-          subTotal: item.submenus.some(
-            (submenuItem) => submenuItem.id === subitem.id
-          )
-            ? item.subTotal - subitem.price
-            : item.subTotal,
-          guestCount: item.submenus.some(
-            (submenuItem) => submenuItem.id === subitem.id
-          )
-            ? item.guestCount - 1
-            : item.guestCount,
+          subTotal: item.subTotal - subitem.price,
+          guestCount: item.guestCount - 1,
           submenus: item.submenus.map((submenuItem) => {
             if (submenuItem.id === subitem.id) {
-              console.log(
-                "fuck you",
-                submenuItem,
-                Math.max(submenuItem.guestCount - 1, 1)
-              );
-              const price =
-                submenuItem.price * Math.max(submenuItem.guestCount - 1, 1);
               return {
                 ...submenuItem,
                 guestCount: Math.max(submenuItem.guestCount - 1, 1),
-                subTotal: price,
               };
-            } else {
-              return submenuItem;
             }
+            return submenuItem;
           }),
         };
       }
@@ -393,31 +436,34 @@ export const CartItem = ({
   };
 
   const handleDelete = () => {
-    // both dish and subdish can be deleted
     const updatedCartData = cartData.map((item) => {
-      return {
-        ...item,
-        submenus: item.submenus.map((submenuItem) => {
-          if (isSubDishId) {
-            // const selectedArray = mainList.find(
-            // 	(item) => item.id === isSubDishId
-            // );
-            return {
-              ...submenuItem,
-              subdata: submenuItem?.subdata.filter(
-                (subSubitem) => subSubitem.id !== subitem.id
-              ),
-            };
-          } else {
-            if (submenuItem.id === subitem.id) {
-              // submenuItem delete from cart
-              return null;
-            } else {
-              return submenuItem;
+      if (item.id !== courseId) return item; // Only update the relevant course
+
+      if (isSubDishId) {
+        // Handle deletion of sub-dishes
+        return {
+          ...item,
+          submenus: item.submenus.map((submenuItem) => {
+            if (submenuItem.id === isSubDishId) {
+              return {
+                ...submenuItem,
+                subdata: submenuItem.subdata.filter(
+                  (subSubitem) => subSubitem.id !== subitem.id
+                ),
+              };
             }
-          }
-        }),
-      };
+            return submenuItem;
+          }),
+        };
+      } else {
+        // Handle deletion of main dishes
+        return {
+          ...item,
+          submenus: item.submenus.filter(
+            (submenuItem) => submenuItem.id !== subitem.id
+          ),
+        };
+      }
     });
     setCartData(updatedCartData);
   };
@@ -564,7 +610,7 @@ export const CartItem = ({
       </Box>
 
       {subitem?.subdata?.length > 0 &&
-        subitem?.subdata?.map((subSubmenu) => (
+        subitem.subdata.map((subSubmenu) => (
           <Box
             sx={{
               ml: {
@@ -586,6 +632,7 @@ export const CartItem = ({
                   subitem: subSubmenu,
                   isSubDishId: subitem.id,
                   mainList: dishlist,
+                  courseId,
                 }}
               />
             </SelectGroup>
@@ -594,7 +641,8 @@ export const CartItem = ({
     </>
   );
 };
-// ui for dropdown menu
+
+// UI for dropdown menu
 const SelectOption = ({ item }) => {
   return (
     <Box
@@ -604,7 +652,6 @@ const SelectOption = ({ item }) => {
         alignItems: "center",
       }}
     >
-      {/* Updated content for clarity */}
       <Typography fontWeight="700" mr={1}>
         {item.dishName}
       </Typography>
@@ -625,7 +672,8 @@ const SelectOption = ({ item }) => {
     </Box>
   );
 };
-// ui for selected menu;
+
+// UI for selected menu
 const SelectedOption = ({ selected }) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -673,7 +721,7 @@ export const cartFakeData = [
   },
   {
     id: "course-2",
-    title: "2 - Course Main ",
+    title: "2 - Course Main",
     subtitle: "7 Courses",
     submenus: [],
     subTotal: 0,
@@ -683,8 +731,6 @@ export const cartFakeData = [
     id: "course-3",
     title: "3 - Course Dessert",
     subtitle: "2 Courses",
-    minCount: 21,
-    maxCount: 60,
     submenus: [],
     subTotal: 0,
     guestCount: 0,
@@ -775,7 +821,7 @@ const dish2 = {
         {
           id: "sub-course-2-4-1",
           dishName: "Fries",
-          description: "Fresh home made fries",
+          description: "Fresh homemade fries",
           price: 20,
           guestCount: 1,
         },
@@ -791,9 +837,9 @@ const dish2 = {
       guestCount: 1,
       subdata: [
         {
-          id: "sub-course-2-4-1",
+          id: "sub-course-2-5-1",
           dishName: "Truffle fries",
-          description: "Fresh home made fries with tuffle",
+          description: "Fresh homemade fries with truffle",
           price: 20,
           guestCount: 1,
         },
