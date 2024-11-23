@@ -21,12 +21,6 @@ import CartEditModal from "./CartEditModal";
 import SelectGroup from "./SelectGroup";
 
 /**
- * Helper function to recalculate the subTotal for a course.
- * @param {Object} course - The course object containing submenus and subdata.
- * @returns {number} - The recalculated subTotal for the course.
- */
-
-/**
  * LaCarteContent Component
  * Main component handling the cart content, guest counts, and totals.
  */
@@ -68,9 +62,8 @@ const LaCarteContent = ({ referanceGuest }) => {
       totalGuestCount += submenu.guestCount || 0;
 
       if (submenu.subdata && submenu.subdata.length > 0) {
-        submenu.subdata.forEach((subsubmenu) => {
-          totalGuestCount += subsubmenu.guestCount || 0;
-        });
+        // Sub-dishes inherit guest count from main dish
+        // No additional guest count is added here
       }
     });
 
@@ -153,7 +146,6 @@ const LaCarteContent = ({ referanceGuest }) => {
                             variant="h6"
                             sx={{ fontWeight: "bold", mb: 1 }}
                           >
-                            {/* Example: "Select Your Dishes" */}
                             Select Your Dishes
                           </Typography>
                           {submenus.map(
@@ -322,6 +314,7 @@ const LaCarteContent = ({ referanceGuest }) => {
 /**
  * CartItem Component
  * Handles individual dish selection, guest count, and deletion.
+ * Modified to remove guest count controls for sub-dishes.
  */
 export const CartItem = ({
   dishlist,
@@ -348,9 +341,8 @@ export const CartItem = ({
       totalGuestCount += submenu.guestCount || 0;
 
       if (submenu.subdata && submenu.subdata.length > 0) {
-        submenu.subdata.forEach((subsubmenu) => {
-          totalGuestCount += subsubmenu.guestCount || 0;
-        });
+        // Sub-dishes inherit guest count from main dish
+        // No additional guest count is added here
       }
     });
 
@@ -366,23 +358,25 @@ export const CartItem = ({
     let courseSubTotal = 0;
 
     course.submenus.forEach((submenuItem) => {
-      const submenuSubTotal = submenuItem.price * submenuItem.guestCount;
+      const mainDishSubTotal = submenuItem.price * submenuItem.guestCount;
 
       let subdataSubTotal = 0;
       if (submenuItem.subdata && submenuItem.subdata.length > 0) {
         subdataSubTotal = submenuItem.subdata.reduce((acc, subSubitem) => {
-          return acc + subSubitem.price * subSubitem.guestCount;
+          // Sub-dishes inherit guest count from main dish
+          return acc + subSubitem.price * submenuItem.guestCount;
         }, 0);
       }
 
-      courseSubTotal += submenuSubTotal + subdataSubTotal;
+      courseSubTotal += mainDishSubTotal + subdataSubTotal;
     });
 
     return courseSubTotal;
   };
 
   /**
-   * Handles incrementing the guest count for a dish.
+   * Handles incrementing the guest count for a main dish.
+   * Note: Sub-dishes' guest counts are automatically handled.
    */
   const handleIncrement = () => {
     const updatedCartData = cartData.map((item) => {
@@ -391,28 +385,7 @@ export const CartItem = ({
       let newSubmenus = item.submenus.map((submenuItem) => {
         if (isSubDishId) {
           // Handling sub-dishes
-          if (submenuItem.id === isSubDishId) {
-            return {
-              ...submenuItem,
-              subdata: submenuItem.subdata.map((subSubitem) => {
-                if (subSubitem.id === subitem.id) {
-                  const courseGuestCount = getTotalGuestCountForCourse(item);
-                  if (courseGuestCount >= referanceGuest) {
-                    errorToast(
-                      `Cannot have more than ${referanceGuest} guests in this course.`
-                    );
-                    return subSubitem;
-                  }
-                  return {
-                    ...subSubitem,
-                    guestCount: subSubitem.guestCount + 1,
-                    subTotal: subSubitem.price * (subSubitem.guestCount + 1),
-                  };
-                }
-                return subSubitem;
-              }),
-            };
-          }
+          // No guest count controls for sub-dishes
           return submenuItem;
         } else {
           // Handling main dishes
@@ -450,7 +423,8 @@ export const CartItem = ({
   };
 
   /**
-   * Handles decrementing the guest count for a dish.
+   * Handles decrementing the guest count for a main dish.
+   * Note: Sub-dishes' guest counts are automatically handled.
    */
   const handleDecrement = () => {
     const updatedCartData = cartData.map((item) => {
@@ -459,22 +433,7 @@ export const CartItem = ({
       let newSubmenus = item.submenus.map((submenuItem) => {
         if (isSubDishId) {
           // Handling sub-dishes
-          if (submenuItem.id === isSubDishId) {
-            return {
-              ...submenuItem,
-              subdata: submenuItem.subdata.map((subSubitem) => {
-                if (subSubitem.id === subitem.id) {
-                  return {
-                    ...subSubitem,
-                    guestCount: Math.max(subSubitem.guestCount - 1, 1),
-                    subTotal:
-                      subSubitem.price * Math.max(subSubitem.guestCount - 1, 1),
-                  };
-                }
-                return subSubitem;
-              }),
-            };
-          }
+          // No guest count controls for sub-dishes
           return submenuItem;
         } else {
           // Handling main dishes
@@ -620,57 +579,60 @@ export const CartItem = ({
         </Card>
 
         {/* Guest Count Controls */}
-        <Box
-          sx={{
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-            padding: "4px 16px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: {
-              xs: "120px",
-              lg: "150px",
-            },
-            position: "relative",
-          }}
-        >
-          <Typography
-            variant="caption"
-            color="textSecondary"
-            sx={{
-              alignSelf: "flex-start",
-              m: 0,
-              position: "absolute",
-              left: "10px",
-              top: "-10px",
-              zIndex: 1,
-              background: "#ffffff",
-              px: 0.7,
-            }}
-          >
-            Guests
-          </Typography>
+        {/* Render guest count controls only for main dishes */}
+        {!isSubDishId && (
           <Box
             sx={{
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              padding: "4px 16px",
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
+              width: {
+                xs: "120px",
+                lg: "150px",
+              },
+              position: "relative",
             }}
           >
-            <IconButton
-              size="small"
-              onClick={subitem?.guestCount > 1 ? handleDecrement : null}
+            <Typography
+              variant="caption"
+              color="textSecondary"
+              sx={{
+                alignSelf: "flex-start",
+                m: 0,
+                position: "absolute",
+                left: "10px",
+                top: "-10px",
+                zIndex: 1,
+                background: "#ffffff",
+                px: 0.7,
+              }}
             >
-              {icons?.decrement}
-            </IconButton>
-            <Typography variant="h6">{subitem?.guestCount}</Typography>
-            <IconButton size="small" onClick={handleIncrement}>
-              {icons?.increment}
-            </IconButton>
+              Guests
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <IconButton
+                size="small"
+                onClick={subitem?.guestCount > 1 ? handleDecrement : null}
+              >
+                {icons?.decrement}
+              </IconButton>
+              <Typography variant="h6">{subitem?.guestCount}</Typography>
+              <IconButton size="small" onClick={handleIncrement}>
+                {icons?.increment}
+              </IconButton>
+            </Box>
           </Box>
-        </Box>
+        )}
 
         {/* Price Display */}
         <Typography
@@ -683,7 +645,12 @@ export const CartItem = ({
             width: "105px",
           }}
         >
-          CHF {(subitem?.price * subitem?.guestCount).toFixed(2)}
+          CHF{" "}
+          {isSubDishId
+            ? (
+                subitem?.price * getMainDishGuestCount(cartData, courseId)
+              ).toFixed(2)
+            : (subitem?.price * subitem?.guestCount).toFixed(2)}
         </Typography>
 
         {/* Delete Button */}
@@ -732,6 +699,19 @@ export const CartItem = ({
         ))}
     </>
   );
+};
+
+/**
+ * Helper function to get the main dish's guest count.
+ * @param {Array} cartData - The cart data array.
+ * @param {string} courseId - The ID of the course.
+ * @returns {number} - The guest count of the main dish.
+ */
+const getMainDishGuestCount = (cartData, courseId) => {
+  const course = cartData.find((item) => item.id === courseId);
+  if (!course) return 1;
+  const mainDish = course.submenus.find((submenu) => !submenu.isSubDish);
+  return mainDish ? mainDish.guestCount : 1;
 };
 
 /**
@@ -932,7 +912,7 @@ const dish2 = {
           dishName: "Fries",
           description: "Fresh homemade fries",
           price: 20,
-          guestCount: 1,
+          // Removed guestCount as it's now inherited
         },
       ],
     },
@@ -950,7 +930,7 @@ const dish2 = {
           dishName: "Truffle fries",
           description: "Fresh homemade fries with truffle",
           price: 20,
-          guestCount: 1,
+          // Removed guestCount as it's now inherited
         },
       ],
     },
