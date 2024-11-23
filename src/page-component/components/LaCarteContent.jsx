@@ -25,24 +25,6 @@ import SelectGroup from "./SelectGroup";
  * @param {Object} course - The course object containing submenus and subdata.
  * @returns {number} - The recalculated subTotal for the course.
  */
-const recalculateCourseSubTotal = (course) => {
-  let courseSubTotal = 0;
-
-  course.submenus.forEach((submenuItem) => {
-    const submenuSubTotal = submenuItem.price * submenuItem.guestCount;
-
-    let subdataSubTotal = 0;
-    if (submenuItem.subdata && submenuItem.subdata.length > 0) {
-      subdataSubTotal = submenuItem.subdata.reduce((acc, subSubitem) => {
-        return acc + subSubitem.price * subSubitem.guestCount;
-      }, 0);
-    }
-
-    courseSubTotal += submenuSubTotal + subdataSubTotal;
-  });
-
-  return courseSubTotal;
-};
 
 /**
  * LaCarteContent Component
@@ -256,11 +238,7 @@ const LaCarteContent = ({ referanceGuest }) => {
               mr: { xs: 0, md: 2, lg: 7 },
             }}
           >
-            {cartData.reduce(
-              (acc, course) => acc + getTotalGuestCountForCourse(course),
-              0
-            )}{" "}
-            Guests
+            {referanceGuest} Guests
           </Typography>
           <Typography fontSize="20px" fontWeight="600">
             CHF {total.toFixed(2)}
