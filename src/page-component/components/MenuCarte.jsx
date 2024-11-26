@@ -28,7 +28,13 @@ export const MenuCarte = ({ guests, setGuests, value, setValue }) => {
 				sx={{ fontSize: "20px", fontWeight: "600", marginRight: "auto" }}
 				variant="h4"
 			>
-				Menu
+				{value === 0
+					? "Menu"
+					: value === 1
+					? "Menu"
+					: value === 2
+					? "Drinks Menu"
+					: ""}
 			</Typography>
 			<Box sx={{ flexGrow: "1", maxWidth: "659px" }}>
 				<Box
@@ -133,5 +139,8 @@ const tabmenu = [
 	},
 	{
 		name: "Standard Menu",
+	},
+	{
+		name: "Drinks menu",
 	},
 ];

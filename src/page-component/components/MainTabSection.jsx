@@ -1,22 +1,20 @@
 import { icons } from "@/components/icons";
 import { Box } from "@mui/material";
 import React from "react";
+import { DrinksMenu } from "./DrinksMenu";
 import LaCarteContent from "./LaCarteContent";
 import { MenuCarte } from "./MenuCarte";
 import { MenuContent } from "./MenuContent";
 
 export const MainTabSection = () => {
-  const [value, setValue] = React.useState(0);
+	const [value, setValue] = React.useState(2);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  // const [disabledBtn, setDisabledBtn] = React.useState(true);
-  const [guests, setGuests] = React.useState(9);
+	// const [disabledBtn, setDisabledBtn] = React.useState(true);
+	const [guests, setGuests] = React.useState(9);
 
-  return (
-    <Box sx={{ width: "100%", px: 3 }}>
-      {/* <Box
+	return (
+		<Box sx={{ width: "100%", px: 3 }}>
+			{/* <Box
 				sx={{
 					borderBottom: 1,
 					borderColor: "divider",
@@ -66,30 +64,28 @@ export const MainTabSection = () => {
 				</Tabs>
 			</Box>
 			<SearchOptions /> */}
-      <MenuCarte {...{ guests, setGuests, value, setValue }} />
-      {value === 0 ? (
-        <LaCarteContent referanceGuest={guests} />
-      ) : (
-        <MenuContent guests={guests} />
-      )}
-    </Box>
-  );
+			<MenuCarte {...{ guests, setGuests, value, setValue }} />
+			{value === 0 && <LaCarteContent referanceGuest={guests} />}
+			{value === 1 && <MenuContent guests={guests} />}
+			{value === 2 && <DrinksMenu />}
+		</Box>
+	);
 };
 const tabmenu = [
-  {
-    name: "Restaurant",
-    icon: icons.restaurant,
-  },
-  {
-    name: "Catering Service",
-    icon: icons.catering,
-  },
-  {
-    name: "Food Truck",
-    icon: icons.truck,
-  },
-  {
-    name: "Event Location",
-    icon: icons.location,
-  },
+	{
+		name: "Restaurant",
+		icon: icons.restaurant,
+	},
+	{
+		name: "Catering Service",
+		icon: icons.catering,
+	},
+	{
+		name: "Food Truck",
+		icon: icons.truck,
+	},
+	{
+		name: "Event Location",
+		icon: icons.location,
+	},
 ];
