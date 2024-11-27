@@ -21,6 +21,10 @@ export const DrinksMenu = () => {
 					"label.Mui-disabled": {
 						opacity: "0.5",
 					},
+					".MuiInputAdornment-root .MuiTypography-root": {
+						fontFamily: '"Roboto", sans-serif',
+						color: "#000",
+					},
 				}}
 			>
 				<Box
@@ -38,6 +42,7 @@ export const DrinksMenu = () => {
 								InputLabelProps={{ shrink: true }}
 								label="Drink Menu Name"
 								placeholder="Soft Drink"
+								value="Soft Drink"
 							/>
 						</Grid>
 						{/* Single Item */}
@@ -48,6 +53,7 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Name"
 									placeholder="Coca Cola"
+									value="Coca Cola"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -55,7 +61,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									placeholder="Light"
+									value="Light"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -64,6 +71,8 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
 									placeholder="1"
+									value="1"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -72,6 +81,7 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
 									placeholder="Glass"
+									value="Glass"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -80,6 +90,7 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Price "
 									placeholder="6.00"
+									value="6.00"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -95,7 +106,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="Ice Tea"
+									value="Ice Tea"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -103,7 +115,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									placeholder="Peach"
+									value="Peach"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -112,6 +125,8 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
 									placeholder="1"
+									value="1"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -119,7 +134,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
-									placeholder="Glass"
+									placeholder="l"
+									value="l"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -127,7 +143,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="5.00"
+									value="5.00"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -143,7 +160,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="Orange Juice"
+									value="Orange Juice"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -152,6 +170,7 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Description"
 									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									value="Freshly squeezed juice from sun-ripened oranges"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -159,7 +178,9 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
-									placeholder="1"
+									placeholder="250"
+									value="250"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -167,7 +188,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
-									placeholder="Glass"
+									placeholder="ml"
+									value="ml"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -175,7 +197,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="8.20"
+									value="8.20"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -191,7 +214,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="Rivella"
+									value="Rivella"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -199,7 +223,6 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
 									disabled
 								/>
 							</Grid>
@@ -208,7 +231,6 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
-									placeholder="1"
 									disabled
 								/>
 							</Grid>
@@ -217,7 +239,6 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
-									placeholder="Glass"
 									disabled
 								/>
 							</Grid>
@@ -226,7 +247,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="5.00"
+									value="5.00"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -251,7 +273,8 @@ export const DrinksMenu = () => {
 								fullWidth
 								InputLabelProps={{ shrink: true }}
 								label="Drink Menu Name"
-								placeholder="Soft Drink"
+								placeholder="Hot Beverages"
+								value="Hot Beverages"
 							/>
 						</Grid>
 						<Grid xs={12}>
@@ -270,7 +293,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="Espresso"
+									value="Espresso"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -278,7 +302,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									placeholder="Aromatic Italian coffee"
+									value="Aromatic Italian coffee"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -287,6 +312,8 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
 									placeholder="1"
+									value="1"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -294,7 +321,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
-									placeholder="Glass"
+									placeholder="Cup"
+									value="Cup"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -302,7 +330,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="4.50"
+									value="4.50"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -318,7 +347,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="Latte Macchiato"
+									value="Latte Macchiato"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -326,7 +356,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									placeholder="Espresso with plenty of milk and milk foam"
+									value="Espresso with plenty of milk and milk foam"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -335,6 +366,8 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
 									placeholder="1"
+									value="1"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -343,6 +376,7 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
 									placeholder="Glass"
+									value="Glass"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -350,7 +384,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="5.00"
+									value="5.00"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -375,7 +410,8 @@ export const DrinksMenu = () => {
 								fullWidth
 								InputLabelProps={{ shrink: true }}
 								label="Drink Menu Name"
-								placeholder="Soft Drink"
+								placeholder="Alcoholic Drinks"
+								value="Alcoholic Drinks"
 							/>
 						</Grid>
 						{/* Single Item */}
@@ -385,7 +421,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="Beer"
+									value="Beer"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -393,7 +430,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									placeholder="Regional draft lager beer"
+									value="Regional draft lager beer"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -401,7 +439,9 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
-									placeholder="1"
+									placeholder="5"
+									value="5"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -409,7 +449,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
-									placeholder="Glass"
+									placeholder="dl"
+									value="dl"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -417,7 +458,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="8.00"
+									value="8.00"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -433,7 +475,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="White Wine"
+									value="White Wine"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -441,7 +484,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									placeholder="Dry white wine from the region"
+									value="Dry white wine from the region"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -450,6 +494,8 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
 									placeholder="1"
+									value="1"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -458,6 +504,7 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
 									placeholder="Glass"
+									value="Glass"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -465,7 +512,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="7.00"
+									value="7.00"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
@@ -481,7 +529,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Name"
-									placeholder="Coca Cola"
+									placeholder="Red Wine"
+									value="Red Wine"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -489,7 +538,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Description"
-									placeholder="Freshly squeezed juice from sun-ripened oranges"
+									placeholder="Full-bodied red wine with fruity notes"
+									value="Full-bodied red wine with fruity notes"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -498,6 +548,8 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
 									placeholder="1"
+									value="1"
+									sx={{ input: { textAlign: "center" } }}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -506,6 +558,7 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
 									placeholder="Glass"
+									value="Glass"
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -513,7 +566,8 @@ export const DrinksMenu = () => {
 									fullWidth
 									InputLabelProps={{ shrink: true }}
 									label="Price "
-									placeholder="6.00"
+									placeholder="8.20"
+									value="8.20"
 									InputProps={{
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
