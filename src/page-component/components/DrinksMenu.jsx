@@ -11,10 +11,6 @@ export const DrinksMenu = () => {
 			<Stack
 				gap={3}
 				sx={{
-					input: {
-						fontFamily: '"Roboto", sans-serif',
-						color: "#000",
-					},
 					".Mui-disabled": {
 						opacity: "0.4",
 					},
@@ -24,6 +20,13 @@ export const DrinksMenu = () => {
 					".MuiInputAdornment-root .MuiTypography-root": {
 						fontFamily: '"Roboto", sans-serif',
 						color: "#000",
+					},
+					".MuiInputBase-root": {
+						fontFamily: '"Roboto", sans-serif',
+						color: "#000",
+						"&.MuiInputBase-readOnly": {
+							pointerEvents: "none",
+						},
 					},
 				}}
 			>
@@ -43,6 +46,9 @@ export const DrinksMenu = () => {
 								label="Drink Menu Name"
 								placeholder="Soft Drink"
 								value="Soft Drink"
+								InputProps={{
+									readOnly: true,
+								}}
 							/>
 						</Grid>
 						{/* Single Item */}
@@ -54,6 +60,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Coca Cola"
 									value="Coca Cola"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -63,6 +72,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Light"
 									value="Light"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -73,6 +85,9 @@ export const DrinksMenu = () => {
 									placeholder="1"
 									value="1"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -82,6 +97,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="Glass"
 									value="Glass"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -95,6 +113,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -108,6 +127,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Ice Tea"
 									value="Ice Tea"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -117,6 +139,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Peach"
 									value="Peach"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -127,6 +152,9 @@ export const DrinksMenu = () => {
 									placeholder="1"
 									value="1"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -136,6 +164,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="l"
 									value="l"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -149,6 +180,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -162,6 +194,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Orange Juice"
 									value="Orange Juice"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -171,6 +206,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Freshly squeezed juice from sun-ripened oranges"
 									value="Freshly squeezed juice from sun-ripened oranges"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -181,6 +219,9 @@ export const DrinksMenu = () => {
 									placeholder="250"
 									value="250"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -190,6 +231,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="ml"
 									value="ml"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -203,6 +247,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -216,6 +261,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Rivella"
 									value="Rivella"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -224,6 +272,9 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Description"
 									disabled
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -232,6 +283,9 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Quantity"
 									disabled
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -240,6 +294,9 @@ export const DrinksMenu = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Unit of Measurement"
 									disabled
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -253,6 +310,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -275,6 +333,9 @@ export const DrinksMenu = () => {
 								label="Drink Menu Name"
 								placeholder="Hot Beverages"
 								value="Hot Beverages"
+								InputProps={{
+									readOnly: true,
+								}}
 							/>
 						</Grid>
 						<Grid xs={12}>
@@ -295,6 +356,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Espresso"
 									value="Espresso"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -304,6 +368,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Aromatic Italian coffee"
 									value="Aromatic Italian coffee"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -314,6 +381,9 @@ export const DrinksMenu = () => {
 									placeholder="1"
 									value="1"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -323,6 +393,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="Cup"
 									value="Cup"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -336,6 +409,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -349,6 +423,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Latte Macchiato"
 									value="Latte Macchiato"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -358,6 +435,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Espresso with plenty of milk and milk foam"
 									value="Espresso with plenty of milk and milk foam"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -368,6 +448,9 @@ export const DrinksMenu = () => {
 									placeholder="1"
 									value="1"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -377,6 +460,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="Glass"
 									value="Glass"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -390,6 +476,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -412,6 +499,9 @@ export const DrinksMenu = () => {
 								label="Drink Menu Name"
 								placeholder="Alcoholic Drinks"
 								value="Alcoholic Drinks"
+								InputProps={{
+									readOnly: true,
+								}}
 							/>
 						</Grid>
 						{/* Single Item */}
@@ -423,6 +513,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Beer"
 									value="Beer"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -432,6 +525,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Regional draft lager beer"
 									value="Regional draft lager beer"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -442,6 +538,9 @@ export const DrinksMenu = () => {
 									placeholder="5"
 									value="5"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -451,6 +550,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="dl"
 									value="dl"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -464,6 +566,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -477,6 +580,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="White Wine"
 									value="White Wine"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -486,6 +592,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Dry white wine from the region"
 									value="Dry white wine from the region"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -496,6 +605,9 @@ export const DrinksMenu = () => {
 									placeholder="1"
 									value="1"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -505,6 +617,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="Glass"
 									value="Glass"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -518,6 +633,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
@@ -531,6 +647,9 @@ export const DrinksMenu = () => {
 									label="Name"
 									placeholder="Red Wine"
 									value="Red Wine"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={5} md={5} xl={5.75}>
@@ -540,6 +659,9 @@ export const DrinksMenu = () => {
 									label="Description"
 									placeholder="Full-bodied red wine with fruity notes"
 									value="Full-bodied red wine with fruity notes"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.5} md={1.5} xl={1.25}>
@@ -550,6 +672,9 @@ export const DrinksMenu = () => {
 									placeholder="1"
 									value="1"
 									sx={{ input: { textAlign: "center" } }}
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -559,6 +684,9 @@ export const DrinksMenu = () => {
 									label="Unit of Measurement"
 									placeholder="Glass"
 									value="Glass"
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
 							</Grid>
 							<Grid item xs={6} sm={1.75} md={1.75} xl={1.5}>
@@ -572,6 +700,7 @@ export const DrinksMenu = () => {
 										endAdornment: (
 											<InputAdornment>CHF</InputAdornment>
 										),
+										readOnly: true,
 									}}
 								/>
 							</Grid>
