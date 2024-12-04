@@ -4,17 +4,17 @@ import { icons } from "@/components/icons";
 import { menuicons } from "@/components/menuicons";
 import { errorToast } from "@/utls/toasts";
 import {
-  Box,
-  Button,
-  ButtonBase,
-  Card,
-  Collapse,
-  IconButton,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
+	Box,
+	Button,
+	ButtonBase,
+	Card,
+	Collapse,
+	IconButton,
+	MenuItem,
+	Select,
+	Stack,
+	TextField,
+	Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CartEditModal from "./CartEditModal";
@@ -39,484 +39,491 @@ const NewStandardMenu = ({ referanceGuest }) => {
   const overallTotal = weddingTotal + birthdayTotal + schoolPartyTotal;
 
   return (
-    <Stack sx={{ minHeight: "calc(100vh - 135px)", pt: 4 }}>
-      {/* Wedding */}
-      <Card
-        sx={{
-          boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-          p: 2,
-          mb: 2,
-        }}
-      >
-        <Box sx={{ overflowX: "auto" }}>
-          <Box
-            sx={{
-              minWidth: "1050px",
-              fontSize: { xs: "14px", sm: "16px" },
-              fontWeight: "600",
-            }}
-          >
-            <Stack
-              direction={"row"}
-              alignItems={"center"}
-              columnGap={{ xs: 2, xl: 3 }}
-            >
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: "16px", sm: "20px" },
-                  width: { xs: "80px", md: "100px" },
-                  fontWeight: "600",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                Wedding
-              </Typography>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "90px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.coursesCountIcon}3 Courses
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.availableGuestsIcon}
-                <Box width={0} flexGrow={1}>
-                  Available for 10-15 Guests
-                </Box>
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.pricePerGuestIcon}
-                <Box width={0} flexGrow={1}>
-                  Price per Guest: 50 CHF
-                </Box>
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                }}
-              >
-                {icons.vegIcon}
-                <Box width={0} flexGrow={1}>
-                  Vegetarian, Meat
-                </Box>
-              </Stack>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: "16px", sm: "20px" },
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  fontWeight: "600",
-                  width: { xs: "140px", md: "160px" },
-                  justifyContent: "flex-end",
-                }}
-              >
-                CHF {weddingTotal.toFixed(2)}
-                <Button
-                  type="button"
-                  sx={{
-                    p: 0,
-                    m: 0,
-                    minWidth: 0,
-                    background: "transparent",
-                  }}
-                  onClick={() =>
-                    setOpenMenu((prev) =>
-                      prev.includes("wedding")
-                        ? prev.filter((itemId) => itemId !== "wedding")
-                        : [...prev, "wedding"]
-                    )
-                  }
-                >
-                  {openMenu.includes("wedding")
-                    ? menuicons.caretUp
-                    : menuicons.caretDown}
-                </Button>
-              </Typography>
-            </Stack>
-          </Box>
-        </Box>
-        <Collapse in={openMenu.includes("wedding")}>
-          <StandardMenu
-            referanceGuest={referanceGuest}
-            cartData={weddingCartData}
-            setCartData={setWeddingCartData}
-            setTotal={setWeddingTotal}
-          />
-        </Collapse>
-      </Card>
+		<Stack sx={{ minHeight: "calc(100vh - 135px)", pt: 4 }}>
+			{/* Wedding */}
+			<Card
+				sx={{
+					boxShadow: "0 0 5px rgba(0,0,0,0.1)",
+					p: 2,
+					mb: 2,
+				}}
+			>
+				<Box sx={{ overflowX: "auto" }}>
+					<Box
+						sx={{
+							minWidth: "1050px",
+							fontSize: { xs: "14px", sm: "16px" },
+							fontWeight: "600",
+						}}
+					>
+						<Stack
+							direction={"row"}
+							alignItems={"center"}
+							columnGap={{ xs: 2, xl: 3 }}
+						>
+							<Typography
+								variant="h5"
+								sx={{
+									fontSize: { xs: "16px", sm: "20px" },
+									width: { xs: "80px", md: "100px" },
+									fontWeight: "600",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								Wedding
+							</Typography>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "90px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.coursesCountIcon}3 Courses
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.availableGuestsIcon}
+								<Box width={0} flexGrow={1}>
+									Available for 10-15 Guests
+								</Box>
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.pricePerGuestIcon}
+								<Box width={0} flexGrow={1}>
+									Price per Guest: 50 CHF
+								</Box>
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+								}}
+							>
+								{icons.vegIcon}
+								<Box width={0} flexGrow={1}>
+									Vegetarian, Meat
+								</Box>
+							</Stack>
+							<Typography
+								variant="h5"
+								sx={{
+									fontSize: { xs: "16px", sm: "20px" },
+									display: "flex",
+									alignItems: "center",
+									gap: 1,
+									fontWeight: "600",
+									width: { xs: "140px", md: "160px" },
+									justifyContent: "flex-end",
+								}}
+							>
+								CHF {weddingTotal.toFixed(2)}
+								<Button
+									type="button"
+									sx={{
+										p: 0,
+										m: 0,
+										minWidth: 0,
+										background: "transparent",
+									}}
+									onClick={() =>
+										setOpenMenu((prev) =>
+											prev.includes("wedding")
+												? prev.filter(
+														(itemId) => itemId !== "wedding"
+												  )
+												: [...prev, "wedding"]
+										)
+									}
+								>
+									{openMenu.includes("wedding")
+										? menuicons.caretUp
+										: menuicons.caretDown}
+								</Button>
+							</Typography>
+						</Stack>
+					</Box>
+				</Box>
+				<Collapse in={openMenu.includes("wedding")}>
+					<StandardMenu
+						referanceGuest={referanceGuest}
+						cartData={weddingCartData}
+						setCartData={setWeddingCartData}
+						setTotal={setWeddingTotal}
+					/>
+				</Collapse>
+			</Card>
 
-      {/* Birthday */}
-      <Card
-        sx={{
-          boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-          p: 2,
-          mb: 2,
-        }}
-      >
-        <Box sx={{ overflowX: "auto" }}>
-          <Box sx={{ minWidth: "1050px" }}>
-            <Stack
-              direction={"row"}
-              alignItems={"center"}
-              columnGap={{ xs: 2, xl: 3 }}
-            >
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: "16px", sm: "20px" },
-                  width: { xs: "80px", md: "100px" },
-                  fontWeight: "600",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                Birthday
-              </Typography>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "90px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.coursesCountIcon}3 Courses
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.availableGuestsIcon}
-                <Box width={0} flexGrow={1}>
-                  Available for 10-15 Guests
-                </Box>
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.pricePerGuestIcon}
-                <Box width={0} flexGrow={1}>
-                  Price per Guest: 50 CHF
-                </Box>
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                }}
-              >
-                {icons.vegIcon}
-                <Box width={0} flexGrow={1}>
-                  Vegetarian, Meat
-                </Box>
-              </Stack>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: "16px", sm: "20px" },
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  fontWeight: "600",
-                  width: { xs: "140px", md: "160px" },
-                  justifyContent: "flex-end",
-                }}
-              >
-                CHF {birthdayTotal.toFixed(2)}
-                <Button
-                  type="button"
-                  sx={{
-                    p: 0,
-                    m: 0,
-                    minWidth: 0,
-                    background: "transparent",
-                  }}
-                  onClick={() =>
-                    setOpenMenu((prev) =>
-                      prev.includes("birthday")
-                        ? prev.filter((itemId) => itemId !== "birthday")
-                        : [...prev, "birthday"]
-                    )
-                  }
-                >
-                  {openMenu.includes("birthday")
-                    ? menuicons.caretUp
-                    : menuicons.caretDown}
-                </Button>
-              </Typography>
-            </Stack>
-            <Collapse in={openMenu.includes("birthday")}>
-              <StandardMenu
-                referanceGuest={referanceGuest}
-                cartData={birthdayCartData}
-                setCartData={setBirthdayCartData}
-                setTotal={setBirthdayTotal}
-              />
-            </Collapse>
-          </Box>
-        </Box>
-      </Card>
+			{/* Birthday */}
+			<Card
+				sx={{
+					boxShadow: "0 0 5px rgba(0,0,0,0.1)",
+					p: 2,
+					mb: 2,
+				}}
+			>
+				<Box sx={{ overflowX: "auto" }}>
+					<Box sx={{ minWidth: "1050px" }}>
+						<Stack
+							direction={"row"}
+							alignItems={"center"}
+							columnGap={{ xs: 2, xl: 3 }}
+						>
+							<Typography
+								variant="h5"
+								sx={{
+									fontSize: { xs: "16px", sm: "20px" },
+									width: { xs: "80px", md: "100px" },
+									fontWeight: "600",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								Birthday
+							</Typography>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "90px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.coursesCountIcon}3 Courses
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.availableGuestsIcon}
+								<Box width={0} flexGrow={1}>
+									Available for 10-15 Guests
+								</Box>
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.pricePerGuestIcon}
+								<Box width={0} flexGrow={1}>
+									Price per Guest: 50 CHF
+								</Box>
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+								}}
+							>
+								{icons.vegIcon}
+								<Box width={0} flexGrow={1}>
+									Vegetarian, Meat
+								</Box>
+							</Stack>
+							<Typography
+								variant="h5"
+								sx={{
+									fontSize: { xs: "16px", sm: "20px" },
+									display: "flex",
+									alignItems: "center",
+									gap: 1,
+									fontWeight: "600",
+									width: { xs: "140px", md: "160px" },
+									justifyContent: "flex-end",
+								}}
+							>
+								CHF {birthdayTotal.toFixed(2)}
+								<Button
+									type="button"
+									sx={{
+										p: 0,
+										m: 0,
+										minWidth: 0,
+										background: "transparent",
+									}}
+									onClick={() =>
+										setOpenMenu((prev) =>
+											prev.includes("birthday")
+												? prev.filter(
+														(itemId) => itemId !== "birthday"
+												  )
+												: [...prev, "birthday"]
+										)
+									}
+								>
+									{openMenu.includes("birthday")
+										? menuicons.caretUp
+										: menuicons.caretDown}
+								</Button>
+							</Typography>
+						</Stack>
+						<Collapse in={openMenu.includes("birthday")}>
+							<StandardMenu
+								referanceGuest={referanceGuest}
+								cartData={birthdayCartData}
+								setCartData={setBirthdayCartData}
+								setTotal={setBirthdayTotal}
+							/>
+						</Collapse>
+					</Box>
+				</Box>
+			</Card>
 
-      {/* School Party */}
-      <Card
-        sx={{
-          boxShadow: "0 0 5px rgba(0,0,0,0.1)",
-          p: 2,
-          mb: 2,
-        }}
-      >
-        <Box sx={{ overflowX: "auto" }}>
-          <Box sx={{ minWidth: "1050px" }}>
-            <Stack
-              direction={"row"}
-              alignItems={"center"}
-              columnGap={{ xs: 2, xl: 3 }}
-            >
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: "16px", sm: "20px" },
-                  width: { xs: "80px", md: "100px" },
-                  fontWeight: "600",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                School Party
-              </Typography>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "90px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.coursesCountIcon}3 Courses
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.availableGuestsIcon}
-                <Box width={0} flexGrow={1}>
-                  Available for 10-15 Guests
-                </Box>
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                  borderRight: "1px solid #cccccc",
-                }}
-              >
-                {icons.pricePerGuestIcon}
-                <Box width={0} flexGrow={1}>
-                  Price per Guest: 50 CHF
-                </Box>
-              </Stack>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                gap={1}
-                sx={{
-                  width: "120px",
-                  flexGrow: 1,
-                }}
-              >
-                {icons.vegIcon}
-                <Box width={0} flexGrow={1}>
-                  Vegetarian, Meat
-                </Box>
-              </Stack>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontSize: { xs: "16px", sm: "20px" },
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  fontWeight: "600",
-                  width: { xs: "140px", md: "160px" },
-                  justifyContent: "flex-end",
-                }}
-              >
-                CHF {schoolPartyTotal.toFixed(2)}
-                <Button
-                  type="button"
-                  sx={{
-                    p: 0,
-                    m: 0,
-                    minWidth: 0,
-                    background: "transparent",
-                  }}
-                  onClick={() =>
-                    setOpenMenu((prev) =>
-                      prev.includes("school-party")
-                        ? prev.filter((itemId) => itemId !== "school-party")
-                        : [...prev, "school-party"]
-                    )
-                  }
-                >
-                  {openMenu.includes("school-party")
-                    ? menuicons.caretUp
-                    : menuicons.caretDown}
-                </Button>
-              </Typography>
-            </Stack>
-            <Collapse in={openMenu.includes("school-party")}>
-              <StandardMenu
-                referanceGuest={referanceGuest}
-                cartData={schoolPartyCartData}
-                setCartData={setSchoolPartyCartData}
-                setTotal={setSchoolPartyTotal}
-              />
-            </Collapse>
-          </Box>
-        </Box>
-      </Card>
+			{/* School Party */}
+			<Card
+				sx={{
+					boxShadow: "0 0 5px rgba(0,0,0,0.1)",
+					p: 2,
+					mb: 2,
+				}}
+			>
+				<Box sx={{ overflowX: "auto" }}>
+					<Box sx={{ minWidth: "1050px" }}>
+						<Stack
+							direction={"row"}
+							alignItems={"center"}
+							columnGap={{ xs: 2, xl: 3 }}
+						>
+							<Typography
+								variant="h5"
+								sx={{
+									fontSize: { xs: "16px", sm: "20px" },
+									width: { xs: "80px", md: "100px" },
+									fontWeight: "600",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								School Party
+							</Typography>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "90px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.coursesCountIcon}3 Courses
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.availableGuestsIcon}
+								<Box width={0} flexGrow={1}>
+									Available for 10-15 Guests
+								</Box>
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+									borderRight: "1px solid #cccccc",
+								}}
+							>
+								{icons.pricePerGuestIcon}
+								<Box width={0} flexGrow={1}>
+									Price per Guest: 50 CHF
+								</Box>
+							</Stack>
+							<Stack
+								direction={"row"}
+								alignItems={"center"}
+								gap={1}
+								sx={{
+									width: "120px",
+									flexGrow: 1,
+								}}
+							>
+								{icons.vegIcon}
+								<Box width={0} flexGrow={1}>
+									Vegetarian, Meat
+								</Box>
+							</Stack>
+							<Typography
+								variant="h5"
+								sx={{
+									fontSize: { xs: "16px", sm: "20px" },
+									display: "flex",
+									alignItems: "center",
+									gap: 1,
+									fontWeight: "600",
+									width: { xs: "140px", md: "160px" },
+									justifyContent: "flex-end",
+								}}
+							>
+								CHF {schoolPartyTotal.toFixed(2)}
+								<Button
+									type="button"
+									sx={{
+										p: 0,
+										m: 0,
+										minWidth: 0,
+										background: "transparent",
+									}}
+									onClick={() =>
+										setOpenMenu((prev) =>
+											prev.includes("school-party")
+												? prev.filter(
+														(itemId) => itemId !== "school-party"
+												  )
+												: [...prev, "school-party"]
+										)
+									}
+								>
+									{openMenu.includes("school-party")
+										? menuicons.caretUp
+										: menuicons.caretDown}
+								</Button>
+							</Typography>
+						</Stack>
+						<Collapse in={openMenu.includes("school-party")}>
+							<StandardMenu
+								referanceGuest={referanceGuest}
+								cartData={schoolPartyCartData}
+								setCartData={setSchoolPartyCartData}
+								setTotal={setSchoolPartyTotal}
+							/>
+						</Collapse>
+					</Box>
+				</Box>
+			</Card>
 
-      <>
-        <Box sx={{ opacity: "0.3", my: 1, mt: "auto" }}>
-          <hr />
-        </Box>
-        <Stack flexDirection={"row"} alignItems="center">
-          <Typography fontSize="20px" fontWeight="600" marginRight="auto">
-            Subtotal
-          </Typography>
-          <Typography
-            fontSize="20px"
-            fontWeight="500"
-            sx={{
-              mr: { xs: 0, md: 2, lg: 7 },
-            }}
-          >
-            {referanceGuest} Guests
-          </Typography>
-          <Typography fontSize="20px" fontWeight="600">
-            CHF {overallTotal.toFixed(2)}
-          </Typography>
-        </Stack>
-        <Box sx={{ opacity: "0.3", my: 1 }}>
-          <hr />
-        </Box>
-        <TextField
-          variant="outlined"
-          placeholder="Add remarks here..."
-          label="Add Remarks"
-          sx={{
-            width: "100%",
-          }}
-        />
-        <Stack
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems={"center"}
-          flexWrap={"wrap-reverse"}
-          sx={{
-            py: 3,
-            rowGap: 2,
-          }}
-        >
-          <Stack
-            flexDirection="row"
-            alignItems="center"
-            gap="6px"
-            sx={{
-              fontWeight: "500",
-              width: { xs: "100%", sm: "0" },
-              maxWidth: "771px",
-              flexGrow: "1",
-            }}
-          >
-            {icons.info}{" "}
-            <Box sx={{ width: "0", flexGrow: "1" }}>
-              For allergies, specific food instructions, or questions about the
-              origin of meat: Please contact the restaurant directly at{" "}
-              <a href="tel:+41585620030" style={{ color: "#1D9BF0" }}>
-                +41585620030
-              </a>{" "}
-              or add your questions to the remark section.
-            </Box>
-          </Stack>
-          <Button
-            type="button"
-            variant="contained"
-            color="primary"
-            // disabled={!isAnyCourseHasDishes()}
-            sx={{
-              fontSize: "14px",
-              fontWeight: "600",
-              textTransform: "uppercase",
-              height: "44px",
-              ml: "auto",
-            }}
-          >
-            Request Menu
-          </Button>
-        </Stack>
-      </>
-    </Stack>
+			<>
+				<Box sx={{ opacity: "0.3", my: 1, mt: "auto" }}>
+					<hr />
+				</Box>
+				<Stack flexDirection={"row"} alignItems="center">
+					<Typography fontSize="20px" fontWeight="600" marginRight="auto">
+						Subtotal
+					</Typography>
+					<Typography
+						fontSize="20px"
+						fontWeight="500"
+						sx={{
+							mr: { xs: 0, md: 2, lg: 7 },
+						}}
+					>
+						{referanceGuest} Guests
+					</Typography>
+					<Typography fontSize="20px" fontWeight="600">
+						CHF {overallTotal.toFixed(2)}
+					</Typography>
+				</Stack>
+				<Box sx={{ opacity: "0.3", my: 1 }}>
+					<hr />
+				</Box>
+				<TextField
+					variant="outlined"
+					placeholder="Add remarks here..."
+					label="Add Remarks"
+					sx={{
+						width: "100%",
+					}}
+				/>
+				<Stack
+					flexDirection="row"
+					justifyContent="space-between"
+					alignItems={"center"}
+					flexWrap={"wrap-reverse"}
+					sx={{
+						py: 3,
+						rowGap: 2,
+					}}
+				>
+					<Stack
+						flexDirection="row"
+						alignItems="center"
+						gap="6px"
+						sx={{
+							fontWeight: "500",
+							width: { xs: "100%", sm: "0" },
+							maxWidth: "771px",
+							flexGrow: "1",
+						}}
+					>
+						{icons.info}{" "}
+						<Box sx={{ width: "0", flexGrow: "1" }}>
+							For allergies, specific food instructions, or questions
+							about the origin of meat: Please contact the restaurant
+							directly at{" "}
+							<a href="tel:+41585620030" style={{ color: "#1D9BF0" }}>
+								+41585620030
+							</a>{" "}
+							or add your questions to the remark section.
+						</Box>
+					</Stack>
+					<Button
+						type="button"
+						variant="contained"
+						color="primary"
+						disabled={overallTotal == 0}
+						sx={{
+							fontSize: "14px",
+							fontWeight: "600",
+							textTransform: "uppercase",
+							height: "44px",
+							ml: "auto",
+						}}
+					>
+						Request Menu
+					</Button>
+				</Stack>
+			</>
+		</Stack>
   );
 };
 
