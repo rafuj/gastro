@@ -1,6 +1,6 @@
 import { icons } from "@/components/icons";
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { DrinksMenu } from "./DrinksMenu";
 import LaCarteContent from "./LaCarteContent";
 import { MenuCarte } from "./MenuCarte";
@@ -10,6 +10,11 @@ export const MainTabSection = () => {
 	const [value, setValue] = React.useState(1);
 
 	const [guests, setGuests] = React.useState(9);
+	useEffect(() => {
+		if (value == 1) {
+			setGuests(15);
+		}
+	}, [value]);
 
 	return (
 		<Box sx={{ width: "100%", px: 3 }}>
