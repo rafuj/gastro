@@ -20,25 +20,17 @@ import React, { useEffect, useState } from "react";
 import CartEditModal from "./CartEditModal";
 import SelectGroup from "./SelectGroup";
 
-// Define availability ranges and price per guest for each menu
+// Define the ranges and price per guest for each menu
 const WEDDING_RANGE = { min: 10, max: 15, pricePerGuest: 50 };
-const BIRTHDAY_RANGE = { min: 15, max: 20, pricePerGuest: 60 };
-const SCHOOL_PARTY_RANGE = { min: 20, max: 100, pricePerGuest: 70 };
+const BIRTHDAY_RANGE = { min: 16, max: 20, pricePerGuest: 60 };
+const SCHOOL_PARTY_RANGE = { min: 21, max: 100, pricePerGuest: 70 };
 
-/**
- * Helper to determine effective guest count for pricing:
- * If referanceGuest is out of range, we use the minimum of that range.
- */
 function getEffectiveGuestCount(referanceGuest, menuRange) {
   if (referanceGuest < menuRange.min) return menuRange.min;
   if (referanceGuest > menuRange.max) return menuRange.min;
   return referanceGuest;
 }
 
-/**
- * Initial cart data with at least one original dish per course.
- * Marking them as isOriginal: true so they cannot be deleted.
- */
 export const cartFakeData = [
   {
     id: "course-1",
@@ -97,9 +89,7 @@ export const cartFakeData = [
 ];
 
 /**
- * Dishes available for selection (original menu options).
- * These represent possible alternatives or additional dishes the user can add.
- * Newly added dishes should be marked isOriginal: false in CartEditModal.
+ * Example dish data for each course. Adjust or expand as needed.
  */
 const dish1 = {
   id: "course-1",
@@ -209,7 +199,6 @@ const dish2 = {
       description: "Classic spaghetti with rich tomato-meat sauce.",
       icon: menuicons.meat,
       tag: "Meat",
-      kidsIcon: menuicons.kids,
       price: 25.5,
     },
   ],
@@ -232,7 +221,7 @@ const dish3 = {
 };
 
 /**
- * Utility to check if all courses in a given cartData match the referanceGuest count.
+ * Checks if all courses match the reference guest count.
  */
 function allCoursesMatchGuestCount(cartData, referanceGuest) {
   return cartData.every((course) => {
@@ -251,7 +240,27 @@ const NewStandardMenu = ({ referanceGuest }) => {
   const [birthdayCartData, setBirthdayCartData] = useState(cartFakeData);
   const [schoolPartyCartData, setSchoolPartyCartData] = useState(cartFakeData);
 
-  // Effective guest counts based on range
+  // Whenever referanceGuest changes, update all dishes in all menus to that guestCount
+  useEffect(() => {
+    const updateAllGuestCounts = (data) =>
+      data.map((course) => ({
+        ...course,
+        submenus: course.submenus.map((submenu) => ({
+          ...submenu,
+          guestCount: referanceGuest,
+          subdata:
+            submenu.subdata?.map((sub) => ({
+              ...sub,
+              guestCount: referanceGuest,
+            })) || [],
+        })),
+      }));
+
+    setWeddingCartData((prev) => updateAllGuestCounts(prev));
+    setBirthdayCartData((prev) => updateAllGuestCounts(prev));
+    setSchoolPartyCartData((prev) => updateAllGuestCounts(prev));
+  }, [referanceGuest]);
+
   const weddingEffectiveGuests = getEffectiveGuestCount(
     referanceGuest,
     WEDDING_RANGE
@@ -265,13 +274,11 @@ const NewStandardMenu = ({ referanceGuest }) => {
     SCHOOL_PARTY_RANGE
   );
 
-  // Calculate totals based on effective guests
   const weddingTotal = weddingEffectiveGuests * WEDDING_RANGE.pricePerGuest;
   const birthdayTotal = birthdayEffectiveGuests * BIRTHDAY_RANGE.pricePerGuest;
   const schoolPartyTotal =
     schoolPartyEffectiveGuests * SCHOOL_PARTY_RANGE.pricePerGuest;
 
-  // Check if referanceGuest is in range for each menu
   const isWeddingInRange =
     referanceGuest >= WEDDING_RANGE.min && referanceGuest <= WEDDING_RANGE.max;
   const isBirthdayInRange =
@@ -294,7 +301,6 @@ const NewStandardMenu = ({ referanceGuest }) => {
     referanceGuest
   );
 
-  // Determine which menus are open and if conditions to request menu are met
   const canRequestMenu =
     openMenu.length > 0 &&
     openMenu.every((menu) => {
@@ -305,7 +311,6 @@ const NewStandardMenu = ({ referanceGuest }) => {
       return false;
     });
 
-  // Overall total (sum of all displayed menu totals)
   const overallTotal =
     (openMenu.includes("wedding") ? weddingTotal : 0) +
     (openMenu.includes("birthday") ? birthdayTotal : 0) +
@@ -821,21 +826,13 @@ const NewStandardMenu = ({ referanceGuest }) => {
   );
 };
 
-/**
- * StandardMenu Component
- * Handles the cart display for each course in the selected menu.
- * Note: Pricing no longer depends on dish changes, so we skip recalculating totals here.
- */
 const StandardMenu = ({ referanceGuest, cartData, setCartData }) => {
-  const [open, setOpen] = React.useState(false);
-  const [modalData, setModalData] = React.useState({});
-  const [accordionOpenIds, setAccordionOpenIds] = React.useState(
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [accordionOpenIds, setAccordionOpenIds] = useState(
     cartData.map((course) => course.id)
   );
 
-  /**
-   * Function to get total guests for a course.
-   */
   const getTotalGuestCountForCourse = (course) => {
     let totalGuestCount = 0;
     course.submenus?.forEach((submenu) => {
@@ -849,6 +846,13 @@ const StandardMenu = ({ referanceGuest, cartData, setCartData }) => {
       <Stack gap={1} mt={3}>
         {cartData.map((item, index) => {
           const { id, submenus, title } = item;
+          // Compute whether this course matches the required guest count
+          const totalGuests = getTotalGuestCountForCourse(item);
+          const isMatching = totalGuests === referanceGuest;
+
+          // Retrieve dishData as you previously did, for example:
+          // Assuming dish1, dish2, dish3 are accessible in this scope.
+          // Adjust this logic as needed if dish data is handled differently.
           const dishData = index === 0 ? dish1 : index === 1 ? dish2 : dish3;
           const { dishList } = dishData;
 
@@ -869,8 +873,13 @@ const StandardMenu = ({ referanceGuest, cartData, setCartData }) => {
                 <Typography fontSize="20px" fontWeight="600" mr="auto">
                   {title}
                 </Typography>
-                <Typography fontSize="16px" fontWeight="600" color="primary">
-                  {getTotalGuestCountForCourse(item)} / {referanceGuest} Guests
+                <Typography
+                  fontSize="16px"
+                  fontWeight="600"
+                  // Use text.primary (default color) if matching, else error (red)
+                  color={isMatching ? "#666" : "#821101"}
+                >
+                  {totalGuests} / {referanceGuest} Guests
                   <Button
                     type="button"
                     sx={{
@@ -910,6 +919,7 @@ const StandardMenu = ({ referanceGuest, cartData, setCartData }) => {
                                         subitem.subdata ? "Side Dish" : "Dish"
                                       }
                                     >
+                                      {/* CartItem component as previously implemented */}
                                       <CartItem
                                         dishlist={dishList}
                                         cartData={cartData}
@@ -946,7 +956,6 @@ const StandardMenu = ({ referanceGuest, cartData, setCartData }) => {
                             mr: "57px",
                           }}
                           onClick={() => {
-                            // Ensure we do not exceed referanceGuest if adding more dishes
                             const courseGuestCount =
                               getTotalGuestCountForCourse(item);
                             if (courseGuestCount >= referanceGuest) {
@@ -954,7 +963,6 @@ const StandardMenu = ({ referanceGuest, cartData, setCartData }) => {
                                 `Cannot add more than ${referanceGuest} guests to this course.`
                               );
                             } else {
-                              // Set modal data to add a new dish (isOriginal: false)
                               setModalData({
                                 ...dishData,
                                 courseId: item.id,
@@ -984,17 +992,12 @@ const StandardMenu = ({ referanceGuest, cartData, setCartData }) => {
             open,
             referanceGuest,
           }}
-          // Ensure that any newly added dish in CartEditModal is marked isOriginal: false
         />
       )}
     </>
   );
 };
 
-/**
- * CartItem Component
- * Handles dish selection, guest count, and deletion logic.
- */
 export const CartItem = ({
   dishlist,
   cartData,
@@ -1023,7 +1026,6 @@ export const CartItem = ({
       if (item.id !== courseId) return item;
       let newSubmenus = item.submenus.map((submenuItem) => {
         if (submenuItem.id === subitem.id && !isSubDishId) {
-          // Check if we can increment without exceeding referanceGuest
           const courseGuestCount = item.submenus.reduce(
             (acc, si) => acc + (si.guestCount || 0),
             0
@@ -1071,7 +1073,6 @@ export const CartItem = ({
   };
 
   /*   const handleDelete = () => {
-    // Only allow deletion if subitem.isOriginal is false
     if (subitem.isOriginal) {
       errorToast("You cannot delete a standard dish.");
       return;
@@ -1081,7 +1082,6 @@ export const CartItem = ({
 
       let newSubmenus;
       if (isSubDishId) {
-        // Deleting a sub-dish
         newSubmenus = item.submenus.map((submenuItem) => {
           if (submenuItem.id === isSubDishId) {
             const newSubdata = (submenuItem.subdata || []).filter(
@@ -1095,7 +1095,6 @@ export const CartItem = ({
           return submenuItem;
         });
       } else {
-        // Deleting a main dish
         newSubmenus = item.submenus.filter(
           (submenuItem) => submenuItem.id !== subitem.id
         );
@@ -1133,7 +1132,6 @@ export const CartItem = ({
                 value={selectedDish || ""}
                 onChange={(e) => {
                   setSelectedDish(e.target.value);
-                  // You can update the dish in cartData as well if needed
                   const updatedCartData = cartData.map((course) => {
                     if (course.id !== courseId) return course;
                     const newSubmenus = course.submenus.map((s) => {
@@ -1141,7 +1139,6 @@ export const CartItem = ({
                         return {
                           ...s,
                           ...e.target.value,
-                          // Keep guestCount and isOriginal status
                           guestCount: s.guestCount,
                           isOriginal: s.isOriginal,
                         };
@@ -1292,9 +1289,6 @@ export const CartItem = ({
   );
 };
 
-/**
- * SelectOption Component for dropdown items
- */
 const SelectOption = ({ item }) => {
   return (
     <Box
@@ -1325,9 +1319,6 @@ const SelectOption = ({ item }) => {
   );
 };
 
-/**
- * SelectedOption Component for the selected dish in the dropdown
- */
 const SelectedOption = ({ selected }) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
