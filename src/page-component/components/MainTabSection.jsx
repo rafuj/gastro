@@ -8,12 +8,7 @@ import NewStandardMenu from "./NewStandardMenu";
 export const MainTabSection = () => {
 	const [value, setValue] = React.useState(1);
 
-	const [guests, setGuests] = React.useState(9);
-	// useEffect(() => {
-	// 	if (value == 1) {
-	// 		setGuests(15);
-	// 	}
-	// }, [value]);
+	const [guests, setGuests] = React.useState(15);
 
 	return (
 		<Box sx={{ width: "100%", px: 3 }}>
